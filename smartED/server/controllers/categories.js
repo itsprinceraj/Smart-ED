@@ -25,19 +25,19 @@ exports.createCategory = async (req, res) => {
         status: false,
         message: `Only Unique category can be created ,${name} already exists`,
       });
-    } else {
-      // details are filled , now create entry in Db
-      const CategoryDetails = await Category.create({
-        name: name,
-        description: description,
-      });
-      console.log(CategoryDetails);
     }
+    // details are filled , now create entry in Db
+    const CategoryDetails = await Category.create({
+      name: name,
+      description: description,
+    });
+    // console.log(CategoryDetails);
 
     // send REsponse
     res.status(200).json({
       success: true,
       message: "Category Created Successfully",
+      data: CategoryDetails,
     });
   } catch (err) {
     console.log("error while creating Category: ", err);
@@ -58,7 +58,9 @@ exports.showAllCategories = async (req, res) => {
     const allCategories = await Category.find(
       {},
       { name: true, description: true }
-    );
+    )
+      .populate("courses")
+      .exec();
 
     //Send response
     res.status(200).json({

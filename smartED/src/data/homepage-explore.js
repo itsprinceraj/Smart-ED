@@ -69,7 +69,7 @@ export const HomePageExplore = [
         ]
     },
     {
-        tag: 'Skills paths',
+        tag: 'Skills path',
         courses : [
             {
                 heading : "Flask",
@@ -92,7 +92,7 @@ export const HomePageExplore = [
         ]
     },
     {
-        tag: 'Career paths',
+        tag: 'Career path',
         courses : [
             {
                 heading : "Next.js",

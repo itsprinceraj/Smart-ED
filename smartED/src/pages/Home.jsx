@@ -5,6 +5,12 @@ import { CTAButton } from "../components/homepage/CTAButton";
 import Banner from "../assets/Images/banner.mp4";
 import { AnimateCode } from "../components/homepage/AnimateCode";
 import { CodeBlock } from "../components/homepage/CodeBlock";
+import { TimeLineSection } from "../components/homepage/TimeLineSection";
+import { LearningLang } from "../components/homepage/LearningLang";
+import Footer from "../components/common/Footer";
+import { InstructorSection } from "../components/homepage/InstructorSection";
+import { ReviewSlider } from "../components/homepage/ReviewSlider";
+import { ExploreTabs } from "../components/homepage/ExploreTabs";
 export const Home = () => {
   return (
     <>
@@ -41,7 +47,7 @@ export const Home = () => {
 
         <div className="mt-8 flex flex-row gap-7">
           <CTAButton active={true} linkTo={"/signup"}>
-            Learn more
+            Learn More
           </CTAButton>
           <CTAButton active={false} linkTo={"/login"}>
             Book a Demo
@@ -92,7 +98,7 @@ export const Home = () => {
           position={"lg:flex-row"}
           backgroundGradient={<div className="codeblock1 absolute"></div>}
           codeColor={"text-yellow-25"}
-          codes={`<!DOCTYPE html>\n <html lang="en">\n<head>\n<title>This is myPage</title>\n</head>\n<body>\n<h1><a href="/">Header</a></h1>\n<nav> <a href="/one">One</a> <a href="/two">Two</a> <a href="/three">Three</a>\n</nav>\n</body>`}
+          codes={`<!DOCTYPE html>\n <html lang="en">\n<head>\n<title>This is Home Page</title>\n</head>\n<body>\n<h1>Header</h1>\n<nav><a href="/one">One</a>\n<a href="/two">Two</a>\n<a href="/three">Three</a></nav>\n</body>`}
         />
       </div>
 
@@ -110,7 +116,7 @@ export const Home = () => {
           }
           position={"lg:flex-row"}
           ctaBtn1={{
-            text: "Try it Yourself",
+            text: "Continue Lesson",
             active: true,
             link: "/signup",
           }}
@@ -135,9 +141,89 @@ export const Home = () => {
         />
       </div>
 
+      {/* Explore more Tabs and Cards */}
+
+      <ExploreTabs />
+
       {/* Section 2 */}
 
+      <div className="bg-pure-greys-5 text-richblack-700">
+        <div className=" homepage_bg h-[320px]">
+          <div className="mx-auto flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-8">
+            {/* Explore full catalog Section */}
+
+            <div className=" lg:h-[150px] "></div>
+
+            {/* Controll To Action Button */}
+
+            <div className="flex flex-row gap-7 text-white lg:mt-8">
+              <CTAButton active={true} linkTo={"/signup"}>
+                <div className="flex items-center gap-2">
+                  {" "}
+                  Explore Full Catalog
+                  <FaArrowRight />
+                </div>
+              </CTAButton>
+
+              <CTAButton active={false} linkto={"/login"}>
+                Learn More
+              </CTAButton>
+            </div>
+          </div>
+        </div>
+
+        <div className="mx-auto flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-8 ">
+          {/* job Demant Section - 1 */}
+
+          <div className="mb-10 mt-[-100px] flex flex-col justify-between gap-7 lg:mt-20 lg:flex-row lg:gap-0">
+            <div className="text-4xl font-semibold lg:w-[45%] ">
+              Get the skills you need for a{" "}
+              <HighlightText text={"job that is in demand."} />
+            </div>
+            <div className="flex flex-col items-start gap-10 lg:w-[40%]">
+              <div className="text-[16px]">
+                The modern StudyNotion is the dictates its own terms. Today, to
+                be a competitive specialist requires more than professional
+                skills.
+              </div>
+              <CTAButton active={true} linkTo={"/signup"}>
+                Learn More
+              </CTAButton>
+            </div>
+          </div>
+
+          {/* TimeLine Section  */}
+
+          <TimeLineSection />
+
+          {/* Learning Language Section */}
+
+          <LearningLang />
+        </div>
+
+        <div className="w-fit mx-auto lg:mb-20 mb-8 mt-5">
+          <CTAButton active={true} linkTo={"/login"}>
+            Learn More
+          </CTAButton>
+        </div>
+      </div>
+
       {/* Section 3 */}
+
+      {/* Instructor Section */}
+
+      <div className="relative mx-auto my-20 flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-8 bg-richblack-900 text-white">
+        <InstructorSection />
+
+        {/* Reviws from Other Learner */}
+        <h1 className="text-center text-4xl font-semibold mt-8">
+          Reviews from other learners
+        </h1>
+
+        <ReviewSlider />
+      </div>
+
+      <Footer />
     </>
   );
 };
