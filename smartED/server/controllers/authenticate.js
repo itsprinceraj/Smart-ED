@@ -6,6 +6,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const secKey = process.env.SEC_KEY;
+const { passwordUpdated } = require("../mail/templates/passwordUpdate");
+const mailSender = require("../utilities/mailSender");
 
 //send otp
 exports.sendOTP = async (req, res) => {
@@ -286,25 +288,46 @@ exports.changePassword = async (req, res) => {
       });
     }
 
-    //  password is matched and the password is unique from the previous one, now create entry in database
+    //  password is matched and the password is unique from the previous one, hash the password
+
+    const encryptPass = await bcrypt.hash(newPassword, 10);
+
+    // now create entry in database
     const user = await User.findOneAndUpdate(
       { email: email },
-      { password: newPassword },
+      { password: encryptPass },
       { new: true }
     );
 
-    const response = await User.create({ password: newPassword });
+    // password is updated , now send mail to user that their password is updated succesfully
+
+    try {
+      const emailResponse = await mailSender(
+        user.email,
+        "Password for your account has been updated",
+        passwordUpdated(
+          user.email,
+          `Password updated successfully for ${user.firstName} ${user.lastName}`
+        )
+      );
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({
+        success: false,
+        message: "Error occurred while sending email",
+        error: err.message,
+      });
+    }
 
     res.status(200).json({
       success: true,
       message: "Password updated successfully",
-      data: response,
     });
   } catch (err) {
-    console.log("facing issue while loging in", err);
-    res.status(401).json({
+    console.log("error occurred while updating password", err);
+    res.status(500).json({
       success: false,
-      message: "Password cannot be change",
+      message: "Error occurred while updating password",
     });
   }
 };

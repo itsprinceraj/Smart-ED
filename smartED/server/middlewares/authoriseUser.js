@@ -11,6 +11,11 @@ exports.auth = async (req, res, next) => {
 
     // console.log(token);
 
+    // If JWT is missing, return 401 Unauthorized response
+    if (!token) {
+      return res.status(401).json({ success: false, message: `Token Missing` });
+    }
+
     // decode it and verify that token matches or not
     try {
       // console.log("decode chl rha h?");
@@ -26,11 +31,11 @@ exports.auth = async (req, res, next) => {
       //   data: decode,
       // });
     } catch (error) {
-      res.status(403).json({
+      res.status(401).json({
         success: false,
-        message: "token verificaton failed",
+        message: "token is invalid",
       });
-    }
+    } // If JWT is valid, move on to the next middleware or request handler
     next();
   } catch (err) {
     console.log("authentication error", err);
@@ -44,8 +49,9 @@ exports.auth = async (req, res, next) => {
 // isStudent
 exports.isStudent = async (req, res, next) => {
   try {
+    const userDetails = await User.findOne({ email: req.user.email });
     // match account type and check authorisation
-    if (req.user.accountType !== "Student") {
+    if (userDetails.accountType !== "Student") {
       res.status(403).json({
         success: false,
         message: "this is a protected Route for Students Only",
@@ -64,10 +70,11 @@ exports.isStudent = async (req, res, next) => {
 // isAdmin
 exports.isAdmin = async (req, res, next) => {
   try {
+    const userDetails = await User.findOne({ email: req.user.email });
     // match account type and check authorisation
-    // console.log(req.user.accountType);
-    if (req.user.accountType !== "Admin") {
-      res.status(403).json({
+
+    if (userDetails.accountType !== "Admin") {
+      res.status(401).json({
         success: false,
         message: "this is a protected Route for Admin Only",
       });
@@ -86,9 +93,10 @@ exports.isAdmin = async (req, res, next) => {
 
 exports.isInstructor = async (req, res, next) => {
   try {
+    const userDetails = await User.findOne({ email: req.user.email });
     // match account type and check authorisation
-    if (req.user.accountType !== "Instructor") {
-      res.status(403).json({
+    if (userDetails.accountType !== "Instructor") {
+      res.status(401).json({
         success: false,
         message: "this is a protected Route for Instructor Only",
       });
@@ -96,7 +104,7 @@ exports.isInstructor = async (req, res, next) => {
     next();
   } catch (err) {
     console.log("authentication error", err);
-    res.status(401).json({
+    res.status(500).json({
       success: false,
       message: "User role cannot be verified",
     });

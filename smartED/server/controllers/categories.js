@@ -55,9 +55,7 @@ exports.showAllCategories = async (req, res) => {
     // create a db call to find all Categories
     // make sure that the data contain name and description
 
-    const allCategories = await Tag.find({}, { name: true, description: true })
-      .populate("courses")
-      .exec();
+    const allCategories = await Tag.find({});
 
     //Send response
     res.status(200).json({

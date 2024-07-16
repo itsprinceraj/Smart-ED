@@ -20,7 +20,7 @@ const mailSender = async (email, title, body) => {
 
     // SEND MAIL
     let info = transporter.sendMail({
-      from: "SmartED || BY - Prince Raj ",
+      from: "SMART-ED || BY - SMART-ED corps ",
       to: `${email}`,
       subject: `${title}`,
       html: `${body}`,
