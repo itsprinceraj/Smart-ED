@@ -1,6 +1,6 @@
 import React from "react";
 import { Template } from "../components/auth/Template";
-import signupImage from "../assets/Images/signup.png";
+import signupImage from "../assets/Images/signuppageimg.png";
 export const Signup = (props) => {
   const setIsLoggedIn = props.setIsLoggedIn;
   const templateData = {

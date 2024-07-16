@@ -40,21 +40,13 @@ export const Template = ({ data, image, setIsLoggedIn }) => {
 
       {/* Render Image */}
 
-      <div className="relative w-[500px]">
+      <div className="relative  -top-16 w-[600]">
         <img
-          src={framImage}
-          alt="Pattern"
-          height={460}
-          width={460}
-          loading="lazy"
-        />
-
-        <img
-        className="absolute -top-4 -left-4"
+          className=""
           src={image}
           alt="Students"
-          height={460}
-          width={460}
+          height={700}
+          width={650}
           loading="lazy"
         />
       </div>
