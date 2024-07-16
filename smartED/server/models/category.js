@@ -9,11 +9,13 @@ const tagSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  courses: {
-    type: mongoose.Schema.Types.ObjectId,
-    // required: true,
-    ref: "Course",
-  },
+  courses: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      // required: true,
+      ref: "Course",
+    },
+  ],
 });
 
 // export schema

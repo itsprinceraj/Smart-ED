@@ -1,4 +1,4 @@
-const Category = require("../models/category");
+const Tag = require("../models/category");
 
 // create Category
 
@@ -17,7 +17,7 @@ exports.createCategory = async (req, res) => {
     }
 
     // if a category exist with same name , then refuse to create a new category
-    const category = await Category.findOne({ name });
+    const category = await Tag.findOne({ name });
     // console.log("printing category ", category);
 
     if (category) {
@@ -27,7 +27,7 @@ exports.createCategory = async (req, res) => {
       });
     }
     // details are filled , now create entry in Db
-    const CategoryDetails = await Category.create({
+    const CategoryDetails = await Tag.create({
       name: name,
       description: description,
     });
@@ -55,10 +55,7 @@ exports.showAllCategories = async (req, res) => {
     // create a db call to find all Categories
     // make sure that the data contain name and description
 
-    const allCategories = await Category.find(
-      {},
-      { name: true, description: true }
-    )
+    const allCategories = await Tag.find({}, { name: true, description: true })
       .populate("courses")
       .exec();
 
@@ -85,7 +82,7 @@ exports.categoryPageDetails = async (req, res) => {
     const { categoryId } = req.body;
 
     // get courses for specified category
-    const selectedCategory = await Category.findById(categoryId)
+    const selectedCategory = await Tag.findById(categoryId)
       .populate("courses")
       .exec();
 
@@ -98,7 +95,7 @@ exports.categoryPageDetails = async (req, res) => {
     }
 
     // get courses for different categories
-    const differentCategories = await Category.find({
+    const differentCategories = await Tag.find({
       _id: { $ne: categoryId }, // get category not equal to the given id
     })
       .populate("courses")

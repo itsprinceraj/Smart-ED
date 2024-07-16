@@ -38,10 +38,12 @@ const courseSchema = new mongoose.Schema({
     ref: "Tag",
   },
 
-  tag: {
-    type: [String],
-    required: true,
-  },
+  tag: [
+    {
+      type: String,
+      required: true,
+    },
+  ],
   studentsEnrolled: {
     type: mongoose.Schema.Types.ObjectId,
     // required: true,
@@ -53,6 +55,10 @@ const courseSchema = new mongoose.Schema({
   status: {
     type: String,
     enum: ["Draft", "Published"],
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
   },
 });
 

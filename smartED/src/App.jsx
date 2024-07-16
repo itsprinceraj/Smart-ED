@@ -5,6 +5,9 @@ import { Navbar } from "./components/common/Navbar";
 import { useState } from "react";
 import { Login } from "./pages/Login";
 import { Signup } from "./pages/Signup";
+import { ProtectedRoute } from "./components/auth/ProtectedRoute";
+import { Dashboard } from "./pages/Dashboard";
+import { NotFoundPage } from "./pages/NotFoundPage";
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   return (
@@ -23,6 +26,19 @@ function App() {
           path="/signup"
           element={<Signup setIsLoggedIn={setIsLoggedIn} />}
         />
+
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute isLoggedIn={isLoggedIn}>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        {/*  not found Page */}
+
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </div>
   );

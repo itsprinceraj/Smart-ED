@@ -39,7 +39,7 @@ export const SignupForm = ({ setIsLoggedIn }) => {
     } else {
       setIsLoggedIn(true);
       toast.success("Account Created Successfully");
-      navigate("/dashboard");
+      navigate("/login");
       const finalData = {
         ...formData,
         accountType,
