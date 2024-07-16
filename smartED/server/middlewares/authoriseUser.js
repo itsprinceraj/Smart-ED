@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const secKey = process.env.SEC_KEY;
-
+const User = require("../models/user");
 // Authorization for creating Protected route
 exports.auth = async (req, res, next) => {
   try {

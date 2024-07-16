@@ -78,9 +78,9 @@ details > summary::-webkit-details-marker {
   border-radius: 100%;
   background: linear-gradient(
     118.19deg,
-    #1fa2ff -3.62%,
-    #12d8fa 50.44%,
-    #a6ffcb 104.51%
+    #63c9eb -3.62%,
+    #4690d1 50.44%,
+    #7fd4eb 104.51%
   );
   opacity: 0.2;
   filter: blur(34px);

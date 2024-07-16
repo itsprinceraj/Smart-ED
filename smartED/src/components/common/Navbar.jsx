@@ -31,16 +31,16 @@ export const Navbar = () => {
   };
 
   //   catalog sublinks with Static DATA
-  const ssublink = [
-    {
-      title: "Python",
-      path: "/catalog/python",
-    },
-    {
-      title: "Web Dev",
-      path: "/catalog/web-dev",
-    },
-  ];
+  // const ssublink = [
+  //   {
+  //     title: "Python",
+  //     path: "/catalog/python",
+  //   },
+  //   {
+  //     title: "Web Dev",
+  //     path: "/catalog/web-dev",
+  //   },
+  // ];
 
   // sublink states
   const [sublink, setSublink] = useState([]);
@@ -108,21 +108,29 @@ export const Navbar = () => {
 
                           {loading ? (
                             <p className="text-center">Loading...</p>
+                          ) : sublink && sublink.length ? (
+                            <>
+                              {sublink
+                                .filter((link) => link?.courses?.length > 0)
+                                .map((elements, index) => {
+                                  return (
+                                    <Link
+                                      to={`/catalog/${elements.name
+                                        .split(" ")
+                                        .join("-")
+                                        .toLowerCase()}`}
+                                      key={index}
+                                      className="rounded-lg bg-transparent py-4 pl-4 hover:bg-richblack-50"
+                                    >
+                                      {elements.name}
+                                    </Link>
+                                  );
+                                })}
+                            </>
                           ) : (
-                            sublink.map((elements, index) => {
-                              return (
-                                <Link
-                                  to={`/catalog/${elements.name
-                                    .split(" ")
-                                    .join("-")
-                                    .toLowerCase()}`}
-                                  key={index}
-                                  className="rounded-lg bg-transparent py-4 pl-4 hover:bg-richblack-50"
-                                >
-                                  {elements.name}
-                                </Link>
-                              );
-                            })
+                            <p className="text-center text-richblack-25">
+                              No Courses Found
+                            </p>
                           )}
                         </div>
                       </div>
@@ -132,7 +140,7 @@ export const Navbar = () => {
                       <p
                         className={`${
                           matchRoutePath(navLink?.path)
-                            ? "text-yellow-25"
+                            ? " text-yellow-25 "
                             : "text-richblack-25"
                         }`}
                       >

@@ -8,6 +8,7 @@ const {
   createCourse,
   showAllCourses,
   getCourseDetails,
+  deleteCourse,
 } = require("../controllers/course");
 
 // Categories Handler
@@ -53,6 +54,7 @@ const {
 router.post("/createCourse", auth, isInstructor, createCourse);
 router.get("/getCourseDetails", getCourseDetails);
 router.get("/showAllCourses", showAllCourses);
+router.delete("/deleteCourse", auth, isInstructor, deleteCourse);
 
 //************ sectionRoutes
 router.post("/addSection", auth, isInstructor, createSection);

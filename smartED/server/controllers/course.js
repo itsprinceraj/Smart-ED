@@ -3,6 +3,7 @@ const Tag = require("../models/category");
 const Course = require("../models/course");
 require("dotenv").config();
 const { uploadImageToCloudinary } = require("../utilities/imageUploader");
+const { isInstructor } = require("../middlewares/authoriseUser");
 const FOLDER_NAME = process.env.FOLDER_NAME;
 // create course handler
 exports.createCourse = async (req, res) => {
@@ -39,7 +40,7 @@ exports.createCourse = async (req, res) => {
     // Details has been filled now check for instructer
     const userId = req.user.id;
     const instructerDetails = await User.findById(userId);
-    console.log("instructor Details: ", instructerDetails);
+    // console.log("instructor Details: ", instructerDetails);
 
     // check if the instructor details exists or not
     if (!instructerDetails) {
@@ -49,9 +50,27 @@ exports.createCourse = async (req, res) => {
       });
     }
 
+    // check if  same user trying to make same course again ;
+    try {
+      const existingCourse = await Course.findOne({
+        instructor: userId,
+        courseName,
+      });
+
+      if (existingCourse) {
+        return res.status(400).json({
+          success: false,
+          message: `${courseName} already exists for the same user`,
+          data: existingCourse,
+        });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+
     // check that the tag is valid or not
     const tagDetails = await Tag.findById(category);
-    console.log("tagDetails: ", tagDetails);
+    // console.log("tagDetails: ", tagDetails);
     if (!tagDetails) {
       return res.status(401).json({
         success: false,
@@ -88,12 +107,12 @@ exports.createCourse = async (req, res) => {
       { new: true }
     );
 
-    //update tag schema
-    await Tag.findByIdAndUpdate(
-      { _id: instructerDetails._id },
+    //update tag schema by adding course id to the courses array field
+    const categoryDetails2 = await Tag.findByIdAndUpdate(
+      { _id: category },
       {
         $push: {
-          tags: tagDetails._id,
+          courses: newCourse._id,
         },
       },
       { new: true }
@@ -102,8 +121,9 @@ exports.createCourse = async (req, res) => {
     // send response
     res.status(200).json({
       success: true,
-      message: "Course Create Successfully",
-      newCourse,
+      message: "Course Created Successfully",
+      data: newCourse,
+      data2: categoryDetails2,
     });
   } catch (err) {
     console.log("error while creating course: ", err);
@@ -196,6 +216,64 @@ exports.getCourseDetails = async (req, res) => {
     res.status(501).json({
       success: false,
       message: " something went wrong",
+    });
+  }
+};
+
+exports.deleteCourse = async (req, res) => {
+  try {
+    const { courseId } = req.body;
+    const { category } = req.body;
+    const userId = req.user.id;
+
+    // validate if userId available or not
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: "User not authorised",
+      });
+    }
+
+    // validation
+    if (!courseId) {
+      return res.status(401).json({
+        success: false,
+        message: "Please enter course id",
+      });
+    }
+
+    // find course by courseId in Course Schema and delete course
+    await Course.findByIdAndDelete(courseId);
+
+    // remove course from instructors profile
+    const instructerDetails = await User.findById(userId);
+    const updatedInstructorDetail = await User.findByIdAndUpdate(
+      { _id: instructerDetails._id },
+      { $pull: { courses: courseId } },
+      { new: true }
+    );
+
+    // remove course from tagschema
+    const updatedCategory = await Tag.findByIdAndUpdate(
+      { _id: category },
+      {
+        $pull: { courses: courseId },
+      },
+      { new: true }
+    );
+
+    // send success response
+    res.status(200).json({
+      success: true,
+      message: "Course Deleted Successfully ",
+      data: updatedInstructorDetail,
+      data2: updatedCategory,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      success: false,
+      message: "Course Deletion Failed ",
     });
   }
 };
