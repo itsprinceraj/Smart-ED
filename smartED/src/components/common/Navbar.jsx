@@ -42,6 +42,8 @@ export const Navbar = () => {
   //   },
   // ];
 
+  const { CATEGORIES_API } = categories;
+
   // sublink states
   const [sublink, setSublink] = useState([]);
 
@@ -49,11 +51,11 @@ export const Navbar = () => {
   const fetchCategories = async () => {
     setLoading(true);
     try {
-      let { data } = await apiConnector("GET", categories.CATEGORIES_API);
-      const categoryLink = data.data;
-      console.log(categoryLink);
+      let { data } = await apiConnector("GET", CATEGORIES_API);
+      const categoryLink = data;
+      // console.log(data);
       setSublink(categoryLink);
-      //   toast.success("Categories fetched Successfully");
+      // toast.success("Categories fetched Successfully");
     } catch (err) {
       console.log(err);
       //   toast.error("Unable to fetch categories");
@@ -128,7 +130,7 @@ export const Navbar = () => {
                                 })}
                             </>
                           ) : (
-                            <p className="text-center text-richblack-25">
+                            <p className="text-center text-richblack-200">
                               No Courses Found
                             </p>
                           )}
@@ -160,7 +162,7 @@ export const Navbar = () => {
           {/* Login button */}
           {token === null && (
             <Link to={"/login"}>
-              <button className="rounded-[8px] border border-richblack-700 bg-richblack-800 px-[12px] py-[8px] text-richblack-100">
+              <button className="rounded-[8px] border border-richblack-700 bg-richblack-800 px-[12px] py-[8px] text-richblack-100 hover:text-white transition-all duration-200">
                 Log In
               </button>
             </Link>
@@ -170,7 +172,7 @@ export const Navbar = () => {
 
           {token === null && (
             <Link to={"/signup"}>
-              <button className="rounded-[8px] border border-richblack-700 bg-richblack-800 px-[12px] py-[8px] text-richblack-100">
+              <button className="rounded-[8px] border border-richblack-700 bg-richblack-800 px-[12px] py-[8px] text-richblack-100 hover:text-white transition-all duration-200">
                 Sign Up
               </button>
             </Link>
@@ -180,7 +182,7 @@ export const Navbar = () => {
 
           {user && user?.accountType !== ACCOUNT_TYPE.INSTRUCTOR && (
             <Link to={"/dashboard/cart"}>
-              <AiOutlineShoppingCart className="text-2xl text-richblack-100" />
+              <AiOutlineShoppingCart className="text-2xl text-richblack-100 hover:text-white transition-all duration-200" />
 
               {/* overlap number of items in the cart */}
 

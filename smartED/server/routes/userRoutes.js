@@ -29,4 +29,8 @@ router.post("/signUP", signUP); // user Login Routes
 router.post("/login", login); // User SignUp Routes
 router.post("/changePassword", auth, changePassword); // changePassRoutes
 
+// ***********resetpassword route************
+router.post("/reset-password-token", resetPasswordToken);
+router.post("/reset-password", resetPassword);
+
 module.exports = router;

@@ -22,7 +22,7 @@ exports.sendOTP = async (req, res) => {
 
     //if user exist , then return it to login page
     if (checkUser) {
-      return res.status(403).json({
+      return res.status(200).json({
         success: false,
         message: "User already Registered",
       });
@@ -34,7 +34,7 @@ exports.sendOTP = async (req, res) => {
       lowerCaseAlphabets: false,
       specialChars: false,
     });
-    console.log("OTP: ", otp);
+    // console.log("OTP: ", otp);
 
     // check that otp is unique
     // let checkOTP = await OTP.findOne({ otp: otp });
@@ -54,7 +54,7 @@ exports.sendOTP = async (req, res) => {
     // console.log("otp", otpBody);
 
     // send success response
-    res.status(201).json({
+    res.status(200).json({
       success: true,
       message: "OTP sent Successfully",
     });
@@ -128,7 +128,7 @@ exports.signUP = async (req, res) => {
       .limit(1); //it limits the number of document returned
     const newRecentOtp = recentOtp.otp;
 
-    console.log(recentOtp);
+    // console.log(recentOtp);
 
     // check if otp matched or not
     if (newRecentOtp.length == 0 || otp !== newRecentOtp) {
@@ -209,7 +209,7 @@ exports.login = async (req, res, next) => {
     let user = await User.findOne({ email }); // returns array of objects
 
     if (!user) {
-      return res.status(409).json({
+      return res.status(200).json({
         success: false,
         message: "User not Found",
       });
@@ -242,10 +242,12 @@ exports.login = async (req, res, next) => {
 
       res.cookie("token", token, options).status(200).json({
         success: true,
-        message: " User Logged in Successfully",
+        user,
+        token,
+        message: " User Logged In Successfully",
       });
     } else {
-      res.status(401).json({
+      res.status(200).json({
         success: false,
         message: "Incorrect Password",
       });
@@ -331,5 +333,3 @@ exports.changePassword = async (req, res) => {
     });
   }
 };
-
-// module.exports = sendOTP;

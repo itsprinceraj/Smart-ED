@@ -26,9 +26,11 @@ app.use(express.json());
 app.use(cookieParser());
 
 // we want BackEnd to entertain our Frontend so use cors;
+const allowedOrigin = ["http://localhost:5173"];
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: allowedOrigin,
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true,
   })
 );

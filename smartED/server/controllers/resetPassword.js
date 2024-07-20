@@ -8,18 +8,28 @@ exports.resetPasswordToken = async (req, res) => {
     // fetch data from body
     const email = req.body.email;
 
+    console.log("printing email", email);
+
+    // validate
+    if (!email) {
+      return res.status(403).json({
+        success: false,
+        message: "Email is required",
+      });
+    }
+
     // check if user is already registered or not
     const user = await User.findOne({ email: email });
 
     if (!user) {
       return res.status(401).json({
         success: false,
-        message: "Your email is not registered with us",
+        message: `This Email: ${email} is not Registered With Us Enter a Valid Email `,
       });
     }
 
     // user found . create a reset token , so that it can be embedded in ui link and make it unique everytime
-    const token = crypto.randomUUID();
+    const token = crypto.randomBytes(20).toString("hex");
 
     // update entry in db
     const updatedDetails = await User.findOneAndUpdate(
@@ -37,18 +47,18 @@ exports.resetPasswordToken = async (req, res) => {
     // send mail
     await mailSender(
       email,
-      "Reset Your Password",
-      `Password reset Link: ${url}`
+      "Password Reset",
+      `Your Link for Reset Password is ${url}. Please click this url to reset your password.`
     );
     res.status(200).json({
-      sucess: true,
+      success: true,
       message: "Reset Link Sent Successfully",
     });
   } catch (err) {
-    console.log("error while password Reser", err);
+    console.log("error while password Reset", err);
     res.status(500).json({
       success: false,
-      message: "Cannot reset password",
+      message: "Cannot generate reset password token",
     });
   }
 };

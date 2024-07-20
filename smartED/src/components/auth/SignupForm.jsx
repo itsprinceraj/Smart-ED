@@ -2,7 +2,14 @@ import React, { useState } from "react";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
-export const SignupForm = ({ setIsLoggedIn }) => {
+import { ACCOUNT_TYPE } from "../../utilities/constants";
+import Tab from "../common/Tab";
+import { useDispatch } from "react-redux";
+import { setSignupData } from "../../redux/slices/authSlice";
+import { sendOtp } from "../../services/operations/authApiHandler";
+export const SignupForm = () => {
+  const dispatch = useDispatch();
+
   // handling FormData
   const [formData, setFormData] = useState({
     firstName: "",
@@ -13,15 +20,17 @@ export const SignupForm = ({ setIsLoggedIn }) => {
   });
 
   // for student and instructor tab switching
-  const [accountType, setAccountType] = useState("student");
+  const [accountType, setAccountType] = useState("Student");
 
   // navigation for signup form
   const navigate = useNavigate();
 
   // showPassword state
-
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPass, setShowConfirmPass] = useState(false);
+
+  // accumulate form data
+  const { firstName, lastName, email, password, confirmPassword } = formData;
 
   const changeHandler = (event) => {
     setFormData((prevData) => {
@@ -34,45 +43,54 @@ export const SignupForm = ({ setIsLoggedIn }) => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    if (formData.createPass !== formData.confirmPass) {
+    if (password !== confirmPassword) {
       toast.error("Password does not match");
-    } else {
-      setIsLoggedIn(true);
-      toast.success("Account Created Successfully");
-      navigate("/login");
-      const finalData = {
-        ...formData,
-        accountType,
-      };
-      console.log(finalData);
+      return;
     }
+
+    // accumulate formdata and accountType
+
+    const signupData = {
+      ...formData,
+      accountType,
+    };
+
+    // dispatch signup data
+    dispatch(setSignupData(signupData));
+
+    // dispatch email so the email verification can be done
+    dispatch(sendOtp(formData.email, navigate));
+
+    // Reset
+    // setFormData({
+    //   firstName: "",
+    //   lastName: "",
+    //   email: "",
+    //   password: "",
+    //   confirmPassword: "",
+    // });
+    // setAccountType(ACCOUNT_TYPE.STUDENT);
   };
+
+  // data to pass to Tab component
+  const tabData = [
+    {
+      id: 1,
+      tabName: "Student",
+      type: ACCOUNT_TYPE.STUDENT,
+    },
+    {
+      id: 2,
+      tabName: "Instructor",
+      type: ACCOUNT_TYPE.INSTRUCTOR,
+    },
+  ];
+
   return (
     <div className=" flex flex-col justify-center  gap-y-2 ">
       {/* student - Instructor Tab */}
 
-      <div className="flex gap-x-1 p-1 bg-richblack-800 text-richblack-5  rounded-full my-6  max-w-max">
-        <button
-          className={`${
-            accountType === "student"
-              ? "bg-richblack-900 text-richblack-5"
-              : "text-richblack-200"
-          } py-2 px-5 rounded-full transition-all duration-200`}
-          onClick={() => setAccountType("student")}
-        >
-          Student
-        </button>
-        <button
-          className={`${
-            accountType === "instructor"
-              ? "bg-richblack-900 text-richblack-5"
-              : "text-richblack-200"
-          } py-2 px-5 rounded-full transition-all duration-200`}
-          onClick={() => setAccountType("instructor")}
-        >
-          Instructor
-        </button>
-      </div>
+      <Tab tabData={tabData} field={accountType} setField={setAccountType} />
 
       {/* signup form */}
 
@@ -89,7 +107,7 @@ export const SignupForm = ({ setIsLoggedIn }) => {
               type="text"
               required
               placeholder="Enter first name"
-              value={formData.firstName}
+              value={firstName}
               name="firstName"
               onChange={changeHandler}
             />
@@ -104,7 +122,7 @@ export const SignupForm = ({ setIsLoggedIn }) => {
               type="text"
               required
               placeholder="Enter last name"
-              value={formData.lastName}
+              value={lastName}
               name="lastName"
               onChange={changeHandler}
             />
@@ -120,7 +138,7 @@ export const SignupForm = ({ setIsLoggedIn }) => {
             type="email"
             required
             placeholder="Enter email id"
-            value={formData.email}
+            value={email}
             name="email"
             onChange={changeHandler}
           />
@@ -138,8 +156,8 @@ export const SignupForm = ({ setIsLoggedIn }) => {
               type={showPassword ? "text" : "password"}
               required
               placeholder="Enter Password"
-              value={formData.createPass}
-              name="createPass"
+              value={password}
+              name="password"
               onChange={changeHandler}
             />
 
@@ -164,8 +182,8 @@ export const SignupForm = ({ setIsLoggedIn }) => {
               type={showConfirmPass ? "text" : "password"}
               required
               placeholder="Confirm Password"
-              value={formData.confirmPass}
-              name="confirmPass"
+              value={confirmPassword}
+              name="confirmPassword"
               onChange={changeHandler}
             />
 

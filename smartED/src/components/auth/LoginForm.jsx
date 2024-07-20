@@ -2,15 +2,21 @@ import React, { useState } from "react";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
-export const LoginForm = ({ setIsLoggedIn }) => {
+import { useDispatch } from "react-redux";
+import { loginRequest } from "../../services/operations/authApiHandler";
+
+export const LoginForm = () => {
+  //take instance of useDispatch hook
+  const dispatch = useDispatch();
+
+  //navigation for login
+  const navigate = useNavigate();
+
   // handling FormData
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-
-  //navigation for login
-  const navigate = useNavigate();
 
   // showPassword state
 
@@ -25,12 +31,12 @@ export const LoginForm = ({ setIsLoggedIn }) => {
     });
   };
 
+  // accumulate data
+  const { email, password } = formData;
+
   const submitHandler = (event) => {
     event.preventDefault();
-    setIsLoggedIn(true);
-    toast.success("Logged In successfully");
-    navigate("/dashboard");
-    console.log(formData);
+    dispatch(loginRequest(email, password, navigate));
   };
   return (
     <form
@@ -46,7 +52,7 @@ export const LoginForm = ({ setIsLoggedIn }) => {
           type="email"
           required
           placeholder="Enter email id"
-          value={formData.email}
+          value={email}
           name="email"
           onChange={changeHandler}
         />
@@ -61,7 +67,7 @@ export const LoginForm = ({ setIsLoggedIn }) => {
           type={showPassword ? "text" : "password"}
           required
           placeholder="Enter Password"
-          value={formData.password}
+          value={password}
           name="password"
           onChange={changeHandler}
         />
@@ -84,7 +90,10 @@ export const LoginForm = ({ setIsLoggedIn }) => {
         </p>
       </Link>
 
-      <button className=" bg-yellow-50 rounded-[8px] font-md text-richblack-900 px-[12px]  py-[8px] ">
+      <button
+        type="submit"
+        className=" bg-yellow-50 rounded-[8px] font-md text-richblack-900 px-[12px]  py-[8px] "
+      >
         Sign In
       </button>
     </form>

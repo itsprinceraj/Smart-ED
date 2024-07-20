@@ -9,12 +9,6 @@ const {
   uploadDisplayPicture,
 } = require("../controllers/profile");
 
-// Reset Handlers
-const {
-  resetPasswordToken,
-  resetPassword,
-} = require("../controllers/resetPassword");
-
 // MiddleWares
 const { auth } = require("../middlewares/authoriseUser");
 
@@ -26,10 +20,5 @@ router.post("/updateDisplayPicture", auth, uploadDisplayPicture);
 
 // **************** enrolled courses ************8
 // router.post("/getEnrolledCourses", auth , )
-
-// *************Reset Password Routes**************
-
-router.post("/resetPasswordToken", resetPasswordToken);
-router.post("/resetPassword", resetPassword);
 
 module.exports = router;
