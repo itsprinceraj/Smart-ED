@@ -23,7 +23,7 @@ const Resources = [
 const Plans = ["Paid memberships", "For students", "Business solutions"];
 const Community = ["Forums", "Chapters", "Events"];
 
-const Footer = () => {
+export const Footer = () => {
   return (
     <div className="bg-richblack-800">
       <div className="flex lg:flex-row gap-8 items-center justify-between w-11/12 max-w-maxContent text-richblack-400 leading-6 mx-auto relative py-14">
@@ -174,7 +174,8 @@ const Footer = () => {
           </div>
 
           <div className="text-center">
-            Made By <span className=" text-pink-200 ">SMART-ED  </span>corps. © 2024 Smart-ED
+            Made By <span className=" text-pink-200 ">SMART-ED </span>corps. ©
+            2024 smarted.com
           </div>
         </div>
       </div>
@@ -182,4 +183,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+

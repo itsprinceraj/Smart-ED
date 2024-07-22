@@ -2,8 +2,7 @@ import { toast } from "react-hot-toast";
 import { setToken, setLoading } from "../../redux/slices/authSlice";
 import { apiConnector } from "../apiConnector";
 import { authEndpoints } from "../apiEndPoints";
-import { json } from "react-router-dom";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { setUser } from "../../redux/slices/profileSlice";
 import { resetCartItems } from "../../redux/slices/cartSlice";
 
@@ -63,6 +62,7 @@ export const signupRequest = (
     dispatch(setLoading(true)); // show loading
 
     try {
+      // make a api call
       const response = await apiConnector("POST", SIGNUP_API, {
         accountType,
         firstName,
@@ -76,8 +76,12 @@ export const signupRequest = (
       console.log(response);
 
       //handle error
-      toast.success("Signed up Succesfully");
-      navigate("/login");
+      if (!response.success) {
+        toast.error(response.message);
+      } else {
+        toast.success(response.message);
+        navigate("/login");
+      }
     } catch (err) {
       console.log(err);
       toast.error("Signup failed");
@@ -150,6 +154,7 @@ export const logoutRequest = (navigate) => {
 export const resetPasswordToken = (email, setSentEmail) => {
   return async (dispatch) => {
     // mark loading true  , so that spinner can be shown
+    const toastId = toast.loading("Loading...");
     dispatch(setLoading(true));
 
     try {
@@ -158,19 +163,79 @@ export const resetPasswordToken = (email, setSentEmail) => {
         email,
       });
 
-      // console.log("reset pass token :", response);
+      console.log("reset pass token :", response);
 
       // handle error from api data
       if (!response.success) {
-        throw new Error(response.message);
+        toast.error(response.message);
+      } else {
+        toast.success(response.message);
+        setSentEmail(true); // mark that email is sent
       }
-
-      toast.success("Reset Password Email Sent");
-      setSentEmail(true); // mark that email is sent
     } catch (err) {
       console.log("Reset password token error: ", err);
       toast.error("Failed to Send Reset Password Email");
     }
     dispatch(setLoading(false));
+    toast.dismiss(toastId);
+  };
+};
+
+// make a reset password request
+export const resetPasswordRequest = (password, confirmPassword, token) => {
+  return async (dispatch) => {
+    // const navigate = useNavigate();
+    const toastId = toast.loading("Loading...");
+    dispatch(setLoading(true));
+
+    try {
+      // password validation
+      if (password.length < 8) {
+        toast.error("Password must be at least 8 characters long");
+        throw new Error("Password must be at least 8 characters long");
+      }
+      if (!/[a-z]/.test(password)) {
+        toast.error("Password must contain at least one lowercase letter");
+        throw new Error("Password must contain at least one lowercase letter");
+      }
+      if (!/[A-Z]/.test(password)) {
+        toast.error("Password must contain at least one uppercase letter");
+        throw new Error("Password must contain at least one uppercase letter");
+      }
+      if (!/\d/.test(password)) {
+        toast.error("Password must contain at least one number");
+        throw new Error("Password must contain at least one number");
+      }
+      if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+        toast.error("Password must contain at least one special character");
+        throw new Error("Password must contain at least one special character");
+      }
+
+      // Confirm password validation
+      if (password !== confirmPassword) {
+        toast.error("Password do not match");
+        throw new Error("Passwords do not match");
+      }
+
+      // make an api call
+      const response = await apiConnector("POST", RESETPASSWORD_API, {
+        password,
+        confirmPassword,
+        token,
+      });
+
+      console.log(response);
+
+      // handle response and show toast accordingly
+      if (!response.success) {
+        toast.error(response.message);
+      } else {
+        toast.success(response.message);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+    dispatch(setLoading(false));
+    toast.dismiss(toastId);
   };
 };

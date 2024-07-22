@@ -7,7 +7,7 @@ import { AnimateCode } from "../components/homepage/AnimateCode";
 import { CodeBlock } from "../components/homepage/CodeBlock";
 import { TimeLineSection } from "../components/homepage/TimeLineSection";
 import { LearningLang } from "../components/homepage/LearningLang";
-import Footer from "../components/common/Footer";
+import { Footer } from "../components/common/Footer";
 import { InstructorSection } from "../components/homepage/InstructorSection";
 import { ReviewSlider } from "../components/homepage/ReviewSlider";
 import { ExploreTabs } from "../components/homepage/ExploreTabs";

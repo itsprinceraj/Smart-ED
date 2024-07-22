@@ -1,5 +1,6 @@
 const { contactUsEmail } = require("../mail/templates/contactFormRes");
 const mailSender = require("../utilities/mailSender");
+const ContactUs = require("../models/contact");
 
 exports.contactUsController = async (req, res) => {
   const { email, firstname, lastname, message, phoneNo, countrycode } =
@@ -12,13 +13,29 @@ exports.contactUsController = async (req, res) => {
       contactUsEmail(email, firstname, lastname, message, phoneNo, countrycode)
     );
     console.log("Email Res ", emailRes);
+    const contactData = await ContactUs.create({
+      firstname: firstname,
+      lastname: lastname,
+      email: email,
+      countrycode: countrycode,
+      phoneNo: phoneNo,
+      message: message,
+    });
+
+    //if data is not saved to dataBase
+    if (!contactData) {
+      return res.json({
+        success: false,
+        message: "Unable to enter data in to the database",
+      });
+    }
     return res.json({
       success: true,
       message: "Email send successfully",
+      data: { emailRes, contactData },
     });
   } catch (error) {
     console.log("Error", error);
-    console.log("Error message :", error.message);
     return res.json({
       success: false,
       message: "Something went wrong...",

@@ -84,14 +84,14 @@ export const Navbar = () => {
         {/*  Navigation Links */}
 
         <nav className="hidden md:block">
-          <ul className="flex gap-x-6 text-richblack-25">
+          <ul className="flex gap-x-8 text-richblack-25">
             {NavbarLinks.map((navLink, index) => {
               return (
                 <li key={index} className="">
                   {navLink?.title === "Catalog" ? (
                     <>
                       <div
-                        className={`group relative flex cursor-pointer items-center gap-1 ${
+                        className={` group relative flex cursor-pointer items-center gap-1 ${
                           matchRoutePath("/catalog/:catalogName")
                             ? "text-yellow-25"
                             : "text-richblack-25"
@@ -140,7 +140,7 @@ export const Navbar = () => {
                   ) : (
                     <Link to={navLink?.path}>
                       <p
-                        className={`${
+                        className={` hover:scale-110 transition-all duration-75 ${
                           matchRoutePath(navLink?.path)
                             ? " text-yellow-25 "
                             : "text-richblack-25"

@@ -84,7 +84,7 @@ export const LoginForm = () => {
         </span>
       </label>
 
-      <Link>
+      <Link to={"/reset-password"}>
         <p className=" text-xs mt-1 text-blue-100 text-end ">
           Forgot Password?
         </p>

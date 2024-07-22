@@ -15,7 +15,7 @@ exports.sendOTP = async (req, res) => {
     // fetch data from body
     const { email } = req.body;
 
-    await OTP.findOneAndDelete({ email });
+    // await OTP.findOneAndDelete({ email });
 
     // check email exist or not
     const checkUser = await User.findOne({ email });
@@ -100,10 +100,13 @@ exports.signUP = async (req, res) => {
         });
     }
 
+    //  printing signupData
+    console.log("print signup data :", otp);
+
     // match both the passwords
     if (password !== confirmPassword) {
       return res
-        .status(422) // data did not matched
+        .status(200) // data did not matched
         .json({
           success: false,
           message: "Password did not match , please enter Again",
@@ -114,7 +117,7 @@ exports.signUP = async (req, res) => {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res
-        .status(409) // conflict
+        .status(200) // conflict
         .json({
           success: false,
           message: "User already Registered",
@@ -122,28 +125,31 @@ exports.signUP = async (req, res) => {
     }
 
     // fetch the most recent otp form dataBase
-    const recentOtp = await OTP.findOne({ email })
-      // .select("otp")
-      .sort({ createdAt: -1 }) // returns the most recent Document created
-      .limit(1); //it limits the number of document returned
-    const newRecentOtp = recentOtp.otp;
+    const recentOtpDocument = await OTP.find({ email })
+      .sort({ createdAt: -1 }) // Sort in descending order by createdAt
+      .limit(1); // Limit to return only one document
 
-    // console.log(recentOtp);
-
-    // check if otp matched or not
-    if (newRecentOtp.length == 0 || otp !== newRecentOtp) {
-      return res.status(499).json({
+    // Check if we got any OTP document
+    if (recentOtpDocument.length === 0) {
+      return res.status(200).json({
         success: false,
         message: "OTP not Found",
       });
     }
-    // else if (otp !== recentOtp) {
-    //   res.status(422).json({
-    //     success: false,
-    //     message: "Invalid OTP",
-    //   });
-    // }
 
+    const newRecentOtp = recentOtpDocument[0].otp; // Access the OTP from the first document
+
+    // Log the OTP values
+    console.log("otp:", recentOtpDocument);
+    console.log("newRecentOtp", newRecentOtp);
+
+    // Check if the OTPs match
+    if (otp !== newRecentOtp) {
+      return res.status(200).json({
+        success: false,
+        message: "Invalid OTP",
+      });
+    }
     // hash the pasword
     const hashPassword = await bcrypt.hash(password, 10); // hash Password with 10 salt Round
 
@@ -151,6 +157,10 @@ exports.signUP = async (req, res) => {
 
     // console.log(hashPassword);
     // create a profile object
+
+    // Create the user
+    let approved = "";
+    approved === "Instructor" ? (approved = false) : (approved = true);
 
     const profileDetails = await Profile.create({
       dateOfBirth: null,
@@ -172,9 +182,6 @@ exports.signUP = async (req, res) => {
       image: `https://api.dicebear.com/5.x/initials/svg?seed=${firstName}${lastName}`, //api for creating Avatar using firstName and lastName
     });
 
-    // delete otp from database;
-    await OTP.findOneAndDelete({ otp });
-
     // send a succes response
     res.status(200).json({
       success: true,
@@ -185,7 +192,7 @@ exports.signUP = async (req, res) => {
     console.log("error occured while user registration", err);
     res.status(500).json({
       success: false,
-      message: "Facing Problem in while registration",
+      message: "Facing Problem while registration",
     });
   }
 };

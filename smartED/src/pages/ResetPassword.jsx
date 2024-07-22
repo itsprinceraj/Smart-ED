@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { BiArrowBack } from "react-icons/bi";
@@ -14,6 +14,10 @@ export const ResetPassword = () => {
   const { loading } = useSelector((state) => state.auth);
 
   const { email } = formData;
+
+  // count down for sending email
+  const [countDown, setCountDown] = useState(0);
+
   const onChangeHandler = (event) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -25,10 +29,18 @@ export const ResetPassword = () => {
   const onSubmitHandler = (event) => {
     event.preventDefault();
     dispatch(resetPasswordToken(email, setEmailSent)); // dispatch returns reference of the function from redux store and can be further used;
+    setCountDown(60); // start countDown Timer
   };
 
   // logging form data
   // console.log("print form data: ", formData);
+
+  // countDown Logic
+  useEffect(() => {
+    const timer = setTimeout(() => setCountDown(countDown - 1), 1000);
+
+    return () => clearTimeout(timer);
+  }, [countDown, emailSent]);
 
   return (
     <div className="grid min-h-[calc(100vh-3.5rem)] place-items-center">
@@ -61,16 +73,27 @@ export const ResetPassword = () => {
                 />
               </label>
             )}
+
+            {/*  timeout label */}
+            {emailSent && countDown > 0 && (
+              <p className="font-medium text-richblack-50  ">
+                You can resend password reset link after{" "}
+                <span className=" text-pink-200 ">{countDown}</span> seconds
+              </p>
+            )}
             <button
               type="submit"
-              className="mt-6 w-full rounded-[8px] bg-yellow-50 py-[12px] px-[12px] font-medium text-richblack-900"
+              disabled={emailSent && countDown > 0}
+              className={`mt-6 w-full rounded-[8px] bg-yellow-50 py-[12px] px-[12px] font-medium text-richblack-900 ${
+                emailSent && countDown > 0 && " bg-yellow-50 opacity-70 "
+              }`}
             >
               {!emailSent ? "Reset Password" : "Resend Email"}
             </button>
           </form>
           <div className="mt-6 flex items-center justify-between">
             <Link to="/login">
-              <p className="flex items-center gap-x-2 text-richblack-5">
+              <p className="flex items-center gap-x-2 text-richblack-100 hover:text-richblack-5 transition-all duration-200">
                 <BiArrowBack /> Back To Login
               </p>
             </Link>

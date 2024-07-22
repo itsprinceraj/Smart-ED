@@ -7,6 +7,8 @@ import Tab from "../common/Tab";
 import { useDispatch } from "react-redux";
 import { setSignupData } from "../../redux/slices/authSlice";
 import { sendOtp } from "../../services/operations/authApiHandler";
+import { LiaTimesCircle } from "react-icons/lia";
+import { LuCheckCircle } from "react-icons/lu";
 export const SignupForm = () => {
   const dispatch = useDispatch();
 
@@ -15,8 +17,8 @@ export const SignupForm = () => {
     firstName: "",
     lastName: "",
     email: "",
-    createPass: "",
-    confirmPass: "",
+    password: "",
+    confirmPassword: "",
   });
 
   // for student and instructor tab switching
@@ -41,10 +43,32 @@ export const SignupForm = () => {
     });
   };
 
+  // password validation check
+  const validatePassword = (password) => {
+    return {
+      minLength: password.length >= 8,
+      hasLowercase: /[a-z]/.test(password),
+      hasUppercase: /[A-Z]/.test(password),
+      hasNumber: /\d/.test(password),
+      hasSpecialChar: /[!@#$%^&*(),.?":{}|<>]/.test(password),
+    };
+  };
+
+  const passwordValidations = validatePassword(password);
+
   const submitHandler = (event) => {
     event.preventDefault();
+
+    // Check if passwords match
     if (password !== confirmPassword) {
-      toast.error("Password does not match");
+      toast.error("Passwords do not match");
+      return;
+    }
+
+    // Check if password meets all validations
+    const isPasswordValid = Object.values(passwordValidations).every(Boolean);
+    if (!isPasswordValid) {
+      toast.error("Password does not meet all requirements");
       return;
     }
 
@@ -199,6 +223,106 @@ export const SignupForm = () => {
             </span>
           </label>
         </div>
+
+        {/* password validation label */}
+
+        <ul className="mt-4 flex  flex-wrap gap-14 justify-center items-center ">
+          {/* first div */}
+          <div className=" flex flex-col gap-1 ">
+            {/* for length of characters */}
+            <li className="flex items-center">
+              {passwordValidations.minLength ? (
+                <LuCheckCircle className="mr-2 text-caribbeangreen-200" />
+              ) : (
+                <LiaTimesCircle className="text-pink-200 mr-2" fontSize={18} />
+              )}
+              <p
+                className={`text-sm ${
+                  passwordValidations.minLength
+                    ? "text-caribbeangreen-300"
+                    : "text-pink-200"
+                }`}
+              >
+                8 characters minimum
+              </p>
+            </li>
+
+            {/* for upppercase */}
+            <li className="flex items-center">
+              {passwordValidations.hasUppercase ? (
+                <LuCheckCircle className="mr-2 text-caribbeangreen-200" />
+              ) : (
+                <LiaTimesCircle className="text-pink-200 mr-2" fontSize={18} />
+              )}
+              <p
+                className={`text-sm ${
+                  passwordValidations.hasUppercase
+                    ? "text-caribbeangreen-300"
+                    : "text-pink-200"
+                }`}
+              >
+                one upppercase character
+              </p>
+            </li>
+
+            {/* for lowercase */}
+            <li className="flex items-center">
+              {passwordValidations.hasLowercase ? (
+                <LuCheckCircle className="mr-2 text-caribbeangreen-200" />
+              ) : (
+                <LiaTimesCircle className="text-pink-200 mr-2" fontSize={18} />
+              )}
+              <p
+                className={`text-sm ${
+                  passwordValidations.hasLowercase
+                    ? "text-caribbeangreen-300"
+                    : "text-pink-200"
+                }`}
+              >
+                one lowercase character
+              </p>
+            </li>
+          </div>
+
+          {/* second div */}
+          <div className="flex flex-col gap-1">
+            {/* for numbers */}
+            <li className="flex items-center">
+              {passwordValidations.hasNumber ? (
+                <LuCheckCircle className="mr-2 text-caribbeangreen-200" />
+              ) : (
+                <LiaTimesCircle className="text-pink-200 mr-2" fontSize={18} />
+              )}
+              <p
+                className={`text-sm ${
+                  passwordValidations.hasNumber
+                    ? "text-caribbeangreen-300"
+                    : "text-pink-200"
+                }`}
+              >
+                one number
+              </p>
+            </li>
+
+            {/*  for special symbol */}
+            <li className="flex items-center">
+              {passwordValidations.hasSpecialChar ? (
+                <LuCheckCircle className="mr-2 text-caribbeangreen-200" />
+              ) : (
+                <LiaTimesCircle className="text-pink-200 mr-2" fontSize={18} />
+              )}
+              <p
+                className={`text-sm ${
+                  passwordValidations.hasSpecialChar
+                    ? "text-caribbeangreen-300"
+                    : "text-pink-200"
+                }`}
+              >
+                one special character
+              </p>
+            </li>
+          </div>
+        </ul>
 
         <button className=" bg-yellow-50 rounded-[8px] font-md text-richblack-900 px-[12px]  py-[8px] w-full mt-10">
           Create Account

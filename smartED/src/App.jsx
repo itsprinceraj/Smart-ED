@@ -2,7 +2,6 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
 import { Home } from "./pages/Home";
 import { Navbar } from "./components/common/Navbar";
-import { useState } from "react";
 import { Login } from "./pages/Login";
 import { Signup } from "./pages/Signup";
 import { ProtectedRoute } from "./components/auth/ProtectedRoute";
@@ -11,6 +10,10 @@ import { ErrorPage } from "./pages/ErrorPage";
 import { OpenRoute } from "./components/auth/OpenRoute";
 import { ResetPassword } from "./pages/ResetPassword";
 import { MyProfile } from "./components/dashboard/MyProfile";
+import { UpdatePassword } from "./pages/UpdatePassword";
+import { VerifyEmail } from "./pages/VerifyEmail";
+import { About } from "./pages/About";
+import { Contact } from "./pages/Contact";
 
 function App() {
   return (
@@ -38,6 +41,16 @@ function App() {
           }
         />
 
+        {/* verify email route */}
+        <Route
+          path="/verify-email"
+          element={
+            <OpenRoute>
+              <VerifyEmail />
+            </OpenRoute>
+          }
+        />
+
         {/* ResetPassword Route */}
         <Route
           path="/reset-password"
@@ -48,16 +61,50 @@ function App() {
           }
         />
 
+        {/* update-password route */}
+
         <Route
-          path="/dashboard"
+          path="/reset-password/:id"
           element={
-            <ProtectedRoute >
+            <OpenRoute>
+              <UpdatePassword />
+            </OpenRoute>
+          }
+        />
+
+        {/* contact us page */}
+
+        <Route
+          path="/reach-us"
+          element={
+            <OpenRoute>
+              <Contact />
+            </OpenRoute>
+          }
+        />
+
+        {/* Dashboard Route */}
+
+        {/* <Route
+          element={
+            <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          }
+        /> */}
+
+        <Route
+          path="/dashboard/my-profile"
+          element={
+            <ProtectedRoute>
+              <MyProfile />
             </ProtectedRoute>
           }
         />
 
-        <Route path="/dashboard/my-profile" element={<MyProfile />} />
+        {/* About Page Route */}
+
+        <Route path="/about" element={<About />} />
 
         {/*  not found Page */}
 

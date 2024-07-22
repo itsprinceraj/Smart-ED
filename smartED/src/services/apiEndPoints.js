@@ -12,3 +12,7 @@ export const authEndpoints = {
   RESETPASSTOKEN_API: BASE_URL + "/auth/reset-password-token",
   RESETPASSWORD_API: BASE_URL + "/auth/reset-password",
 };
+
+export const contactUsEnpoints = {
+  CONTACT_API: BASE_URL + "/about/contact-us",
+};
