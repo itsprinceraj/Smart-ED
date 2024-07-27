@@ -1,4 +1,4 @@
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import { Home } from "./pages/Home";
 import { Navbar } from "./components/common/Navbar";
@@ -14,6 +14,7 @@ import { UpdatePassword } from "./pages/UpdatePassword";
 import { VerifyEmail } from "./pages/VerifyEmail";
 import { About } from "./pages/About";
 import { Contact } from "./pages/Contact";
+import { Setting } from "./components/dashboard/Setting";
 
 function App() {
   return (
@@ -85,22 +86,19 @@ function App() {
 
         {/* Dashboard Route */}
 
-        {/* <Route
+        <Route
           element={
             <ProtectedRoute>
               <Dashboard />
             </ProtectedRoute>
           }
-        /> */}
+        >
+          {/*  /dashboard/my-profile */}
+          <Route path="/dashboard/my-profile" element={<MyProfile />} />
 
-        <Route
-          path="/dashboard/my-profile"
-          element={
-            <ProtectedRoute>
-              <MyProfile />
-            </ProtectedRoute>
-          }
-        />
+          {/* /dashboard/settings -- nested Routes */}
+          <Route path="/dashboard/settings" element={<Setting />} />
+        </Route>
 
         {/* About Page Route */}
 
