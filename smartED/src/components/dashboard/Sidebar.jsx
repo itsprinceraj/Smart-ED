@@ -32,7 +32,7 @@ export const Sidebar = () => {
 
   return (
     <div className="flex h-[calc(100vh-3.5rem)] min-w-[220px] flex-col border-r-[1px] border-r-richblack-700 bg-richblack-800 py-10">
-      <div className="flex flex-col">
+      <div className="flex flex-col text-xl">
         {sidebarLinks.map((link) => {
           if (link.type && user.accountType !== link.type) {
             // console.log(link);
@@ -41,14 +41,14 @@ export const Sidebar = () => {
 
           // else return sidebar links
 
-          return <SidebarLink key={link.id} link={link} iconName={link.icon} />;
+          return <SidebarLink  key={link.id} link={link} iconName={link.icon} />;
         })}
       </div>
 
       <div className="mx-auto mt-6 mb-6 h-[1px] w-10/12 bg-richblack-700" />
       {/* Setting and logout button */}
-      <div className="flex flex-col">
-        <SidebarLink
+      <div className="flex flex-col text-lg">
+        <SidebarLink 
           link={{ name: "Settings", path: "/dashboard/settings" }}
           iconName="VscSettingsGear"
         />
@@ -69,8 +69,8 @@ export const Sidebar = () => {
           }
         >
           <div className="flex items-center gap-x-2">
-            <VscSignOut className="text-lg" />
-            <span>Logout</span>
+            <VscSignOut className="text-xl" />
+            <span className="text-lg">Logout</span>
           </div>
         </button>
       </div>

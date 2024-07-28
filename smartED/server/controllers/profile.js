@@ -199,3 +199,51 @@ exports.uploadDisplayPicture = async (req, res) => {
     });
   }
 };
+
+// get enrolled courses data
+
+exports.getEnrolledCourses = async (req, res) => {
+  try {
+    // fetch user id by which we can further fetch their course details
+    const userId = req.user.id;
+
+    //  make a db cal and fetch usern with its id
+    const userDetails = await User.findOne({ _id: userId })
+      .populate({
+        path: "courses",
+        populate: {
+          path: "courseContent",
+          populate: {
+            path: "subSection",
+          },
+        },
+      })
+      .exec();
+
+    //  validate useDeytails
+    if (!userDetails) {
+      res.status(400).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    //  send response with success flag
+    res.status(200).json({
+      success: true,
+      message: `${
+        userDetails.courses.length === 0
+          ? "Did not purchased any course yet"
+          : "Enrolled course fetched successfully"
+      }`,
+      data: userDetails.courses,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      success: false,
+      message: "Unable to get enrolled course data",
+    });
+  }
+  // fetch user id
+};

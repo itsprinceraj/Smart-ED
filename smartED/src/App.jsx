@@ -15,8 +15,15 @@ import { VerifyEmail } from "./pages/VerifyEmail";
 import { About } from "./pages/About";
 import { Contact } from "./pages/Contact";
 import { Setting } from "./components/dashboard/Setting";
+import { EnrolledCourse } from "./components/dashboard/EnrolledCourse";
+import { MyCart } from "./components/dashboard/cart/MyCart";
+import { ACCOUNT_TYPE } from "./utilities/constants";
+import { useSelector } from "react-redux";
+import { MyCourses } from "./components/dashboard/instructor courses/MyCourses";
+import { AddCourse } from "./components/dashboard/add course/AddCourse";
 
 function App() {
+  const { user } = useSelector((state) => state.profile);
   return (
     <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter text-white">
       <Navbar />
@@ -91,6 +98,28 @@ function App() {
 
           {/* /dashboard/settings -- nested Routes */}
           <Route path="/dashboard/settings" element={<Setting />} />
+
+          {/*  protected routes only for students */}
+
+          {user?.accountType === ACCOUNT_TYPE.STUDENT && (
+            <>
+              <Route
+                path="/dashboard/enrolled-courses"
+                element={<EnrolledCourse />}
+              />
+
+              {/*  nested route of cart under dashboard */}
+              <Route path="/dashboard/cart" element={<MyCart />} />
+            </>
+          )}
+
+          {/*  protected routes for Instructor only */}
+          {user?.accountType === ACCOUNT_TYPE.INSTRUCTOR && (
+            <>
+              <Route path="/dashboard/my-courses" element={<MyCourses />} />
+              <Route path="/dashboard/add-course" element={<AddCourse />} />
+            </>
+          )}
         </Route>
 
         {/* About Page Route */}

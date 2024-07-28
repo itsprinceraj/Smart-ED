@@ -7,6 +7,7 @@ const {
   deleteProfile,
   getUserDetails,
   uploadDisplayPicture,
+  getEnrolledCourses,
 } = require("../controllers/profile");
 
 // MiddleWares
@@ -19,6 +20,6 @@ router.get("/getUserDetails", auth, getUserDetails);
 router.put("/updateDisplayPicture", auth, uploadDisplayPicture);
 
 // **************** enrolled courses ************8
-// router.post("/getEnrolledCourses", auth , )
+router.get("/getEnrolledCourses", auth, getEnrolledCourses);
 
 module.exports = router;

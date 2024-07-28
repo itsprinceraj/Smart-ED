@@ -23,7 +23,7 @@ export const SidebarLink = ({ link, iconName }) => {
     <>
       <NavLink
         to={link.path}
-        className={`relative px-8 py-2 text-sm font-medium ${
+        className={`relative px-8 py-2 text-lg font-medium ${
           matchRoute(link.path)
             ? "bg-yellow-800 text-yellow-50"
             : "bg-opacity-0 text-richblack-300"
@@ -37,8 +37,8 @@ export const SidebarLink = ({ link, iconName }) => {
         ></span>
 
         {/*  link names */}
-        <div className="flex items-center gap-x-2">
-          <Icon className="text-lg" />
+        <div className="flex items-center gap-x-3">
+          <Icon className="text-xl" />
           <span>{link.name}</span>
         </div>
       </NavLink>
