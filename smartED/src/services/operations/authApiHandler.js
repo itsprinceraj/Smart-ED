@@ -27,7 +27,7 @@ export const sendOtp = (email, navigate) => {
         checkUserPresent: true,
       });
 
-      console.log(response);
+      // console.log(response);
 
       if (!response.success) {
         toast.error(response.message);
@@ -73,7 +73,7 @@ export const signupRequest = (
         otp,
       });
 
-      console.log(response);
+      // console.log(response);
 
       //handle error
       if (!response.success) {

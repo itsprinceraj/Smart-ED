@@ -55,6 +55,7 @@ export const ContactUsForm = () => {
       className="flex flex-col gap-7 mt-3"
       onSubmit={handleSubmit(submitHandler)}
     >
+      {/* firstname */}
       <div className="flex flex-col gap-5 lg:flex-row">
         <div className="flex flex-col gap-2 lg:w-[48%]">
           <label htmlFor="firstname" className="lable-style">
@@ -75,6 +76,7 @@ export const ContactUsForm = () => {
           )}
         </div>
 
+        {/* lastname */}
         <div className="flex flex-col gap-2 lg:w-[48%]">
           <label htmlFor="lastname" className="lable-style">
             Last Name
@@ -89,6 +91,8 @@ export const ContactUsForm = () => {
           />
         </div>
       </div>
+
+      {/* email */}
 
       <div className="flex flex-col gap-2">
         <label htmlFor="email" className="lable-style">
@@ -108,6 +112,8 @@ export const ContactUsForm = () => {
           </span>
         )}
       </div>
+
+      {/* number input  */}
 
       <div className="flex flex-col gap-2">
         <label htmlFor="phonenumber" className="lable-style">
@@ -159,6 +165,7 @@ export const ContactUsForm = () => {
         )}
       </div>
 
+      {/* message section  */}
       <div className="flex flex-col gap-2">
         <label htmlFor="message" className="lable-style">
           Message

@@ -13,10 +13,10 @@ const {
 const { auth } = require("../middlewares/authoriseUser");
 
 //define Routes
-router.post("/updateProfile", auth, updateProfile);
+router.put("/updateProfile", auth, updateProfile);
 router.post("/deleteProfile", auth, deleteProfile);
 router.get("/getUserDetails", auth, getUserDetails);
-router.post("/updateDisplayPicture", auth, uploadDisplayPicture);
+router.put("/updateDisplayPicture", auth, uploadDisplayPicture);
 
 // **************** enrolled courses ************8
 // router.post("/getEnrolledCourses", auth , )

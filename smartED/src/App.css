@@ -43,7 +43,6 @@ details > summary::-webkit-details-marker {
   display: none;
 }
 
-/* https://10015.io/tools/css-loader-generator */
 .spinner {
   width: 56px;
   height: 56px;
@@ -215,22 +214,10 @@ details > summary::-webkit-details-marker {
   @apply cursor-pointer rounded-md bg-yellow-50 px-[20px] py-[8px] font-semibold text-richblack-900;
 }
 
-/* Swiper CSS Starts */
-/* .swiper {
-  max-width: 1200px;
-  width: 91.66%;
-  height: 185px;
-  margin: 50px 0px;
-} */
-
 .swiper-slide {
   width: 100%;
   height: 100%;
 }
-/* .swiper-slide {
-  @apply bg-richblack-800 text-richblack-25 p-3 text-[14px];
-} */
-/* Swiper CSS Ends */
 
 .blackButton {
   @apply cursor-pointer rounded-md bg-richblack-800 px-[20px] py-[8px] font-semibold text-richblack-5;

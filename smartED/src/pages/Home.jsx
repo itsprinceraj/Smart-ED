@@ -129,7 +129,7 @@ export const Home = () => {
         <AnimateCode
           position={"lg:flex-row"}
           backgroundGradient={<div className="codeblock2 absolute"></div>}
-          codeColor={" text-white "}
+          codeColor={" text-purple-400 "}
           codes={`import { Link } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa";
 import Banner from "../assets/Images/banner.mp4";

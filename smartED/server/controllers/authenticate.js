@@ -185,7 +185,7 @@ exports.signUP = async (req, res) => {
     // send a succes response
     res.status(200).json({
       success: true,
-      messsage: "User Registered Succesfully ",
+      message: "User Registered Succesfully ",
       user,
     });
   } catch (err) {
@@ -273,65 +273,57 @@ exports.login = async (req, res, next) => {
 
 exports.changePassword = async (req, res) => {
   try {
-    // fetch data from req body
-    const { oldPassword, newPassword, confirmNewPassword } = req.body;
+    // Get user data from req.user
+    const userDetails = await User.findById(req.user.id);
 
-    // check if these fields are empty or not
-    if (!oldPassword || !newPassword || !confirmNewPassword) {
-      return res.status(409).json({
-        success: false,
-        message: "Please enter the passwords",
-      });
-    } else if (oldPassword == (newPassword || confirmNewPassword)) {
-      return res.status(409).json({
-        success: false,
-        message: "new password is same as your old one",
-      });
+    // Get old password, new password, and confirm new password from req.body
+    const { oldPassword, newPassword } = req.body;
+
+    // Validate old password , that it matches to your current account password or not
+    const isPasswordMatch = await bcrypt.compare(
+      oldPassword,
+      userDetails.password
+    );
+    if (!isPasswordMatch) {
+      // If old password does not match, return a 401 (Unauthorized) error
+      return res
+        .status(401)
+        .json({ success: false, message: "The password is incorrect" });
     }
 
-    // if password entered then match new and confirm password and also check that it is different from the oldpassword
-    if (newPassword !== confirmNewPassword) {
-      return res.status(409).json({
-        success: false,
-        message: "Password not matched",
-      });
-    }
-
-    //  password is matched and the password is unique from the previous one, hash the password
-
-    const encryptPass = await bcrypt.hash(newPassword, 10);
-
-    // now create entry in database
-    const user = await User.findOneAndUpdate(
-      { email: email },
-      { password: encryptPass },
+    // Update password
+    const encryptedPassword = await bcrypt.hash(newPassword, 10);
+    const updatedUserDetails = await User.findByIdAndUpdate(
+      req.user.id,
+      { password: encryptedPassword },
       { new: true }
     );
 
-    // password is updated , now send mail to user that their password is updated succesfully
-
+    // Send notification email
     try {
       const emailResponse = await mailSender(
-        user.email,
+        updatedUserDetails.email,
         "Password for your account has been updated",
         passwordUpdated(
-          user.email,
-          `Password updated successfully for ${user.firstName} ${user.lastName}`
+          updatedUserDetails.email,
+          `Password updated successfully for ${updatedUserDetails.firstName} ${updatedUserDetails.lastName}`
         )
       );
-    } catch (err) {
-      console.log(err);
+      console.log("Email sent successfully:", emailResponse);
+    } catch (error) {
+      // If there's an error sending the email, log the error and return a 500 (Internal Server Error) error
+      console.error("Error occurred while sending email:", error);
       return res.status(500).json({
         success: false,
         message: "Error occurred while sending email",
-        error: err.message,
+        error: error.message,
       });
     }
 
-    res.status(200).json({
-      success: true,
-      message: "Password updated successfully",
-    });
+    // Return success response
+    return res
+      .status(200)
+      .json({ success: true, message: "Password updated successfully" });
   } catch (err) {
     console.log("error occurred while updating password", err);
     res.status(500).json({

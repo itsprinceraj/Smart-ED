@@ -11,14 +11,20 @@ const axiosCall = axios.create({
   },
 });
 
-export const apiConnector = async (method, url, data, headers, params) => {
+export const apiConnector = async (
+  method,
+  url,
+  data = null,
+  headers = {},
+  params = null
+) => {
   try {
     const response = await axiosCall({
       method,
       url,
-      data: data || null,
-      headers: headers || null,
-      params: params || null,
+      data: data || undefined, // Only include data if it's not null
+      headers: headers || undefined, // Only include headers if they're not null
+      params: params || undefined, // Only include params if they're not null
     });
 
     // return response

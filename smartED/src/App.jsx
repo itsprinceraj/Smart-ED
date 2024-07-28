@@ -75,14 +75,7 @@ function App() {
 
         {/* contact us page */}
 
-        <Route
-          path="/reach-us"
-          element={
-            <OpenRoute>
-              <Contact />
-            </OpenRoute>
-          }
-        />
+        <Route path="/reach-us" element={<Contact />} />
 
         {/* Dashboard Route */}
 
