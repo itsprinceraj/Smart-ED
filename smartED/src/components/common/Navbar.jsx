@@ -72,7 +72,7 @@ export const Navbar = () => {
   const [loading, setLoading] = useState(false);
   return (
     <div
-      className={`flex h-14 items-center justify-center border-b-[1px] border-b-richblack-700 transition-all duration-200`}
+      className={`flex h-20 items-center justify-center border-b-[1px] border-b-richblack-700 transition-all duration-200 text-lg`}
     >
       <div className="flex w-11/12 max-w-maxContent items-center justify-between">
         {/* Logo */}
@@ -158,7 +158,7 @@ export const Navbar = () => {
 
         {/*  Login and signup button , Dashboard  */}
 
-        <div className="hidden items-center gap-x-4 md:flex relative">
+        <div className="hidden items-center gap-x-6 md:flex relative">
           {/* Login button */}
           {token === null && (
             <Link to={"/login"}>
@@ -182,7 +182,7 @@ export const Navbar = () => {
 
           {user && user?.accountType !== ACCOUNT_TYPE.INSTRUCTOR && (
             <Link to={"/dashboard/cart"}>
-              <AiOutlineShoppingCart className="text-2xl text-richblack-100 hover:text-white transition-all duration-200" />
+              <AiOutlineShoppingCart className="text-3xl text-richblack-100 hover:text-white transition-all duration-200" />
 
               {/* overlap number of items in the cart */}
 
@@ -194,8 +194,7 @@ export const Navbar = () => {
             </Link>
           )}
 
-          {/* now show dashboard if user is logged in */}
-
+          {/* now show userProfile if user is logged in */}
           {token !== null && <UserProfile />}
         </div>
         <button className="mr-4 md:hidden">

@@ -41,7 +41,7 @@ export const UserProfile = () => {
       <button ref={ref} className="relative " onClick={() => setOpen(!open)}>
         <div className="flex items-center gap-x-1">
           <img
-            className="aspect-square w-[30px] rounded-full object-cover"
+            className="aspect-square w-[40px] rounded-full object-cover"
             src={user?.image}
             alt={`profile- ${user?.firstName}`}
           />
@@ -58,13 +58,13 @@ export const UserProfile = () => {
         {open && (
           <div
             onClick={(event) => event.stopPropagation()} // <--- Prevent click inside dropdown from propagating
-            className="absolute top-[118%] right-0 z-[1000] divide-y-[1px] divide-richblack-700 overflow-hidden rounded-md border-[1px] border-richblack-700 bg-richblack-800"
+            className="absolute top-[150%] right-0 z-[1000] divide-y-[1px] divide-richblack-700 overflow-hidden rounded-md border-[1px] border-richblack-700 bg-richblack-800"
           >
             {/* Dashboard button */}
 
             <Link to={"/dashboard/my-profile"}>
-              <div className="flex w-full items-center gap-x-1 py-[10px] px-[12px] text-sm text-richblack-100 hover:bg-richblack-700 hover:text-richblack-25">
-                <VscDashboard className="text-lg" />
+              <div className="flex w-full items-center gap-x-3 py-[10px] px-[12px] text-md text-richblack-100 hover:bg-richblack-700 hover:text-richblack-25">
+                <VscDashboard className="text-xl" />
                 Dashboard
               </div>
             </Link>
@@ -76,9 +76,9 @@ export const UserProfile = () => {
                 dispatch(logoutRequest(navigate));
                 setOpen(false);
               }}
-              className="flex w-full items-center gap-x-1 py-[10px] px-[12px] text-sm text-richblack-100 hover:bg-richblack-700 hover:text-richblack-25"
+              className="flex w-full items-center gap-x-3 py-[10px] px-[12px] text-md text-richblack-100 hover:bg-richblack-700 hover:text-richblack-25"
             >
-              <VscSignOut className="text-lg" />
+              <VscSignOut className="text-xl" />
               Log Out
             </div>
           </div>
