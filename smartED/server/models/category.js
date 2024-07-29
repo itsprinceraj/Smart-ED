@@ -12,7 +12,6 @@ const tagSchema = new mongoose.Schema({
   courses: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      // required: true,
       ref: "Course",
     },
   ],

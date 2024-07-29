@@ -1,14 +1,18 @@
 const User = require("../models/user");
 const Tag = require("../models/category");
 const Course = require("../models/course");
+const Section = require("../models/section");
+const SubSection = require("../models/subSection");
 require("dotenv").config();
 const { uploadImageToCloudinary } = require("../utilities/imageUploader");
 const { isInstructor } = require("../middlewares/authoriseUser");
 const FOLDER_NAME = process.env.FOLDER_NAME;
 // create course handler
+const mongoose = require("mongoose");
+
 exports.createCourse = async (req, res) => {
   try {
-    // fetch data form req body
+    // Fetch data from req body
     const {
       courseName,
       courseDescription,
@@ -18,10 +22,10 @@ exports.createCourse = async (req, res) => {
       category,
     } = req.body;
 
-    // fetch thumbnail
+    // Fetch thumbnail
     const thumbnail = req.files.thumbnail;
 
-    // validate that , the data is present or not
+    // Validate that all the necessary data is present
     if (
       !courseName ||
       !courseDescription ||
@@ -37,99 +41,85 @@ exports.createCourse = async (req, res) => {
       });
     }
 
-    // Details has been filled now check for instructer
+    // Get the user ID from the request
     const userId = req.user.id;
-    const instructerDetails = await User.findById(userId);
-    // console.log("instructor Details: ", instructerDetails);
+    const instructorDetails = await User.findById(userId);
 
-    // check if the instructor details exists or not
-    if (!instructerDetails) {
+    // Check if the instructor details exist
+    if (!instructorDetails) {
       return res.status(401).json({
         success: false,
         message: "Instructor details not available",
       });
     }
 
-    // check if  same user trying to make same course again ;
-    try {
-      const existingCourse = await Course.findOne({
-        instructor: userId,
-        courseName,
-      });
+    // Check if the same course already exists for the same user
+    const existingCourse = await Course.findOne({
+      instructor: userId,
+      courseName,
+    });
 
-      if (existingCourse) {
-        return res.status(400).json({
-          success: false,
-          message: `${courseName} already exists for the same user`,
-          data: existingCourse,
-        });
-      }
-    } catch (err) {
-      console.log(err);
+    if (existingCourse) {
+      return res.status(400).json({
+        success: false,
+        message: `${courseName} already exists for the same user`,
+        data: existingCourse,
+      });
     }
 
-    // check that the tag is valid or not
-    const tagDetails = await Tag.findById(category);
-    // console.log("tagDetails: ", tagDetails);
+    // Check that the tag is valid
+    const tagDetails = await Tag.findOne({ _id: category });
     if (!tagDetails) {
       return res.status(401).json({
         success: false,
-        message: "tag details are empty ",
+        message: "Tag details are invalid",
       });
     }
 
-    //upload thumbnail to cloudinary
+    // Upload thumbnail to Cloudinary
     const thumbnailImage = await uploadImageToCloudinary(
       thumbnail,
       FOLDER_NAME
     );
 
-    // create course entry in DB
+    // Create course entry in DB
     const newCourse = await Course.create({
-      courseName: courseName,
-      courseDescription: courseDescription,
-      instructor: instructerDetails._id,
-      whatYouWillLearn: whatYouWillLearn,
-      price: price,
+      courseName,
+      courseDescription,
+      instructor: instructorDetails._id,
+      whatYouWillLearn,
+      price,
       tag: tagDetails.name,
       thumbnail: thumbnailImage.secure_url,
-      category: category,
+      category,
     });
 
-    // put the new created course in instructors course list
+    // Add the new course to the instructor's course list
     await User.findByIdAndUpdate(
-      { _id: instructerDetails._id },
-      {
-        $push: {
-          courses: newCourse._id,
-        },
-      },
+      instructorDetails._id,
+      { $push: { courses: newCourse._id } },
       { new: true }
     );
 
-    //update tag schema by adding course id to the courses array field
-    const categoryDetails2 = await Tag.findByIdAndUpdate(
-      { _id: category },
-      {
-        $push: {
-          courses: newCourse._id,
-        },
-      },
+    // Update tag schema by adding course ID to the courses array field
+    const updatedTag = await Tag.findByIdAndUpdate(
+      category,
+      { $push: { courses: newCourse._id } },
       { new: true }
     );
 
-    // send response
+    // Send response
     res.status(200).json({
       success: true,
-      message: "Course Created Successfully",
+      message: "Course created successfully",
       data: newCourse,
-      data2: categoryDetails2,
+      updatedTag,
     });
   } catch (err) {
-    console.log("error while creating course: ", err);
-    res.status(501).json({
+    console.log("Error while creating course: ", err);
+    res.status(500).json({
       success: false,
-      message: "Unable to create Course",
+      message: "Unable to create course",
     });
   }
 };
@@ -223,57 +213,88 @@ exports.getCourseDetails = async (req, res) => {
 exports.deleteCourse = async (req, res) => {
   try {
     const { courseId } = req.body;
-    const { category } = req.body;
-    const userId = req.user.id;
 
-    // validate if userId available or not
-    if (!userId) {
-      return res.status(401).json({
+    // Find the course
+    const course = await Course.findById(courseId);
+    if (!course) {
+      return res.status(404).json({
         success: false,
-        message: "User not authorised",
+        message: "Course not found",
       });
     }
 
-    // validation
-    if (!courseId) {
-      return res.status(401).json({
-        success: false,
-        message: "Please enter course id",
+    // Unenroll students from the course
+    const studentsEnrolled = course.studentsEnrolled;
+    for (const studentId of studentsEnrolled) {
+      await User.findByIdAndUpdate(studentId, {
+        $pull: { courses: courseId },
       });
     }
 
-    // find course by courseId in Course Schema and delete course
+    // Delete sections and sub-sections
+    const courseSections = course.courseContent;
+    for (const sectionId of courseSections) {
+      // Delete sub-sections of the section
+      const section = await Section.findById(sectionId);
+      if (section) {
+        const subSections = section.subSection;
+        for (const subSectionId of subSections) {
+          await SubSection.findByIdAndDelete(subSectionId);
+        }
+      }
+
+      // Delete the section
+      await Section.findByIdAndDelete(sectionId);
+    }
+
+    // Remove the course ID from the tag(s)
+    const tags = course.tag;
+    for (const tagName of tags) {
+      await Tag.findOneAndUpdate(
+        { name: tagName },
+        { $pull: { courses: courseId } }
+      );
+    }
+
+    // Delete the course
     await Course.findByIdAndDelete(courseId);
 
-    // remove course from instructors profile
-    const instructerDetails = await User.findById(userId);
-    const updatedInstructorDetail = await User.findByIdAndUpdate(
-      { _id: instructerDetails._id },
-      { $pull: { courses: courseId } },
-      { new: true }
-    );
+    return res.status(200).json({
+      success: true,
+      message: "Course deleted successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+      error: error.message,
+    });
+  }
+};
 
-    // remove course from tagschema
-    const updatedCategory = await Tag.findByIdAndUpdate(
-      { _id: category },
-      {
-        $pull: { courses: courseId },
-      },
-      { new: true }
-    );
+//  get all instructor courses
+exports.getInstructorCourses = async (req, res) => {
+  try {
+    //  get instructor id from authenticated user (req.user.id)
+    const intructorId = req.user.id;
 
-    // send success response
+    // make a db call to fetch course data with this instructor id
+    const instructorCourse = await Course.find({
+      instructor: intructorId,
+    }).sort({ createdAt: -1 });
+
+    // send success response and return the courses
     res.status(200).json({
       success: true,
-      message: "Course Deleted Successfully ",
-      data: updatedInstructorDetail,
-      data2: updatedCategory,
+      message: "Instructor course fetched Successfully",
+      data: instructorCourse,
     });
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    console.log(error);
     res.status(500).json({
       success: false,
-      message: "Course Deletion Failed ",
+      message: "Unable to get instructor courses",
     });
   }
 };
