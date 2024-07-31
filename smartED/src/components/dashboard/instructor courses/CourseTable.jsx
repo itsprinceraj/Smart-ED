@@ -21,7 +21,7 @@ export const CourseTable = ({ courses, setCourses }) => {
   const [loading, setLoading] = useState(false);
   const [confirmationModal, setConfirmationModal] = useState(null);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const TRUNCATE_LENGTH = 30;
 
   //    create a handleDelete function so that ui will behave accordingly

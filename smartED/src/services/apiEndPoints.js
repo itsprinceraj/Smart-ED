@@ -36,4 +36,6 @@ export const userDataEndPoints = {
 export const courseEndpoints = {
   GET_INSTRUCTOR_COURSES: BASE_URL + "/course/getInstructorCourses",
   DELETE_INSTRUCTOR_COURSE: BASE_URL + "/course/deleteCourse",
+  EDIT_COURSE_API: BASE_URL + "/course/updateCourse",
+  CREATE_COURSE_API : BASE_URL + "/course/createCourse"
 };

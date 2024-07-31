@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  step: 1,
+  step: 1, // defining steps for creating a course , and show at which step you are currently
   course: null,
   editCourse: false,
   paymentLoading: false,

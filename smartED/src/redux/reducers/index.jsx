@@ -6,6 +6,7 @@ import authSlice from "../slices/authSlice"; //  you can import  it with any nam
 import profileSlice from "../slices/profileSlice";
 import cartSlice from "../slices/cartSlice";
 import courseSlice from "../slices/courseSlice";
+import viewCourseSlice from "../slices/viewCourseSlice";
 
 export const rootReducer = combineReducers({
   // we will mention all the slices here
@@ -13,4 +14,5 @@ export const rootReducer = combineReducers({
   profile: profileSlice,
   cart: cartSlice,
   course: courseSlice,
+  viewCourse: viewCourseSlice,
 });
