@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { IconBtn } from "../../../common/IconBtn";
+import { IconBtn } from "../../../../common/IconBtn";
 import { useForm } from "react-hook-form";
-import { TagInput } from "../input components/TagInput";
+import { TagInput } from "./TagInput";
 import { MdNavigateNext, MdOutlineCurrencyRupee } from "react-icons/md";
-import { Instructions } from "../input components/Instructions";
-import { Upload } from "../input components/Upload";
+import { Instructions } from "./Instructions";
+import { Upload } from "./Upload";
 import { useDispatch, useSelector } from "react-redux";
-import { setStep, setCourse } from "../../../../redux/slices/courseSlice";
-import { COURSE_STATUS } from "../../../../utilities/constants";
+import { setStep, setCourse } from "../../../../../redux/slices/courseSlice";
+import { COURSE_STATUS } from "../../../../../utilities/constants";
 import {
   fetchCategories,
   editCourseDetails,
   createCourse,
-} from "../../../../services/operations/courseDetailApi";
+} from "../../../../../services/operations/courseDetailApi";
 import toast from "react-hot-toast";
 
 export const CourseInfoForm = () => {
@@ -26,18 +26,19 @@ export const CourseInfoForm = () => {
   // Fetch categories using API call and set its state to categories array
   const [courseCategories, setCourseCategories] = useState([]);
 
-  // Fetch course category and set it to the state
-  const getCourseCategory = async () => {
-    setLoading(true);
-    const category = await fetchCategories();
-    if (category.length > 0) {
-      setCourseCategories(category);
-    }
-    setLoading(false);
-  };
-
   // Set the default value in edit mode and call the getCategory function
   useEffect(() => {
+    // Fetch course category and set it to the state
+    const getCourseCategory = async () => {
+      setLoading(true);
+      const category = await fetchCategories();
+      if (category.length > 0) {
+        setCourseCategories(category);
+      }
+      setLoading(false);
+    };
+
+    //  check if user is editing the course
     if (editCourse) {
       setValue("courseTitle", course.courseName);
       setValue("courseShortDesc", course.courseDescription);
@@ -62,30 +63,32 @@ export const CourseInfoForm = () => {
 
   // Check if the form is updated
   const formUpdated = () => {
-    const currentVal = getValues();
+    const currentValues = getValues();
+    // console.log("changes after editing form values:", currentValues)
     if (
-      currentVal.courseTitle !== course.courseName ||
-      currentVal.courseShortDesc !== course.courseDescription ||
-      currentVal.coursePrice !== course.price ||
-      currentVal.courseTags.toString() !== course.tag.toString() ||
-      currentVal.courseBenefits !== course.whatYouWillLearn ||
-      currentVal.courseCategory._id !== course.category._id ||
-      currentVal.courseInstructions !== course.instructions ||
-      currentVal.courseImage !== course.thumbnail
+      currentValues.courseTitle !== course.courseName ||
+      currentValues.courseShortDesc !== course.courseDescription ||
+      currentValues.coursePrice !== course.price ||
+      currentValues.courseTags.toString() !== course.tag.toString() ||
+      currentValues.courseBenefits !== course.whatYouWillLearn ||
+      currentValues.courseCategory._id !== course.category._id ||
+      currentValues.courseInstructions.toString() !==
+        course.instructions.toString() ||
+      currentValues.courseImage !== course.thumbnail
     ) {
       return true;
-    } else {
-      return false;
     }
+    return false;
   };
 
   // Form submit handler
   const formSubmitHandler = async (data) => {
+    const currentValues = getValues();
     if (editCourse) {
       if (formUpdated()) {
-        const currentValues = getValues();
-        const formData = new FormData();
+        const formData = new FormData(); // create a new formData
 
+        // append all the data to new form data
         formData.append("courseId", course._id);
         if (currentValues.courseTitle !== course.courseName) {
           formData.append("courseName", data.courseTitle);
@@ -108,7 +111,7 @@ export const CourseInfoForm = () => {
           formData.append("whatYouWillLearn", data.courseBenefits);
         }
         if (currentValues.courseCategory._id !== course.category._id) {
-          formData.append("category", data.courseCategory);
+          formData.append("category", data.courseCategory._id);
         }
 
         if (
@@ -137,32 +140,32 @@ export const CourseInfoForm = () => {
         toast.error("No changes made to the form");
       }
       return;
+    } else {
+      // If user is not editing the course, then create a new FormData and create a course
+      const formData = new FormData();
+      formData.append("courseName", data.courseTitle);
+      formData.append("courseDescription", data.courseShortDesc);
+      formData.append("price", data.coursePrice);
+      formData.append("tag", JSON.stringify(data.courseTags));
+      formData.append("whatYouWillLearn", data.courseBenefits);
+      formData.append("category", data.courseCategory);
+      formData.append("status", COURSE_STATUS.DRAFT);
+      formData.append("instructions", JSON.stringify(data.courseInstructions));
+      formData.append("thumbnail", data.courseImage);
+
+      // console.log("Printing data inside submition: ", data);
+      // console.log("Printing form-data inside submition: ", formData);
+
+      // Make an API call for course creation
+      setLoading(true);
+      const result = await createCourse(formData, token);
+      // console.log("printing result : ", result);
+      if (result) {
+        dispatch(setStep(2));
+        dispatch(setCourse(result));
+      }
+      setLoading(false);
     }
-
-    // If user is not editing the course, then create a new FormData and create a course
-    const formData = new FormData();
-    formData.append("courseName", data.courseTitle);
-    formData.append("courseDescription", data.courseShortDesc);
-    formData.append("price", data.coursePrice);
-    formData.append("tag", JSON.stringify(data.courseTags));
-    formData.append("whatYouWillLearn", data.courseBenefits);
-    formData.append("category", data.courseCategory);
-    formData.append("status", COURSE_STATUS.DRAFT);
-    formData.append("instructions", JSON.stringify(data.courseInstructions));
-    formData.append("thumbnail", data.courseImage);
-
-    // console.log("Printing data inside submition: ", data);
-    // console.log("Printing form-data inside submition: ", formData);
-
-    // Make an API call for course creation
-    setLoading(true);
-    const result = await createCourse(formData, token);
-    // console.log("printing result : ", result);
-    if (result) {
-      dispatch(setCourse(result));
-      dispatch(setStep(2));
-    }
-    setLoading(false);
   };
 
   return (
@@ -249,8 +252,8 @@ export const CourseInfoForm = () => {
             Choose a Category
           </option>
           {!loading &&
-            courseCategories?.map((category, indx) => (
-              <option key={indx} value={category?._id}>
+            courseCategories?.map((category, index) => (
+              <option key={index} value={category?._id}>
                 {category?.name}
               </option>
             ))}

@@ -3,11 +3,13 @@ const Tag = require("../models/category");
 const Course = require("../models/course");
 const Section = require("../models/section");
 const SubSection = require("../models/subSection");
+const CourseProgress = require("../models/courseProgress");
 require("dotenv").config();
 const { uploadImageToCloudinary } = require("../utilities/imageUploader");
 const FOLDER_NAME = process.env.FOLDER_NAME;
 // create course handler
 const mongoose = require("mongoose");
+const { convertSecondsToDuration } = require("../utilities/secToDuration");
 
 exports.createCourse = async (req, res) => {
   try {
@@ -29,8 +31,8 @@ exports.createCourse = async (req, res) => {
     const thumbnail = req.files.thumbnail;
 
     // Convert the tag and instructions from stringified Array to Array
-    const tag = JSON.stringify(_tag);
-    const instructions = JSON.stringify(_instructions);
+    const tag = JSON.parse(_tag);
+    const instructions = JSON.parse(_instructions);
 
     // console.log("tag", tag);
     // console.log("instructions", instructions);
@@ -310,6 +312,82 @@ exports.getCourseDetails = async (req, res) => {
   }
 };
 
+//  get full course detail when editin the course
+exports.getFullCourseDetails = async (req, res) => {
+  try {
+    const { courseId } = req.body;
+    console.log("course id: ", courseId);
+    const userId = req.user.id;
+    const courseDetails = await Course.findOne({
+      _id: courseId,
+    })
+      .populate({
+        path: "instructor",
+        populate: {
+          path: "additionalDetails",
+        },
+      })
+      .populate("category")
+      .populate("ratingAndReviews")
+      .populate({
+        path: "courseContent",
+        populate: {
+          path: "subSection",
+        },
+      })
+      .exec();
+
+    let courseProgressCount = await CourseProgress.findOne({
+      courseID: courseId,
+      userId: userId,
+    });
+
+    console.log("courseProgressCount : ", courseProgressCount);
+
+    if (!courseDetails) {
+      return res.status(400).json({
+        success: false,
+        message: `Could not find course with id: ${courseId}`,
+      });
+    }
+
+    // if (courseDetails.status === "Draft") {
+    //   return res.status(403).json({
+    //     success: false,
+    //     message: `Accessing a draft course is forbidden`,
+    //   });
+    // }
+
+    let totalDurationInSeconds = 0;
+    courseDetails.courseContent.forEach((content) => {
+      content.subSection.forEach((subSection) => {
+        const timeDurationInSeconds = parseInt(subSection.timeDuration);
+        totalDurationInSeconds += timeDurationInSeconds;
+      });
+    });
+
+    const totalDuration = convertSecondsToDuration(totalDurationInSeconds);
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        courseDetails,
+        totalDuration,
+        completedVideos: courseProgressCount?.completedVideos
+          ? courseProgressCount?.completedVideos
+          : [],
+      },
+      message: "Course Details fetched successfull",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+//  delete course
 exports.deleteCourse = async (req, res) => {
   try {
     const { courseId } = req.body;

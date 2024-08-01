@@ -1,9 +1,9 @@
 import React from "react";
 import { FaCheck } from "react-icons/fa";
 import { useSelector } from "react-redux";
-import { CourseInfoForm } from "../course forms/CourseInfoForm";
-import { CourseBuilderForm } from "../course forms/CourseBuilderForm";
-import { PublishCourse } from "../course forms/PublishCourse";
+import { CourseInfoForm } from "../courseForms/courseInfoForm/CourseInfoForm";
+import { CourseBuilderForm } from "../courseForms/courseBuilder/CourseBuilderForm";
+import { PublishCourse } from "../courseForms/publishCourse/PublishCourse";
 
 export const AddCourseSteps = () => {
   const { step } = useSelector((state) => state.course);
