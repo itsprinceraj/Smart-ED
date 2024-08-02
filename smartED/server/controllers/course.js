@@ -386,9 +386,15 @@ exports.deleteCourse = async (req, res) => {
     // Find the course
     const course = await Course.findById(courseId);
     if (!course) {
+      return res.status(404).json({ message: "Course not found" });
+    }
+
+    const tagId = course.category._id;
+    // console.log(tagId);
+    if (!tagId) {
       return res.status(404).json({
         success: false,
-        message: "Course not found",
+        message: "category not found",
       });
     }
 
@@ -416,15 +422,11 @@ exports.deleteCourse = async (req, res) => {
       await Section.findByIdAndDelete(sectionId);
     }
 
-    // Remove the course ID from the tag(s)
-    const tags = course.tag;
-    for (const tagName of tags) {
-      await Tag.findOneAndUpdate(
-        { name: tagName },
-        { $pull: { courses: courseId } },
-        { new: true }
-      );
-    }
+    await Tag.findByIdAndUpdate(
+      { _id: tagId },
+      { $pull: { courses: courseId } },
+      { new: true }
+    );
 
     // Delete the course
     await Course.findByIdAndDelete(courseId);

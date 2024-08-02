@@ -3,6 +3,7 @@ const BASE_URL = "/api/v1";
 // CATAGORIES API
 export const categories = {
   CATEGORIES_API: BASE_URL + "/course/showAllCategories", // base url with their routes
+  CATALOG_PAGE_API: BASE_URL + "/course/getCategoryPageDetails",
 };
 
 // AUTHENTICATION API

@@ -36,6 +36,7 @@
     "react-router-dom": "^6.24.1",
     "react-super-responsive-table": "^5.2.3",
     "react-type-animation": "^3.2.0",
+    "swiper": "^11.1.9",
     "video-react": "^0.16.0"
   },
   "devDependencies": {

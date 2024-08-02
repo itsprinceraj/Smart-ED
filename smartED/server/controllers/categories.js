@@ -1,4 +1,7 @@
 const Tag = require("../models/category");
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
 
 // create Category
 
@@ -76,44 +79,77 @@ exports.showAllCategories = async (req, res) => {
 
 exports.categoryPageDetails = async (req, res) => {
   try {
-    // get category id
     const { categoryId } = req.body;
-
-    // get courses for specified category
+    // console.log("PRINTING CATEGORY ID: ", categoryId);
+    // Get courses for the specified category
     const selectedCategory = await Tag.findById(categoryId)
-      .populate("courses")
+      .populate({
+        path: "courses",
+        match: { status: "Published" },
+        populate: "ratingAndReviews",
+      })
       .exec();
 
-    // check if no seleted categories found
+    //console.log("SELECTED COURSE", selectedCategory)
+    // Handle the case when the category is not found
     if (!selectedCategory) {
-      return res.status(409).json({
+      console.log("Category not found.");
+      return res
+        .status(404)
+        .json({ success: false, message: "Category not found" });
+    }
+    // Handle the case when there are no courses
+    if (selectedCategory.courses.length === 0) {
+      console.log("No courses found for the selected category.");
+      return res.status(200).json({
         success: false,
-        message: "no categories found",
+        message: "No courses found for the selected category.",
       });
     }
 
-    // get courses for different categories
-    const differentCategories = await Tag.find({
-      _id: { $ne: categoryId }, // get category not equal to the given id
-    })
-      .populate("courses")
+    // Get courses for other categories
+    const categoriesExceptSelected = await Tag.find({
+      _id: { $ne: categoryId },
+    });
+    let differentCategory = await Tag.findOne(
+      categoriesExceptSelected[getRandomInt(categoriesExceptSelected.length)]
+        ._id
+    )
+      .populate({
+        path: "courses",
+        match: { status: "Published" },
+      })
       .exec();
-
+    //console.log("Different COURSE", differentCategory)
+    // Get top-selling courses across all categories
+    const allCategories = await Tag.find()
+      .populate({
+        path: "courses",
+        match: { status: "Published" },
+        populate: {
+          path: "instructor",
+        },
+      })
+      .exec();
+    const allCourses = allCategories.flatMap((category) => category.courses);
+    const mostSellingCourses = allCourses
+      .sort((a, b) => b.sold - a.sold)
+      .slice(0, 10);
+    // console.log("mostSellingCourses COURSE", mostSellingCourses)
     res.status(200).json({
       success: true,
-      message: "categoris fetched",
+      message: "Catalog fetched successfully",
       data: {
         selectedCategory,
-        differentCategories,
+        differentCategory,
+        mostSellingCourses,
       },
     });
-
-    // TODO : get Top selling Courses
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({
+  } catch (error) {
+    return res.status(500).json({
       success: false,
-      message: "something went wrong while fetching category page Details",
+      message: "Internal server error",
+      error: error.message,
     });
   }
 };
