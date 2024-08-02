@@ -111,7 +111,7 @@ export const CourseInfoForm = () => {
           formData.append("whatYouWillLearn", data.courseBenefits);
         }
         if (currentValues.courseCategory._id !== course.category._id) {
-          formData.append("category", data.courseCategory._id);
+          formData.append("category", data.courseCategory);
         }
 
         if (
@@ -133,8 +133,8 @@ export const CourseInfoForm = () => {
         const result = await editCourseDetails(formData, token);
         setLoading(false);
         if (result) {
-          dispatch(setStep(2));
           dispatch(setCourse(result));
+          dispatch(setStep(2));
         }
       } else {
         toast.error("No changes made to the form");
@@ -161,8 +161,8 @@ export const CourseInfoForm = () => {
       const result = await createCourse(formData, token);
       // console.log("printing result : ", result);
       if (result) {
-        dispatch(setStep(2));
         dispatch(setCourse(result));
+        dispatch(setStep(2));
       }
       setLoading(false);
     }

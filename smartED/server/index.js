@@ -40,9 +40,10 @@ app.use(
 app.use(
   fileUpload({
     useTempFiles: true,
-    tempFileDir: "/temp/",
+    tempFileDir: "./temp/",
   })
 );
+app.use(express.urlencoded({ extended: true }));
 
 // import and invoke database
 dbConnect();

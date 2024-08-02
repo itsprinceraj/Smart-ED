@@ -50,6 +50,7 @@ const {
   isInstructor,
   isStudent,
 } = require("../middlewares/authoriseUser");
+const upload = require("../utilities/multer");
 
 // define routes
 
@@ -73,7 +74,7 @@ router.get("/getSectionDetails", auth, isInstructor, getSectionDetails);
 // ******************* subSectionRoutes
 router.post("/addSubSection", auth, isInstructor, createSubSection);
 router.post("/updateSubSection", auth, isInstructor, updateSubSection);
-router.post("/deleteSubSection", auth, isInstructor, deleteSubSection);
+router.delete("/deleteSubSection", auth, isInstructor, deleteSubSection);
 
 //************ ratingAndReviewsRoutes
 router.post("/createRating", auth, isStudent, createRating);

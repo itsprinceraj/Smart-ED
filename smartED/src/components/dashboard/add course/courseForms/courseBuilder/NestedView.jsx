@@ -43,14 +43,19 @@ export const NestedView = ({ changeSectionName }) => {
   };
 
   //  create a function for handling delete subSection
-  const handleDeleteSubSection = async (sectionId, subSectionId) => {
-    const result = await deleteSubSection({ sectionId, subSectionId, token });
+
+  //  jis order me api authenticate karta hai , data ussi order me bhejooo
+  const handleDeleteSubSection = async (subSectionId, sectionId) => {
+    console.log("printing under delete sub section", sectionId, subSectionId);
+    const result = await deleteSubSection({ sectionId, subSectionId }, token);
     if (result) {
       //  update course or delete subsection from that particular course
       const updatedCourseContent = course.courseContent.map((section) =>
         section._id === sectionId ? result : section
       );
       const updatedCourse = { ...course, courseContent: updatedCourseContent };
+
+      console.log(updatedCourse);
 
       //  update state with updated course
       dispatch(setCourse(updatedCourse));
@@ -89,8 +94,8 @@ export const NestedView = ({ changeSectionName }) => {
                     setConfirmationModal({
                       text1: "Delete this Section?",
                       text2: "All the lectures in this section will be deleted",
-                      btn1Text: "Delete",
-                      btn2Text: "Cancel",
+                      btn1: "Delete",
+                      btn2: "Cancel",
                       btn1Handler: () => handleDeleleSection(section._id),
                       btn2Handler: () => setConfirmationModal(null),
                     })
@@ -140,8 +145,8 @@ export const NestedView = ({ changeSectionName }) => {
                         setConfirmationModal({
                           text1: "Delete this Sub-Section?",
                           text2: "This lecture will be deleted",
-                          btn1Text: "Delete",
-                          btn2Text: "Cancel",
+                          btn1: "Delete",
+                          btn2: "Cancel",
                           btn1Handler: () =>
                             //  kis section me se kis subSection ko delete kar rhe ho
                             handleDeleteSubSection(data._id, section._id),
@@ -158,7 +163,7 @@ export const NestedView = ({ changeSectionName }) => {
               <button
                 //  kis Section me subSection add karna hai uski id bhej do
                 onClick={() => setAddSubsection(section._id)}
-                className="mt-3 flex items-center gap-x-1 text-yellow-50"
+                className="mt-3 flex items-center gap-x-1 text-blue-100"
               >
                 <FaPlus className="text-lg" />
                 <p>Add Lecture</p>

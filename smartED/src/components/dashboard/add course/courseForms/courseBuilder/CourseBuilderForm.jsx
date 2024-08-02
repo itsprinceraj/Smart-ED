@@ -39,11 +39,16 @@ export const CourseBuilderForm = () => {
 
     if (editSectionName) {
       //  if user is editing the section name, call the updateSection api
-      result = await updateSection({
-        sectionName: data.sectionName,
-        sectionId: editSectionName, // why this ?
-        courseId: course._id,
-      });
+      result = await updateSection(
+        {
+          sectionName: data.sectionName,
+          sectionId: editSectionName, // why this ?
+          courseId: course._id,
+        },
+        token
+      );
+
+      console.log("princting result in builder form", result);
 
       //  else call createSection api
     } else {
@@ -161,7 +166,7 @@ export const CourseBuilderForm = () => {
       </form>
 
       {/*  display nested component */}
-      {course.courseContent.length > 0 && (
+      {course?.courseContent?.length > 0 && (
         <NestedView changeSectionName={changeSectionName} />
       )}
       {/* Next and back(prev) Button */}
