@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -12,13 +12,24 @@ import { COURSE_STATUS } from "../../../../../utilities/constants";
 import { editCourseDetails } from "../../../../../services/operations/courseDetailApi";
 
 export const PublishCourse = () => {
-  const { register, setValue, getValues, handleSubmit } = useForm();
+  const { register, setValue, getValues, handleSubmit } = useForm({
+    defaultValues: {
+      public: false,
+    },
+  });
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const { course } = useSelector((state) => state.course);
   const { token } = useSelector((state) => state.auth);
+
+  // on first render , if course status is published, then mark the checkbox as checked
+  useEffect(() => {
+    if (course?.status === COURSE_STATUS.PUBLISHED) {
+      setValue("public", true);
+    }
+  }, [setValue, course]);
 
   //  go to course function
   const goToCourses = () => {

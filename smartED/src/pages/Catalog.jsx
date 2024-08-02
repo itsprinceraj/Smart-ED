@@ -43,10 +43,10 @@ export const Catalog = () => {
     const getCatalogData = async () => {
       try {
         const res = await getCatalogPage(categoryId);
-        console.log(res);
+        // console.log(res);
         setCatalogPageData(res);
       } catch (err) {
-        console.log(err);
+        // console.log(err);
       }
     };
 

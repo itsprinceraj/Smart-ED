@@ -14,13 +14,13 @@ export const getCatalogPage = async (categoryId) => {
       categoryId: categoryId,
     });
 
-    console.log("printing service response:", response);
+    // console.log("printing service response:", response);
     if (!response?.success) {
       throw new Error("cant fetch catalog page");
     }
 
     result = response;
-    console.log("printing result in category service:", result);
+    // console.log("printing result in category service:", result);
   } catch (error) {
     console.log(error);
     toast.error(response.message);
