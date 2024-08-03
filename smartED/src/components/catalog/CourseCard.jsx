@@ -3,7 +3,7 @@ import { GetAvgRating } from "../../utilities/avgRating";
 import { RatingStars } from "../../components/common/RatingStars";
 import { Link } from "react-router-dom";
 
-export const CourseCard = ({ course, Height, Width }) => {
+export const CourseCard = ({ course, Height }) => {
   const [avgReviewCount, setAvgReviewCount] = useState(0);
 
   //  fetch and show ratings on first render of this component
@@ -17,12 +17,12 @@ export const CourseCard = ({ course, Height, Width }) => {
       {/*  create the course as link so that when user clicks on it , then we can show the course detail */}
       <Link to={`/courses/${course._id}`}>
         <div className="">
-          <div className="rounded-lg">
+          <div className="rounded-lg flex items-center m-auto">
             {/*  course thumbnail */}
             <img
               src={course?.thumbnail}
               alt="course thumnail"
-              className={`${Height} ${Width} rounded-xl object-cover  `}
+              className={`${Height} w-[370px] rounded-xl object-fit  `}
             />
           </div>
 

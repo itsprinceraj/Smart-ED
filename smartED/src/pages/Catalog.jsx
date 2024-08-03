@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { CourseSlider } from "../components/catalog/CourseSlider";
+import { Course_Slider } from "../components/catalog/Course_Slider";
 import { CourseCard } from "../components/catalog/CourseCard";
 import { ErrorPage } from "./ErrorPage";
 import { Footer } from "../components/common/Footer";
@@ -129,17 +130,17 @@ export const Catalog = () => {
         </div>
         <div className="py-8">
           {/*  course slider component */}
-          <CourseSlider
+          <Course_Slider
             Courses={catalogPageData?.data?.differentCategory?.courses}
           />
         </div>
       </div>
 
       {/* Section 3 */}
-      <div className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-12 lg:max-w-maxContent">
+      <div className=" mx-auto box-content w-full max-w-maxContentTab px-2 py-12 lg:max-w-maxContent">
         <div className="section_heading">Frequently Bought</div>
         <div className="py-8">
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
             {catalogPageData?.data?.mostSellingCourses
               ?.slice(0, 4)
               .map((course, index) => (
@@ -148,7 +149,7 @@ export const Catalog = () => {
                   course={course}
                   key={index}
                   Height={"h-[250px]"}
-                  Width={"w-[370px]"}
+                  // Width={"w-[370px]"}
                 />
               ))}
           </div>

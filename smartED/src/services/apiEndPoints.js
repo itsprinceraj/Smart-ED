@@ -47,3 +47,10 @@ export const courseEndpoints = {
   DELETE_SUB_SECTION_API: BASE_URL + "/course/deleteSubSection",
   GET_SPECIFIC_COURSE_DETAILS: BASE_URL + "/course/getFullCourseDetails",
 };
+
+//  payment api
+export const paymentApiEndpoints = {
+  CAPTURE_PAYMENT_API: BASE_URL + "/payment/capturePayment",
+  VERIFY_SIGNATURE_API: BASE_URL + "/payment/verifyPayment",
+  PAYMENT_SUCCESS_API: BASE_URL + "/payment/paymentSuccessEmail",
+};

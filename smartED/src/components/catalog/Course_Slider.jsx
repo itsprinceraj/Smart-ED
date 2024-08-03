@@ -7,7 +7,7 @@ import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import { CourseCard } from "./CourseCard";
 
-export const CourseSlider = ({ Courses }) => {
+export const Course_Slider = ({ Courses }) => {
   return (
     <>
       {Courses?.length ? (
@@ -15,10 +15,12 @@ export const CourseSlider = ({ Courses }) => {
           slidesPerView={1} // show 1 slides
           spaceBetween={30}
           // centeredSlides={true}
+          
           loop={true}
           autoplay={{
             delay: 1000,
             disableOnInteraction: false,
+            reverseDirection: true
           }}
           // navigation={true}
           modules={[Autoplay]}

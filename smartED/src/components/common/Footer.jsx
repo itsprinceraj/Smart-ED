@@ -1,9 +1,9 @@
 import React from "react";
 import { FooterLink2 } from "../../data/footer-links";
 import { Link } from "react-router-dom";
-
-// Images
 import Logo from "../../assets/Logo/logo.webp";
+import Logo2 from "../../assets/Logo/terminal.png";
+// Images
 
 // Icons
 import { FaFacebook, FaGoogle, FaTwitter, FaYoutube } from "react-icons/fa";
@@ -173,6 +173,27 @@ export const Footer = () => {
             })}
           </div>
 
+          {/*  image  */}
+
+          <Link to={"/"}>
+            <div className="flex relative">
+              <img
+                src={Logo}
+                alt="logo"
+                height={32}
+                width={160}
+                loading="lazy"
+              />
+              <img
+                src={Logo2}
+                alt="logo"
+                style={{ height: 25, width: 30 }}
+                loading="lazy"
+                className=" rotate-12 absolute -left-6 -top-3"
+              />
+            </div>
+          </Link>
+
           <div className="text-center">
             Made By <span className=" text-pink-200 ">SMART-ED </span>corps. ©
             2024 smarted.com
@@ -182,5 +203,3 @@ export const Footer = () => {
     </div>
   );
 };
-
-

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Logo from "../../assets/Logo/logo.webp";
+import Logo2 from "../../assets/Logo/terminal.png";
 import { Link, matchPath, useLocation } from "react-router-dom";
 import { NavbarLinks } from "../../data/navbar-links";
 import { useSelector, useDispatch } from "react-redux";
@@ -78,7 +79,16 @@ export const Navbar = () => {
         {/* Logo */}
 
         <Link to={"/"}>
-          <img src={Logo} alt="logo" height={32} width={160} loading="lazy" />
+          <div className="flex relative">
+            <img src={Logo} alt="logo" height={32} width={160} loading="lazy" />
+            <img
+              src={Logo2}
+              alt="logo"
+              style={{ height: 25, width: 30 }}
+              loading="lazy"
+              className=" rotate-12 absolute -left-6 -top-3"
+            />
+          </div>
         </Link>
 
         {/*  Navigation Links */}
