@@ -3,7 +3,7 @@ import Logo from "../../assets/Logo/logo.webp";
 import Logo2 from "../../assets/Logo/terminal.png";
 import { Link, matchPath, useLocation } from "react-router-dom";
 import { NavbarLinks } from "../../data/navbar-links";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
 import { ACCOUNT_TYPE } from "../../utilities/constants";
 import { AiOutlineMenu, AiOutlineShoppingCart } from "react-icons/ai";
@@ -48,26 +48,24 @@ export const Navbar = () => {
   // sublink states
   const [sublink, setSublink] = useState([]);
 
-  // make an Api call
-  const fetchCategories = async () => {
-    setLoading(true);
-    try {
-      let { data } = await apiConnector("GET", CATEGORIES_API);
-      const categoryLink = data;
-      // console.log(data);
-      setSublink(categoryLink);
-      // toast.success("Categories fetched Successfully");
-    } catch (err) {
-      console.log(err);
-      //   toast.error("Unable to fetch categories");
-    }
-    setLoading(false);
-  };
-
   // always make api calls inside useEffect Hook
   useEffect(() => {
-    fetchCategories();
-  }, []);
+    // make an Api call
+    (async () => {
+      setLoading(true);
+      try {
+        let { data } = await apiConnector("GET", CATEGORIES_API);
+        const categoryLink = data;
+        // console.log(data);
+        setSublink(categoryLink);
+        // toast.success("Categories fetched Successfully");
+      } catch (err) {
+        console.log(err);
+        toast.error("Unable to fetch categories");
+      }
+      setLoading(false);
+    })();
+  }, [CATEGORIES_API]);
 
   // loading state
   const [loading, setLoading] = useState(false);
@@ -95,7 +93,7 @@ export const Navbar = () => {
 
         <nav className="hidden md:block">
           <ul className="flex gap-x-8 text-richblack-25">
-            {NavbarLinks.map((navLink, index) => {
+            {NavbarLinks?.map((navLink, index) => {
               return (
                 <li key={index} className="">
                   {navLink?.title === "Catalog" ? (
@@ -107,7 +105,7 @@ export const Navbar = () => {
                             : "text-richblack-25"
                         }`}
                       >
-                        <p>{navLink.title}</p>
+                        <p>{navLink?.title}</p>
                         <RiArrowDropDownLine
                           style={{ height: 32, width: 32 }}
                           className=" absolute -right-6  pr-1 pl-[2px]"
@@ -156,7 +154,7 @@ export const Navbar = () => {
                             : "text-richblack-25"
                         }`}
                       >
-                        {navLink.title}
+                        {navLink?.title}
                       </p>
                     </Link>
                   )}
@@ -190,14 +188,14 @@ export const Navbar = () => {
 
           {/* If user is logged in then show dashboard , cart and search icon */}
 
-          {user && user?.accountType !== ACCOUNT_TYPE.INSTRUCTOR && (
+          {user && user?.accountType !== ACCOUNT_TYPE?.INSTRUCTOR && (
             <Link to={"/dashboard/cart"}>
               <AiOutlineShoppingCart className="text-3xl text-richblack-100 hover:text-white transition-all duration-200" />
 
               {/* overlap number of items in the cart */}
 
               {totalItems > 0 && (
-                <span className="absolute -bottom-2 -right-2 grid h-5 w-5 place-items-center overflow-hidden rounded-full bg-richblack-600 text-center text-xs font-bold text-yellow-100">
+                <span className="absolute -top-[0.3rem] right-[4.5rem] grid h-5 w-5 place-items-center overflow-hidden rounded-full bg-richblack-600 text-center text-xs font-bold text-yellow-100">
                   {totalItems}
                 </span>
               )}

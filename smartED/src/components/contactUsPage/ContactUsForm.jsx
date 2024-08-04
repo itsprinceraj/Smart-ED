@@ -25,12 +25,12 @@ export const ContactUsForm = () => {
       //   console.log(data);
       const response = await apiConnector("POST", CONTACT_API, data);
 
-      //   console.log(response);
+      console.log(response);
 
       if (!response.success) {
         toast.error(response.message);
       } else {
-        toast.success(response.message);
+        toast.success("We got your response");
       }
     } catch (err) {
       console.log(err);

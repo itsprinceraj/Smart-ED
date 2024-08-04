@@ -56,7 +56,7 @@ const upload = require("../utilities/multer");
 
 //******** courseRoutes*******************
 router.post("/createCourse", auth, isInstructor, createCourse);
-router.get("/getCourseDetails", getCourseDetails);
+router.post("/getCourseDetails", getCourseDetails);
 router.get("/showAllCourses", showAllCourses);
 //  get details for specific course
 router.post("/getFullCourseDetails", auth, getFullCourseDetails);

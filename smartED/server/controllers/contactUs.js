@@ -38,7 +38,7 @@ exports.contactUsController = async (req, res) => {
     console.log("Error", error);
     return res.json({
       success: false,
-      message: "Something went wrong...",
+      message: "Something went wrong...while sending mail",
     });
   }
 };

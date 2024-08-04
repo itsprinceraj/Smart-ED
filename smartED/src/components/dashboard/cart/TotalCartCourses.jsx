@@ -3,9 +3,10 @@ import { FaStar } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import ReactStars from "react-rating-stars-component";
+import { removeFromCart } from "../../../redux/slices/cartSlice";
 
 export const TotalCartCourses = () => {
-  const { cart, removeFromCart } = useSelector((state) => state.cart);
+  const { cart } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   return (
     <div className="flex flex-1 flex-col">

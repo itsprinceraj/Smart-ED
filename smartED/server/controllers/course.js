@@ -255,50 +255,67 @@ exports.showAllCourses = async (req, res) => {
 // get course Details
 exports.getCourseDetails = async (req, res) => {
   try {
-    // get courseId so that you can fetch all course data
     const { courseId } = req.body;
-
-    // make a db call to find by course id
-    const courseDetails = await Course.find({ _id: courseId })
+    //  fetch aand populate all the fields
+    const courseDetails = await Course.findOne({
+      _id: courseId,
+    })
       .populate({
         path: "instructor",
         populate: {
           path: "additionalDetails",
         },
       })
-      // .populate({
-      //   // courseProgress field is not in course Schema ---
-      //   path: "courseProgress",
-      // })
+      .populate("category")
+      .populate("ratingAndReviews")
       .populate({
         path: "courseContent",
         populate: {
           path: "subSection",
+          select: "-videoUrl",
         },
       })
-      .populate("ratingAndReviews")
-      .populate("category")
       .exec();
 
-    // what if nothing came in courseDetails
+    // validate data
     if (!courseDetails) {
-      return res.status(409).json({
+      return res.status(400).json({
         success: false,
-        message: "did not found any data from the given id",
+        message: `Could not find course with id: ${courseId}`,
       });
     }
 
-    // send succesfull response
-    res.status(200).json({
+    // if (courseDetails.status === "Draft") {
+    //   return res.status(403).json({
+    //     success: false,
+    //     message: `Accessing a draft course is forbidden`,
+    //   });
+    // }
+
+    //  get course duration
+    let totalDurationInSeconds = 0;
+    courseDetails.courseContent.forEach((content) => {
+      content.subSection.forEach((subSection) => {
+        const timeDurationInSeconds = parseInt(subSection.timeDuration);
+        totalDurationInSeconds += timeDurationInSeconds;
+      });
+    });
+
+    //  convert seconds to duration
+    const totalDuration = convertSecondsToDuration(totalDurationInSeconds);
+
+    return res.status(200).json({
       success: true,
-      message: "data Found",
-      data: courseDetails,
+      data: {
+        courseDetails,
+        totalDuration,
+      },
     });
   } catch (err) {
     console.log("err while getting CourseDatails", err);
-    res.status(501).json({
+    res.status(500).json({
       success: false,
-      message: " something went wrong",
+      message: " something went wrong while fetching courseDetails",
     });
   }
 };

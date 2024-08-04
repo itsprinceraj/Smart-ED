@@ -1,8 +1,8 @@
 import { paymentApiEndpoints } from "../apiEndPoints";
 import { toast } from "react-hot-toast";
-import { apiConnector, apiconnector } from "../apiConnector";
+import { apiConnector } from "../apiConnector";
 import { setPaymentLoading } from "../../redux/slices/courseSlice";
-import { resetCart } from "../../redux/slices/cartSlice";
+import { resetCartItems } from "../../redux/slices/cartSlice";
 import rzpLogo from "../../assets/Logo/terminal.png";
 const { CAPTURE_PAYMENT_API, VERIFY_SIGNATURE_API, PAYMENT_SUCCESS_API } =
   paymentApiEndpoints;
@@ -50,7 +50,7 @@ export const buyCourse = async (
     }
 
     //  make an api call to initiat order
-    const orderRes = await apiconnector(
+    const orderRes = await apiConnector(
       "POST",
       CAPTURE_PAYMENT_API,
       { courses },
@@ -138,7 +138,7 @@ const verifyPayment = async (bodyData, token, navigate, dispatch) => {
     }
     toast.success("payment Successful, ypou are addded to the course");
     navigate("/dashboard/enrolled-courses");
-    dispatch(resetCart());
+    dispatch(resetCartItems());
   } catch (error) {
     console.log("PAYMENT VERIFY ERROR....", error);
     toast.error("Could not verify Payment");

@@ -8,6 +8,10 @@ import Logo2 from "../../assets/Logo/terminal.png";
 // Icons
 import { FaFacebook, FaGoogle, FaTwitter, FaYoutube } from "react-icons/fa";
 
+{
+  /*  shipping a delevery not available */
+}
+
 const company = ["About", "Careers", "Affiliates"];
 const BottomFooter = ["Privacy Policy", "Cookie Policy", "Terms"];
 const Resources = [
@@ -31,18 +35,35 @@ export const Footer = () => {
           {/* Section 1 */}
           <div className="lg:w-[50%] flex flex-wrap flex-row justify-between lg:border-r lg:border-richblack-700 pl-3 lg:pr-5 gap-3">
             <div className="w-[30%] flex flex-col gap-3 lg:w-[30%] mb-7 lg:pl-0">
-              <img src={Logo} alt="" className="object-contain" />
+              <Link to={"/"}>
+                <div className="flex relative">
+                  <img
+                    src={Logo}
+                    alt="logo"
+                    height={32}
+                    width={160}
+                    loading="lazy"
+                  />
+                  <img
+                    src={Logo2}
+                    alt="logo"
+                    style={{ height: 25, width: 30 }}
+                    loading="lazy"
+                    className=" rotate-12 absolute -left-6 -top-3"
+                  />
+                </div>
+              </Link>
               <h1 className="text-richblack-50 font-semibold text-[16px]">
                 Company
               </h1>
               <div className="flex flex-col gap-2">
-                {company.map((ele, i) => {
+                {company.map((ele, index) => {
                   return (
                     <div
-                      key={i}
+                      key={index}
                       className="text-[14px] cursor-pointer hover:text-richblack-50 transition-all duration-200"
                     >
-                      <Link to={ele.toLowerCase()}>{ele}</Link>
+                      <Link to={"/about"}>{ele}</Link>
                     </div>
                   );
                 })}
@@ -53,7 +74,9 @@ export const Footer = () => {
                 <FaTwitter />
                 <FaYoutube />
               </div>
-              <div></div>
+              <p className="text-lg transition-all duration-200 mt-6 text-pink-200">
+                Shipping & Delevery Not Available
+              </p>
             </div>
 
             <div className="w-[48%] lg:w-[30%] mb-7 lg:pl-0">
@@ -68,9 +91,7 @@ export const Footer = () => {
                       key={index}
                       className="text-[14px] cursor-pointer hover:text-richblack-50 transition-all duration-200"
                     >
-                      <Link to={ele.split(" ").join("-").toLowerCase()}>
-                        {ele}
-                      </Link>
+                      <Link to={"/"}>{ele}</Link>
                     </div>
                   );
                 })}
@@ -80,7 +101,7 @@ export const Footer = () => {
                 Support
               </h1>
               <div className="text-[14px] cursor-pointer hover:text-richblack-50 transition-all duration-200 mt-2">
-                <Link to={"/help-center"}>Help Center</Link>
+                <Link to={"/reach-us"}>Help Center</Link>
               </div>
             </div>
 
@@ -96,9 +117,7 @@ export const Footer = () => {
                       key={index}
                       className="text-[14px] cursor-pointer hover:text-richblack-50 transition-all duration-200"
                     >
-                      <Link to={ele.split(" ").join("-").toLowerCase()}>
-                        {ele}
-                      </Link>
+                      <Link to={"/"}>{ele}</Link>
                     </div>
                   );
                 })}
@@ -114,9 +133,7 @@ export const Footer = () => {
                       key={index}
                       className="text-[14px] cursor-pointer hover:text-richblack-50 transition-all duration-200"
                     >
-                      <Link to={ele.split(" ").join("-").toLowerCase()}>
-                        {ele}
-                      </Link>
+                      <Link to={"/"}>{ele}</Link>
                     </div>
                   );
                 })}
@@ -139,7 +156,7 @@ export const Footer = () => {
                           key={index}
                           className="text-[14px] cursor-pointer hover:text-richblack-50 transition-all duration-200"
                         >
-                          <Link to={link.link}>{link.title}</Link>
+                          <Link to={"/"}>{link.title}</Link>
                         </div>
                       );
                     })}
@@ -165,9 +182,7 @@ export const Footer = () => {
                       : "border-r border-richblack-700 cursor-pointer hover:text-richblack-50 transition-all duration-200"
                   } px-3 `}
                 >
-                  <Link to={ele.split(" ").join("-").toLocaleLowerCase()}>
-                    {ele}
-                  </Link>
+                  <Link to={"/"}>{ele}</Link>
                 </div>
               );
             })}
@@ -180,16 +195,16 @@ export const Footer = () => {
               <img
                 src={Logo}
                 alt="logo"
-                height={32}
-                width={160}
+                height={50}
+                width={180}
                 loading="lazy"
               />
               <img
                 src={Logo2}
                 alt="logo"
-                style={{ height: 25, width: 30 }}
+                style={{ height: 30, width: 35 }}
                 loading="lazy"
-                className=" rotate-12 absolute -left-6 -top-3"
+                className=" rotate-12 absolute -left-7 -top-4"
               />
             </div>
           </Link>

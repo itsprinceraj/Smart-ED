@@ -15,6 +15,7 @@ const {
   DELETE_SUB_SECTION_API,
   UPDATE_SUB_SECTION_API,
   GET_SPECIFIC_COURSE_DETAILS,
+  GET_COURSE_DETAILS_API,
 } = courseEndpoints;
 
 const { CATEGORIES_API } = categories;
@@ -319,6 +320,31 @@ export const getSpecificCourseDetail = async (courseId, token) => {
   } catch (error) {
     console.log(error);
     toast.error("Unable to get course detail");
+  }
+  toast.dismiss(toastId);
+  return result;
+};
+
+// get course detail api
+export const getCourseDetail = async (courseId) => {
+  const toastId = toast.loading("Loading...");
+  let result = null;
+
+  try {
+    //  make an api call
+    const response = await apiConnector("POST", GET_COURSE_DETAILS_API, {
+      courseId,
+    });
+
+    // console.log("print response of courseData: ", response);
+    if (!response?.success) {
+      throw new Error(response?.message);
+    }
+    result = response;
+    // console.log("printing result of courseData: ", result);
+  } catch (err) {
+    console.log(err);
+    toast.error("Unable to fetch course data");
   }
   toast.dismiss(toastId);
   return result;

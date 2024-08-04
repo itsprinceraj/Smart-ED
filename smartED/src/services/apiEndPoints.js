@@ -46,6 +46,7 @@ export const courseEndpoints = {
   UPDATE_SUB_SECTION_API: BASE_URL + "/course/updateSubSection",
   DELETE_SUB_SECTION_API: BASE_URL + "/course/deleteSubSection",
   GET_SPECIFIC_COURSE_DETAILS: BASE_URL + "/course/getFullCourseDetails",
+  GET_COURSE_DETAILS_API: BASE_URL + "/course/getCourseDetails"
 };
 
 //  payment api
