@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { BiArrowBack } from "react-icons/bi";
+import { BiArrowBack, BiRefresh } from "react-icons/bi";
 import { resetPasswordRequest } from "../services/operations/authApiHandler";
 
 import { LuCheckCircle } from "react-icons/lu";
 import { LiaTimesCircle } from "react-icons/lia";
 import toast from "react-hot-toast";
+import { RiRefreshFill } from "react-icons/ri";
 
 export const UpdatePassword = () => {
   const [formData, setFormData] = useState({
@@ -21,7 +22,7 @@ export const UpdatePassword = () => {
   // usedispatch hook
   const dispatch = useDispatch();
   const location = useLocation();
-
+  const navigate = useNavigate();
   // get loader from authSlice
   const { loading } = useSelector((state) => state.auth);
 
@@ -43,7 +44,7 @@ export const UpdatePassword = () => {
   const onSubmitHandler = (event) => {
     event.preventDefault();
 
-    dispatch(resetPasswordRequest(password, confirmPassword, token));
+    dispatch(resetPasswordRequest(password, confirmPassword, token, navigate));
   };
 
   // password validation check
@@ -58,6 +59,16 @@ export const UpdatePassword = () => {
   };
 
   const passwordValidations = validatePassword(password);
+
+  //  maintain a setTimer state for Regenerating token
+  const [counter, setCounter] = useState(30);
+
+  //  show counter on furst render
+  useEffect(() => {
+    const timer = setTimeout(() => setCounter(counter - 1), 1000);
+
+    return () => clearTimeout(timer);
+  }, [counter]);
 
   return (
     <div className="grid min-h-[calc(100vh-3.5rem)] place-items-center">
@@ -243,6 +254,20 @@ export const UpdatePassword = () => {
             </ul>
 
             {/* button  */}
+            {counter > 0 ? (
+              <p className="mt-4 ml-3 text-yellow-200">
+                {" "}
+                {`You can Regenerate your reset token after ${counter} seconds`}
+              </p>
+            ) : (
+              <button
+                type="button"
+                className="mt-6 w-full rounded-[8px] bg-yellow-50 py-[12px] px-[12px] font-medium text-richblack-900 flex justify-center items-center gap-2"
+                onClick={() => navigate("/reset-password")}
+              >
+                <BiRefresh size={24} /> Regenerate Reset Token
+              </button>
+            )}
             <button
               type="submit"
               className="mt-6 w-full rounded-[8px] bg-yellow-50 py-[12px] px-[12px] font-medium text-richblack-900"
@@ -250,7 +275,7 @@ export const UpdatePassword = () => {
               Reset Password
             </button>
           </form>
-          <div className="mt-6 flex items-center justify-between">
+          <div className="mt-4 flex items-center justify-between">
             <Link to="/login">
               <p className="flex items-center gap-x-2 text-richblack-100 hover:text-richblack-5 transition-all duration-200">
                 <BiArrowBack /> Back To Login

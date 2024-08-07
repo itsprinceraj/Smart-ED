@@ -7,7 +7,7 @@ import FoundingStory from "../assets/Images/FoundingStory.png";
 import { Quote } from "../components/aboutPage/Quote";
 import { StatsComponenet } from "../components/aboutPage/StatComponent";
 import { Footer } from "../components/common/Footer";
-import { ReviewSlider } from "../components/homepage/ReviewSlider";
+import { ReviewSlider } from "../components/common/ReviewSlider";
 import { LearningGrid } from "../components/aboutPage/LearningGrid";
 import { ContactFormSection } from "../components/aboutPage/ContactFormSection";
 
@@ -129,9 +129,9 @@ export const About = () => {
         <h1 className="text-center text-4xl font-semibold mt-8">
           Reviews from other learners
         </h1>
-        <ReviewSlider />
       </div>
 
+      <ReviewSlider />
       {/* Section 8, footer*/}
       <Footer />
     </div>

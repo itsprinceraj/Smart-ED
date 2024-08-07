@@ -6,6 +6,7 @@ const { uploadImageToCloudinary } = require("../utilities/imageUploader");
 const { default: mongoose } = require("mongoose");
 require("dotenv").config();
 const FOLDER_NAME = process.env.FOLDER_NAME;
+const { convertSecondsToDuration } = require("../utilities/secToDuration");
 // Create a profile
 exports.updateProfile = async (req, res) => {
   try {
@@ -201,14 +202,13 @@ exports.uploadDisplayPicture = async (req, res) => {
 };
 
 // get enrolled courses data
-
 exports.getEnrolledCourses = async (req, res) => {
   try {
     // fetch user id by which we can further fetch their course details
     const userId = req.user.id;
 
     //  make a db cal and fetch usern with its id
-    const userDetails = await User.findOne({ _id: userId })
+    let userDetails = await User.findOne({ _id: userId })
       .populate({
         path: "courses",
         populate: {
@@ -219,6 +219,44 @@ exports.getEnrolledCourses = async (req, res) => {
         },
       })
       .exec();
+
+    //  logic to find total duration and progress of the course
+    userDetails = userDetails.toObject();
+    var SubsectionLength = 0;
+    for (var i = 0; i < userDetails.courses.length; i++) {
+      let totalDurationInSeconds = 0;
+      SubsectionLength = 0;
+      for (var j = 0; j < userDetails.courses[i].courseContent.length; j++) {
+        totalDurationInSeconds += userDetails.courses[i].courseContent[
+          j
+        ].subSection.reduce(
+          (acc, curr) => acc + parseInt(curr.timeDuration),
+          0
+        );
+        userDetails.courses[i].totalDuration = convertSecondsToDuration(
+          totalDurationInSeconds
+        );
+        SubsectionLength +=
+          userDetails.courses[i].courseContent[j].subSection.length;
+      }
+
+      //  progress track of the courses
+      let courseProgressCount = await CourseProgress.findOne({
+        courseID: userDetails.courses[i]._id,
+        userId: userId,
+      });
+      courseProgressCount = courseProgressCount?.completedVideos.length;
+      if (SubsectionLength === 0) {
+        userDetails.courses[i].progressPercentage = 100;
+      } else {
+        // To make it up to 2 decimal point
+        const multiplier = Math.pow(10, 2);
+        userDetails.courses[i].progressPercentage =
+          Math.round(
+            (courseProgressCount / SubsectionLength) * 100 * multiplier
+          ) / multiplier;
+      }
+    }
 
     //  validate useDeytails
     if (!userDetails) {
@@ -246,4 +284,44 @@ exports.getEnrolledCourses = async (req, res) => {
     });
   }
   // fetch user id
+};
+
+//  create instructor Dashboard
+exports.instructoDashboard = async (req, res) => {
+  //  fetch instructor id from req
+  // const { instructor } = req.user.id;
+
+  //  find course associated to instructor
+  const courseData = await Course.find({ instructor: req.user.id });
+  // console.log("printing courseData: ", courseData);
+
+  if (!courseData)
+    return res.status(404).json({
+      success: false,
+      message: "Instructor not found",
+    });
+
+  // find course details and enrolled studens
+  const courseDetails = courseData.map((data) => {
+    const totalEnrolledStudents = data.studentsEnrolled.length;
+    const totalAmountGenerated = totalEnrolledStudents * data.price;
+
+    // create a new object that needs to be shown on the instructors dashboard
+    const courseDataStats = {
+      _id: data._id,
+      courseName: data.courseName,
+      courseDescription: data.courseDescription,
+      totalEnrolledStudents,
+      totalAmountGenerated,
+    };
+
+    return courseDataStats;
+  });
+
+  // return success response
+  res.status(200).json({
+    success: true,
+    message: "Instructor data fetched Successfully",
+    data: courseDetails,
+  });
 };

@@ -16,7 +16,7 @@ export const CourseDetailsCard = ({
   //  destructure data from course
   const { price: CurrentPrice } = course;
 
-  console.log("printing course", course);
+  // console.log("printing course", course);
 
   //  get all mandatory data
   const { user } = useSelector((state) => state.profile);

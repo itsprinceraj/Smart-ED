@@ -67,67 +67,42 @@ exports.resetPasswordToken = async (req, res) => {
 
 exports.resetPassword = async (req, res) => {
   try {
-    // fetch data from body
     const { password, confirmPassword, token } = req.body;
 
-    if (!password || !confirmPassword) {
-      res.status(200).json({
+    if (confirmPassword !== password) {
+      return res.json({
         success: false,
-        message: "Please fill the required feild",
+        message: "Password and Confirm Password Does not Match",
       });
     }
-
-    //validation
-    if (password.length < 8)
-      if (password !== confirmPassword) {
-        // check password mathces or not
-        return res.status(200).json({
-          success: false,
-          message: "Password do not match",
-        });
-      }
-    // console.log("printing inputs", password, confirmPassword, token);
-
-    // password matched
     const userDetails = await User.findOne({ token: token });
-
-    // if token value is invalid
     if (!userDetails) {
-      return res.status(200).json({
+      return res.json({
         success: false,
-        message: "Invalid Token",
+        message: "Token is Invalid",
       });
     }
-
-    // token is valid now
-    if (userDetails.resetPasswordExpires < Date.now()) {
-      return res.status(200).json({
+    if (!(userDetails.resetPasswordExpires > Date.now())) {
+      return res.json({
         success: false,
-        message: "Token is Expired, Please Regenerate Your Token",
+        message: `Token is Expired, Please Regenerate Your Token`,
       });
     }
-
-    // hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
-    console.log(hashedPassword);
-
-    // update entry in database
+    const encryptedPassword = await bcrypt.hash(password, 10);
     await User.findOneAndUpdate(
       { token: token },
-      { password: hashedPassword },
+      { password: encryptedPassword },
       { new: true }
     );
-
-    // send response with success flag
-    res.status(200).json({
+    res.json({
       success: true,
-      message: "Password Updated Successfully  ",
+      message: `Password Reset Successful`,
     });
-  } catch (err) {
-    console.log("error while reset passweord", err);
-    res.status(500).json({
+  } catch (error) {
+    return res.json({
+      error: error.message,
       success: false,
-      messsage: "Something Went wrong while updating the password",
+      message: `Some Error in Updating the Password`,
     });
   }
 };

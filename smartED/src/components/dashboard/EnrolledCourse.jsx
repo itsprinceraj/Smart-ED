@@ -12,7 +12,9 @@ export const EnrolledCourse = () => {
   //    fetch enrolled course data by making backend call
   const getenrolledcourses = async () => {
     try {
-      const response = getEnrolledCourseDetail(token);
+      const response = await getEnrolledCourseDetail(token);
+      // console.log(response);
+
       setEnrolledCourses(response);
     } catch (error) {
       console.log(error.message);
@@ -22,7 +24,11 @@ export const EnrolledCourse = () => {
   //    always make api call inside useEffect Function
   useEffect(() => {
     getenrolledcourses();
+    // below is a special coment which disable react-hooks dependancy
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // console.log("printing enrolled courses: ", enrolledCourses);
 
   return (
     <>
@@ -47,13 +53,13 @@ export const EnrolledCourse = () => {
           {/* Course Names */}
           {enrolledCourses.map((course, index, arr) => (
             <div
-              className={`flex items-center border border-richblack-700 ${
+              className={`flex items-center border border-richblack-700 text-lg ${
                 index === arr.length - 1 ? "rounded-b-lg" : "rounded-none"
               }`}
               key={index}
             >
               <div
-                className="flex w-[45%] cursor-pointer items-center gap-4 px-5 py-3"
+                className="flex w-[45%] cursor-pointer items-center gap-4 px-6 py-3"
                 onClick={() => {
                   navigate(
                     `/view-course/${course?._id}/section/${course.courseContent?.[0]?._id}/sub-section/${course.courseContent?.[0]?.subSection?.[0]?._id}`
@@ -64,13 +70,13 @@ export const EnrolledCourse = () => {
                 <img
                   src={course.thumbnail}
                   alt="course_img"
-                  className="h-14 w-14 rounded-lg object-cover"
+                  className="h-16 w-16 rounded-lg object-cover"
                 />
 
                 {/*  course name and descriptions */}
                 <div className="flex max-w-xs flex-col gap-2">
                   <p className="font-semibold">{course.courseName}</p>
-                  <p className="text-xs text-richblack-300">
+                  <p className="text-sm text-richblack-300">
                     {course.courseDescription.length > 50
                       ? `${course.courseDescription.slice(0, 50)}...`
                       : course.courseDescription}

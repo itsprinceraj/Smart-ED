@@ -182,7 +182,12 @@ export const resetPasswordToken = (email, setSentEmail) => {
 };
 
 // make a reset password request
-export const resetPasswordRequest = (password, confirmPassword, token) => {
+export const resetPasswordRequest = (
+  password,
+  confirmPassword,
+  token,
+  navigate
+) => {
   return async (dispatch) => {
     // const navigate = useNavigate();
     const toastId = toast.loading("Loading...");
@@ -192,29 +197,29 @@ export const resetPasswordRequest = (password, confirmPassword, token) => {
       // password validation
       if (password.length < 8) {
         toast.error("Password must be at least 8 characters long");
-        throw new Error("Password must be at least 8 characters long");
+        return;
       }
       if (!/[a-z]/.test(password)) {
         toast.error("Password must contain at least one lowercase letter");
-        throw new Error("Password must contain at least one lowercase letter");
+        return;
       }
       if (!/[A-Z]/.test(password)) {
         toast.error("Password must contain at least one uppercase letter");
-        throw new Error("Password must contain at least one uppercase letter");
+        return;
       }
       if (!/\d/.test(password)) {
         toast.error("Password must contain at least one number");
-        throw new Error("Password must contain at least one number");
+        return;
       }
       if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
         toast.error("Password must contain at least one special character");
-        throw new Error("Password must contain at least one special character");
+        return;
       }
 
       // Confirm password validation
       if (password !== confirmPassword) {
         toast.error("Password do not match");
-        throw new Error("Passwords do not match");
+        return;
       }
 
       // make an api call
@@ -231,6 +236,7 @@ export const resetPasswordRequest = (password, confirmPassword, token) => {
         toast.error(response.message);
       } else {
         toast.success(response.message);
+        navigate("/login");
       }
     } catch (err) {
       console.log(err);

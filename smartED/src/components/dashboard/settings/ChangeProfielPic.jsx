@@ -47,11 +47,11 @@ export const ChangeProfielPic = () => {
       setLoading(true); // setloading true
       const inputData = new FormData(); // create a new formData object
       inputData.append("displayPicture", imageFile); // appen file into it
-      dispatch(updateProfilePic(token, inputData)).then(
-        () =>
-          // dispatch the function that calls api in the backend
-          setLoading(false) // setloading false
-      );
+      dispatch(updateProfilePic(token, inputData)).then(() => {
+        // dispatch the function that calls api in the backend
+        setLoading(false); // setloading false
+        setImageFile(null);
+      });
     } catch (err) {
       console.log("Error while updating image", err);
     }
@@ -102,6 +102,10 @@ export const ChangeProfielPic = () => {
             <IconBtn
               text={loading ? "Uploading..." : "Upload"}
               onclick={handleUploadFile}
+              disabled={!imageFile}
+              customClasses={
+                !imageFile ? " bg-yellow-400 cursor-default" : "cursor-pointer"
+              }
             >
               {!loading && <FiUpload className="text-lg text-richblack-900" />}
             </IconBtn>

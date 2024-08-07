@@ -31,6 +31,9 @@ export const Navbar = () => {
     return matchPath({ path: route }, location.pathname); // location.pathname depicts the current path , at where you are on the URL;
   };
 
+  // loading state
+  const [loading, setLoading] = useState(false);
+
   //   catalog sublinks with Static DATA
   // const ssublink = [
   //   {
@@ -60,15 +63,13 @@ export const Navbar = () => {
         setSublink(categoryLink);
         // toast.success("Categories fetched Successfully");
       } catch (err) {
-        console.log(err);
+        console.log(err.message);
         toast.error("Unable to fetch categories");
       }
       setLoading(false);
     })();
-  }, [CATEGORIES_API]);
+  }, [CATEGORIES_API, location.pathname]);
 
-  // loading state
-  const [loading, setLoading] = useState(false);
   return (
     <div
       className={`flex h-20 items-center justify-center border-b-[1px] border-b-richblack-700 transition-all duration-200 text-lg`}
@@ -97,54 +98,52 @@ export const Navbar = () => {
               return (
                 <li key={index} className="">
                   {navLink?.title === "Catalog" ? (
-                    <>
-                      <div
-                        className={` group relative flex cursor-pointer items-center gap-1 ${
-                          matchRoutePath("/catalog/:catalogName")
-                            ? "text-yellow-25"
-                            : "text-richblack-25"
-                        }`}
-                      >
-                        <p>{navLink?.title}</p>
-                        <RiArrowDropDownLine
-                          style={{ height: 32, width: 32 }}
-                          className=" absolute -right-6  pr-1 pl-[2px]"
-                        />
+                    <div
+                      className={` group relative flex cursor-pointer items-center gap-1 ${
+                        matchRoutePath("/catalog/:catalogName")
+                          ? "text-yellow-25"
+                          : "text-richblack-25"
+                      }`}
+                    >
+                      <p>{navLink?.title}</p>
+                      <RiArrowDropDownLine
+                        style={{ height: 32, width: 32 }}
+                        className=" absolute -right-6  pr-1 pl-[2px]"
+                      />
 
-                        {/* dropdown  */}
+                      {/* dropdown  */}
 
-                        <div className="invisible absolute left-[50%] top-[50%] z-[1000] flex w-[200px] translate-x-[-50%] translate-y-[3em] flex-col rounded-lg bg-richblack-5 p-4 text-richblack-900 opacity-0 transition-all duration-150 group-hover:visible group-hover:translate-y-[1.65em] group-hover:opacity-100 lg:w-[300px]">
-                          <div className="absolute left-[50%] top-0 -z-10 h-6 w-6 translate-x-[80%] translate-y-[-40%] rotate-45 select-none rounded bg-richblack-5"></div>
+                      <div className="invisible absolute left-[50%] top-[50%] z-[1000] flex w-[200px] translate-x-[-50%] translate-y-[3em] flex-col rounded-lg bg-richblack-5 p-4 text-richblack-900 opacity-0 transition-all duration-150 group-hover:visible group-hover:translate-y-[1.65em] group-hover:opacity-100 lg:w-[300px]">
+                        <div className="absolute left-[50%] top-0 -z-10 h-6 w-6 translate-x-[80%] translate-y-[-40%] rotate-45 select-none rounded bg-richblack-5"></div>
 
-                          {loading ? (
-                            <p className="text-center">Loading...</p>
-                          ) : sublink && sublink.length ? (
-                            <>
-                              {sublink
-                                .filter((link) => link?.courses?.length > 0)
-                                .map((elements, index) => {
-                                  return (
-                                    <Link
-                                      to={`/catalog/${elements.name
-                                        .split(" ")
-                                        .join("-")
-                                        .toLowerCase()}`}
-                                      key={index}
-                                      className="rounded-lg bg-transparent py-4 pl-4 hover:bg-richblack-50"
-                                    >
-                                      {elements.name}
-                                    </Link>
-                                  );
-                                })}
-                            </>
-                          ) : (
-                            <p className="text-center text-richblack-200">
-                              No Courses Found
-                            </p>
-                          )}
-                        </div>
+                        {loading ? (
+                          <p className="text-center">Loading...</p>
+                        ) : sublink && sublink.length ? (
+                          <>
+                            {sublink
+                              .filter((link) => link?.courses?.length > 0)
+                              .map((elements, index) => {
+                                return (
+                                  <Link
+                                    to={`/catalog/${elements.name
+                                      .split(" ")
+                                      .join("-")
+                                      .toLowerCase()}`}
+                                    key={index}
+                                    className="rounded-lg bg-transparent py-4 pl-4 hover:bg-richblack-50"
+                                  >
+                                    {elements.name}
+                                  </Link>
+                                );
+                              })}
+                          </>
+                        ) : (
+                          <p className="text-center text-richblack-200">
+                            No Courses Found
+                          </p>
+                        )}
                       </div>
-                    </>
+                    </div>
                   ) : (
                     <Link to={navLink?.path}>
                       <p

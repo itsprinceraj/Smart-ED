@@ -46,7 +46,15 @@ export const courseEndpoints = {
   UPDATE_SUB_SECTION_API: BASE_URL + "/course/updateSubSection",
   DELETE_SUB_SECTION_API: BASE_URL + "/course/deleteSubSection",
   GET_SPECIFIC_COURSE_DETAILS: BASE_URL + "/course/getFullCourseDetails",
-  GET_COURSE_DETAILS_API: BASE_URL + "/course/getCourseDetails"
+  GET_COURSE_DETAILS_API: BASE_URL + "/course/getCourseDetails",
+  FULL_COURSE_DETAIL_API: BASE_URL + "/course/getFullCourseDetails",
+  CREATE_RATING_API: BASE_URL + "/course/createRating",
+  LECTURE_COMPLETION_API: BASE_URL + "/course/updateCourseProgress",
+};
+
+//  rating and reviews endPoints
+export const ratingsEndpoints = {
+  REVIEWS_DETAILS_API: BASE_URL + "/course/getReviews",
 };
 
 //  payment api
@@ -54,4 +62,9 @@ export const paymentApiEndpoints = {
   CAPTURE_PAYMENT_API: BASE_URL + "/payment/capturePayment",
   VERIFY_SIGNATURE_API: BASE_URL + "/payment/verifyPayment",
   PAYMENT_SUCCESS_API: BASE_URL + "/payment/paymentSuccessEmail",
+};
+
+//   instructor dashboard api
+export const dashboard = {
+  INSTRUCTOR_DASHBOARD_API: BASE_URL + "/profile/instructoDashboard",
 };

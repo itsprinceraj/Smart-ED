@@ -5,6 +5,7 @@
 html,
 body {
   overflow-x: hidden;
+  /* overflow-y: hidden; */
 }
 
 /* ===== Scrollbar CSS ===== */
@@ -43,6 +44,7 @@ details > summary::-webkit-details-marker {
   display: none;
 }
 
+/* https://10015.io/tools/css-loader-generator */
 .spinner {
   width: 56px;
   height: 56px;
@@ -77,9 +79,9 @@ details > summary::-webkit-details-marker {
   border-radius: 100%;
   background: linear-gradient(
     118.19deg,
-    #63c9eb -3.62%,
-    #4690d1 50.44%,
-    #7fd4eb 104.51%
+    #1fa2ff -3.62%,
+    #12d8fa 50.44%,
+    #a6ffcb 104.51%
   );
   opacity: 0.2;
   filter: blur(34px);
@@ -214,10 +216,22 @@ details > summary::-webkit-details-marker {
   @apply cursor-pointer rounded-md bg-yellow-50 px-[20px] py-[8px] font-semibold text-richblack-900;
 }
 
+/* Swiper CSS Starts */
+/* .swiper {
+  max-width: 1200px;
+  width: 91.66%;
+  height: 185px;
+  margin: 50px 0px;
+} */
+
 .swiper-slide {
   width: 100%;
   height: 100%;
 }
+/* .swiper-slide {
+  @apply bg-richblack-800 text-richblack-25 p-3 text-[14px];
+} */
+/* Swiper CSS Ends */
 
 .blackButton {
   @apply cursor-pointer rounded-md bg-richblack-800 px-[20px] py-[8px] font-semibold text-richblack-5;
@@ -232,21 +246,3 @@ details > summary::-webkit-details-marker {
   @apply text-2xl font-bold text-richblack-5 lg:text-4xl;
 }
 
-/*  applying for all input  */
-
-/* Hide the spinners in WebKit browsers */
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* Hide the spinners in Firefox */
-input[type="number"] {
-  -moz-appearance: textfield;
-}
-
-/* Hide the spinners in Edge and IE */
-input[type="number"] {
-  -ms-appearance: none;
-}

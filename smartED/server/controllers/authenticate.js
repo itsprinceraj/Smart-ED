@@ -231,7 +231,7 @@ exports.login = async (req, res, next) => {
         accountType: user.accountType,
       };
       const token = jwt.sign(payload, secKey, {
-        expiresIn: "2hr",
+        expiresIn: "3d",
       });
 
       // user = user.toObject();
@@ -240,7 +240,7 @@ exports.login = async (req, res, next) => {
 
       // send cookie in response
       const options = {
-        expiresIn: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
+        expiresIn: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
         httpOnly: true,
         secure: true,
       };

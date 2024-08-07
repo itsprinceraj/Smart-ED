@@ -17,7 +17,7 @@ export const CourseSlider = ({ Courses }) => {
           // centeredSlides={true}
           loop={true}
           autoplay={{
-            delay: 1000,
+            delay: 3000,
             disableOnInteraction: false,
           }}
           // navigation={true}

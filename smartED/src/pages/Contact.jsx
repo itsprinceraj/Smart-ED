@@ -1,6 +1,6 @@
 import React from "react";
 import { ContactForm } from "../components/contactUsPage/ContactForm";
-import { ReviewSlider } from "../components/homepage/ReviewSlider";
+import { ReviewSlider } from "../components/common/ReviewSlider";
 import { Footer } from "../components/common/Footer";
 import { ContactDetails } from "../components/contactUsPage/ContactDetails";
 
@@ -23,8 +23,8 @@ export const Contact = () => {
         <h1 className="text-center text-4xl font-semibold mt-8">
           Reviews from other learners
         </h1>
-        <ReviewSlider />
       </div>
+      <ReviewSlider />
       <Footer />
     </div>
   );

@@ -51,6 +51,7 @@ const {
   isStudent,
 } = require("../middlewares/authoriseUser");
 const upload = require("../utilities/multer");
+const { updateCourseProgress } = require("../controllers/courseProgress");
 
 // define routes
 
@@ -79,12 +80,15 @@ router.delete("/deleteSubSection", auth, isInstructor, deleteSubSection);
 //************ ratingAndReviewsRoutes
 router.post("/createRating", auth, isStudent, createRating);
 router.get("/getAverageRatings", getAverageRating);
-router.get("/getAllRatings", getAllRating);
+router.get("/getReviews", getAllRating);
 
 //********** categoryRoutes
 router.get("/showAllCategories", showAllCategories);
 router.post("/getCategoryPageDetails", categoryPageDetails);
 router.post("/createCategory", auth, isAdmin, createCategory);
+
+// *************course progress route
+router.post("/updateCourseProgress", auth, isStudent, updateCourseProgress);
 
 // export Router
 module.exports = router;

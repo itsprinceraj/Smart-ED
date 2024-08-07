@@ -22,7 +22,11 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <BrowserRouter>
       <App />
-      <Toaster />
+      <Toaster
+        position="bottom-left"
+        reverseOrder={true}
+        toastOptions={{ style: { backgroundColor: "black", color: "white" } }}
+      />
     </BrowserRouter>
   </Provider>
 );

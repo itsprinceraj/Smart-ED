@@ -9,7 +9,7 @@ import { TimeLineSection } from "../components/homepage/TimeLineSection";
 import { LearningLang } from "../components/homepage/LearningLang";
 import { Footer } from "../components/common/Footer";
 import { InstructorSection } from "../components/homepage/InstructorSection";
-import { ReviewSlider } from "../components/homepage/ReviewSlider";
+import { ReviewSlider } from "../components/common/ReviewSlider";
 import { ExploreTabs } from "../components/homepage/ExploreTabs";
 export const Home = () => {
   return (
@@ -71,7 +71,7 @@ export const Home = () => {
 
       {/* code Blocks Section 1 */}
 
-      <div className=" flex w-[80%] mx-auto ">
+      <div className="flex lg:flex-row flex-col w-[80%] mx-auto ">
         <CodeBlock
           heading={
             <div className="text-4xl font-semibold">
@@ -104,7 +104,7 @@ export const Home = () => {
 
       {/* code Blocks Section 2 */}
 
-      <div className=" flex flex-row-reverse w-[80%] mx-auto gap-48 ">
+      <div className=" flex lg:flex-row-reverse flex-col w-[80%] mx-auto gap-48 ">
         <CodeBlock
           heading={
             <div className="text-4xl font-semibold">
@@ -219,9 +219,9 @@ export const Home = () => {
         <h1 className="text-center text-4xl font-semibold mt-8">
           Reviews from other learners
         </h1>
-
-        <ReviewSlider />
       </div>
+
+      <ReviewSlider />
 
       <Footer />
     </>

@@ -1,5 +1,5 @@
 window.global = window;
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import "./App.css";
 import { Home } from "./pages/Home";
 import { Navbar } from "./components/common/Navbar";
@@ -25,11 +25,17 @@ import { AddCourse } from "./components/dashboard/add course/AddCourse";
 import { EditCourse } from "./components/dashboard/editCourse/EditCourse";
 import { Catalog } from "./pages/Catalog";
 import { CourseDetails } from "./pages/CourseDetails";
+import { WatchYourCourse } from "./pages/WatchYourCourse";
+import { LectureDetails } from "./components/dashboard/studentCourses/LectureDetails";
+import { Instructor } from "./components/dashboard/instructorDashboard/Instructor";
+import { useEffect } from "react";
+import toast from "react-hot-toast";
 
 function App() {
   const { user } = useSelector((state) => state.profile);
+
   return (
-    <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter text-white">
+    <div className="w-screen min-h-screen  bg-richblack-900 flex flex-col font-inter text-white">
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -125,6 +131,8 @@ function App() {
           {/*  protected routes for Instructor only */}
           {user?.accountType === ACCOUNT_TYPE.INSTRUCTOR && (
             <>
+              {/*  show instructor dashboard */}
+              <Route path="/dashboard/instructor" element={<Instructor />} />
               <Route path="/dashboard/my-courses" element={<MyCourses />} />
               <Route path="/dashboard/add-course" element={<AddCourse />} />
               {/* edit course route */}
@@ -139,6 +147,24 @@ function App() {
         {/* About Page Route */}
 
         <Route path="/about" element={<About />} />
+
+        {/*  viewCoure route */}
+        <Route
+          element={
+            <ProtectedRoute>
+              <WatchYourCourse />
+            </ProtectedRoute>
+          }
+        >
+          {user?.accountType === ACCOUNT_TYPE.STUDENT && (
+            <>
+              <Route
+                path="view-course/:courseId/section/:sectionId/sub-section/:subSectionId"
+                element={<LectureDetails />}
+              />
+            </>
+          )}
+        </Route>
 
         {/*  not found Page */}
 
