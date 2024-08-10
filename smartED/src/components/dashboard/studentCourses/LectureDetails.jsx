@@ -135,6 +135,13 @@ export const LectureDetails = () => {
       navigate(
         `/view-course/${courseId}/section/${sectionId}/sub-section/${nxtSubSecIdx}`
       );
+    } else {
+      const nextSectionId = courseSectionData[currentSectionIdx + 1]?._id;
+      const nextSubSectionId =
+        courseSectionData[currentSectionIdx + 1].subSection[0]?._id;
+      navigate(
+        `/view-course/${courseId}/section/${nextSectionId}/sub-section/${nextSubSectionId}`
+      );
     }
   };
 
