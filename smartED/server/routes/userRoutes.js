@@ -36,4 +36,7 @@ router.post("/changePassword", auth, validate(password), changePassword); // cha
 router.post("/reset-password-token", resetPasswordToken);
 router.post("/reset-password", resetPassword);
 
+//  routes for google sign in
+// router.post("/google-sign-in",googleSignIn)
+
 module.exports = router;

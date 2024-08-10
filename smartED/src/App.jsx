@@ -1,5 +1,5 @@
 window.global = window;
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import { Home } from "./pages/Home";
 import { Navbar } from "./components/common/Navbar";
@@ -28,8 +28,7 @@ import { CourseDetails } from "./pages/CourseDetails";
 import { WatchYourCourse } from "./pages/WatchYourCourse";
 import { LectureDetails } from "./components/dashboard/studentCourses/LectureDetails";
 import { Instructor } from "./components/dashboard/instructorDashboard/Instructor";
-import { useEffect } from "react";
-import toast from "react-hot-toast";
+import GoogleSignIn from "./components/auth/GoogleSignIn";
 
 function App() {
   const { user } = useSelector((state) => state.profile);
@@ -39,6 +38,9 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
+
+        {/* Route for handling OAuth redirect */}
+        <Route path="/api/v1/auth/google-sign-in" element={<GoogleSignIn />} />
 
         {/*   render catalog page */}
         <Route path="/catalog/:catalogName" element={<Catalog />} />

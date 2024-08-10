@@ -23,7 +23,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <BrowserRouter>
       <App />
       <Toaster
-        position="bottom-left"
+        position="bottom-right"
         reverseOrder={true}
         toastOptions={{ style: { backgroundColor: "black", color: "white" } }}
       />

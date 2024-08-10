@@ -14,7 +14,13 @@ import { HiOutlineGlobeAlt } from "react-icons/hi";
 import { formatDate } from "../services/formatDate";
 import { CourseAccordionBar } from "../components/coureDetailPage/CourseAccordionBar";
 import { CourseDetailsCard } from "../components/coureDetailPage/CourseDetailsCard";
-import { buyCourse } from "../services/operations/paymentHandlerApi";
+// import { apiConnector } from "../services/apiConnector";
+// import { paymentApiEndpoints } from "../services/apiEndPoints";
+// import { load } from "@cashfreepayments/cashfree-js";
+// import { setPaymentLoading } from "../redux/slices/courseSlice";
+// import { resetCartItems } from "../redux/slices/cartSlice";
+
+// const { CREATE_PAYMENT_API, VERIFY_SIGNATURE_API } = paymentApiEndpoints;
 
 export const CourseDetails = () => {
   //  fetch user and token as  they are much needed thing for this section
@@ -33,6 +39,9 @@ export const CourseDetails = () => {
   const [totalNoOfLectures, setTotalNoOfLectures] = useState(0);
   const [confirmationModal, setConfirmationModal] = useState(null);
   const [isActive, setIsActive] = useState(Array(0));
+
+  //  create a state variable for order_id
+  // const [orderId, setOrderId] = useState("");
 
   //  get course data on first render of this component
   useEffect(() => {
@@ -93,7 +102,7 @@ export const CourseDetails = () => {
     instructor,
     studentsEnrolled,
     createdAt,
-  } = response?.data?.courseDetails;
+  } = response.data.courseDetails;
 
   //  handle active and inactive state
   const handleActive = (id) => {
@@ -106,11 +115,14 @@ export const CourseDetails = () => {
   };
 
   //  handle purchasing of course
-  const handleBuyCourse = () => {
+  const handleBuyCourse = async (event) => {
+    event.preventDefault();
+
     if (token) {
-      buyCourse(token, [courseId], user, navigate, dispatch);
-      return;
+      return toast.error("Payment Gateway is not Integrated");
     }
+
+    // if no token, prompt the user to log in
     setConfirmationModal({
       text1: "You are not logged in!",
       text2: "Please login to Purchase Course.",
@@ -121,6 +133,7 @@ export const CourseDetails = () => {
     });
   };
 
+  //  if payment loading show a loader
   if (paymentLoading) {
     // console.log("payment loading")
     return (
@@ -160,8 +173,8 @@ export const CourseDetails = () => {
               <div className="text-md flex flex-wrap items-center gap-2">
                 <span className="text-yellow-25">{avgReviewCount}</span>
                 <RatingStars Review_Count={avgReviewCount} Star_Size={24} />
-                <span>{`(${ratingAndReviews.length} reviews)`}</span>
-                <span>{`${studentsEnrolled.length} students enrolled`}</span>
+                <p>{`(${ratingAndReviews.length} reviews)`}</p>
+                <p>{`${studentsEnrolled.length} students enrolled`}</p>
               </div>
 
               {/*  instructor data */}

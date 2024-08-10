@@ -58,13 +58,18 @@ export const ratingsEndpoints = {
 };
 
 //  payment api
-export const paymentApiEndpoints = {
-  CAPTURE_PAYMENT_API: BASE_URL + "/payment/capturePayment",
-  VERIFY_SIGNATURE_API: BASE_URL + "/payment/verifyPayment",
-  PAYMENT_SUCCESS_API: BASE_URL + "/payment/paymentSuccessEmail",
-};
+// export const paymentApiEndpoints = {
+//   CREATE_PAYMENT_API: BASE_URL + "/payment/createPayment",
+//   VERIFY_SIGNATURE_API: BASE_URL + "/payment/verifyPayment",
+//   PAYMENT_SUCCESS_EMAIL_API: BASE_URL + "/payment/paymentSuccessEmail",
+// };
 
 //   instructor dashboard api
 export const dashboard = {
   INSTRUCTOR_DASHBOARD_API: BASE_URL + "/profile/instructoDashboard",
+};
+
+//  GOOGLE SIGNUP API ----http://localhost:4000/api/v1/auth/google-sign-in
+export const googleSignup = {
+  GOOGLE_SIGNUP_API: BASE_URL + "/auth/google-sign-in",
 };
