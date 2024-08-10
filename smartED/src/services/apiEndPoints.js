@@ -69,7 +69,6 @@ export const dashboard = {
   INSTRUCTOR_DASHBOARD_API: BASE_URL + "/profile/instructoDashboard",
 };
 
-//  GOOGLE SIGNUP API ----http://localhost:4000/api/v1/auth/google-sign-in
 export const googleSignup = {
   GOOGLE_SIGNUP_API: BASE_URL + "/auth/google-sign-in",
 };

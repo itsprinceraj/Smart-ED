@@ -4,7 +4,7 @@ import axios from "axios";
 
 // take instance of axios create method , so that you can make a call with cetain parameters
 const axiosCall = axios.create({
-  baseURL: "http://localhost:4000",
+  baseURL: "https://smarted-backend.onrender.com/api/v1",
   headers: {
     "Content-Type": "application/json",
     // Add any other default headers here

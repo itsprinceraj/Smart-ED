@@ -16,7 +16,8 @@ export const Template = ({ data, image, setIsLoggedIn }) => {
   const navigate = useNavigate();
   const handleGoogleSignUp = async () => {
     // Redirect to Google Sign-In
-    window.location.href = "http://localhost:4000/api/v1/auth/google/";
+    window.location.href =
+      "https://smarted-backend.onrender.com/api/v1/auth/google/";
   };
 
   return (
