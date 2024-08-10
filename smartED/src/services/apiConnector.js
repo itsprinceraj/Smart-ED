@@ -1,10 +1,10 @@
 // write api connector function witch will interact with backend
 
 import axios from "axios";
-const BASE_URL = process.env.REACT_APP_BASE_URL;
+// const BASE_URL = process.env.REACT_APP_BASE_URL;
 // take instance of axios create method , so that you can make a call with cetain parameters
 const axiosCall = axios.create({
-  baseURL: BASE_URL,
+  baseURL: "https://smarted-backend.onrender.com",
   headers: {
     "Content-Type": "application/json",
     // Add any other default headers here
