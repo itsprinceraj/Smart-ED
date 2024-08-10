@@ -27,7 +27,7 @@ export const ReviewSlider = () => {
           ratingsEndpoints.REVIEWS_DETAILS_API
         );
 
-        console.log("Print rating data: ", response);
+        // console.log("Print rating data: ", response);
         if (response?.success) {
           setReviews(response?.data);
         }
