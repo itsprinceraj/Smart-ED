@@ -173,7 +173,7 @@ app.get(
 );
 
 // we want BackEnd to entertain our Frontend so use cors;
-const allowedOrigin = ["http://localhost:5173"];
+const allowedOrigin = ["https://smart-ed-frontend.vercel.app"];
 app.use(
   cors({
     origin: allowedOrigin,
