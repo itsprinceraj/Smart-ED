@@ -57,13 +57,14 @@ export const Home = () => {
 
       {/* video */}
 
-      <div className="mx-auto my-20 shadow-[10px_-5px_50px_-5px] shadow-blue-200 w-[80%] ">
+      <div className="mx-auto my-20 shadow-[10px_-5px_50px_-5px] shadow-blue-200 w-[80%] flex justify-center ">
         <video
           className="shadow-[20px_20px_rgba(255,255,255)]"
           muted
           autoPlay
           loop
           controls
+          
         >
           <source src={Banner} type="video/mp4" />
         </video>
