@@ -246,3 +246,9 @@ details > summary::-webkit-details-marker {
   @apply text-2xl font-bold text-richblack-5 lg:text-4xl;
 }
 
+@media (min-width: 300px) {
+  .template {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+}
