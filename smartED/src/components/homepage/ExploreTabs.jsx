@@ -69,7 +69,7 @@ export const ExploreTabs = () => {
 
         {/* Cards Section */}
 
-        <div className="lg:relative lg:bottom-[0] lg:left-[50%] lg:translate-x-[-50%] lg:translate-y-[50%] gap-10 justify-center lg:gap-0 flex lg:justify-between flex-wrap w-[80%]  text-black lg:mb-1 mb-7 lg:px-0 px-3">
+        <div className="lg:relative lg:bottom-[0] lg:left-[40%] lg:translate-x-[-50%] lg:translate-y-[50%] gap-10 justify-center lg:gap-0 flex lg:justify-between flex-wrap w-[80%]  text-black lg:mb-1 mb-7 lg:px-0 px-3 mx-auto">
           {course.map((data, index) => {
             return (
               <CourseCard

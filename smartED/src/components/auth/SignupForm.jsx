@@ -111,7 +111,7 @@ export const SignupForm = () => {
   ];
 
   return (
-    <div className=" flex flex-col justify-center  gap-y-2 ">
+    <div className=" flex flex-col justify-center  gap-y-2  ">
       {/* student - Instructor Tab */}
 
       <Tab tabData={tabData} field={accountType} setField={setAccountType} />
@@ -121,8 +121,9 @@ export const SignupForm = () => {
       <form onSubmit={submitHandler}>
         {/* FirstName and LastName field */}
 
-        <div className=" flex gap-4 mt-4 ">
-          <label>
+        <div className=" flex gap-4 mt-4 w-full ">
+          {/* first name */}
+          <label className="flex w-full flex-col">
             <p className=" text-[0.875rem] text-richblack-5 mb-1 leading-[1.375rem] ">
               First Name<sup className=" text-pink-200 ">*</sup>
             </p>
@@ -137,7 +138,9 @@ export const SignupForm = () => {
             />
           </label>
 
-          <label>
+          {/*  lastname */}
+
+          <label className="flex w-full flex-col">
             <p className=" text-[0.875rem] text-richblack-5 mb-1 leading-[1.375rem] ">
               Last Name <sup className=" text-pink-200 ">*</sup>
             </p>
@@ -153,7 +156,8 @@ export const SignupForm = () => {
           </label>
         </div>
 
-        <label className="  ">
+        {/*  emailadress */}
+        <label className="">
           <p className=" mt-4 text-[0.875rem] text-richblack-5 mb-1 leading-[1.375rem] ">
             Email Address <sup className=" text-pink-200 ">*</sup>
           </p>
@@ -170,8 +174,8 @@ export const SignupForm = () => {
 
         {/* create and confirm password field */}
 
-        <div className=" flex gap-4 mt-4 relative">
-          <label className="relative">
+        <div className=" flex flex-col gap-4 mt-4 relative">
+          <label className="relative flex w-full flex-col">
             <p className=" text-[0.875rem] text-richblack-5 mb-1 leading-[1.375rem] ">
               Create Password <sup className=" text-pink-200 ">*</sup>
             </p>
@@ -197,7 +201,7 @@ export const SignupForm = () => {
             </span>
           </label>
 
-          <label>
+          <label className="flex w-full flex-col">
             <p className=" text-[0.875rem] text-richblack-5 mb-1 leading-[1.375rem] ">
               Confirm Password <sup className=" text-pink-200 ">*</sup>
             </p>
@@ -212,7 +216,7 @@ export const SignupForm = () => {
             />
 
             <span
-              className=" absolute top-[38px] right-3 cursor-pointer  "
+              className=" absolute top-[126px] right-3 cursor-pointer flex flex-col "
               onClick={() => setShowConfirmPass((prevState) => !prevState)}
             >
               {showConfirmPass ? (
@@ -226,9 +230,9 @@ export const SignupForm = () => {
 
         {/* password validation label */}
 
-        <ul className="mt-4 flex  flex-wrap gap-14 justify-center items-center ">
+        <ul className="mt-4 flex lg:flex-row md:flex-col  flex-wrap lg:gap-6 gap-2 sm:gap-6 ">
           {/* first div */}
-          <div className=" flex flex-col gap-1 ">
+          <div className=" flex flex-col gap-2 ">
             {/* for length of characters */}
             <li className="flex items-center">
               {passwordValidations.minLength ? (

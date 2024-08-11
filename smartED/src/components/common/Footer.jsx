@@ -49,7 +49,7 @@ export const Footer = () => {
                     alt="logo"
                     style={{ height: 25, width: 30 }}
                     loading="lazy"
-                    className=" rotate-12 absolute -left-6 -top-3"
+                    className=" rotate-12 absolute -left-6 -top-4"
                   />
                 </div>
               </Link>
@@ -170,7 +170,7 @@ export const Footer = () => {
 
       <div className="flex flex-row items-center justify-between w-11/12 max-w-maxContent text-richblack-400 mx-auto  pb-14 text-sm">
         {/* Section 1 */}
-        <div className="flex justify-between lg:items-start items-center flex-col lg:flex-row gap-3 w-full">
+        <div className="flex justify-between lg:items-start items-center flex-col lg:flex-row gap-10 w-full px-6">
           <div className="flex flex-row">
             {BottomFooter.map((ele, index) => {
               return (

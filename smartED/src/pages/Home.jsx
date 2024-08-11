@@ -64,74 +64,76 @@ export const Home = () => {
           autoPlay
           loop
           controls
-          
         >
           <source src={Banner} type="video/mp4" />
         </video>
       </div>
 
-      {/* code Blocks Section 1 */}
+      {/* codeBlocks */}
+      <div className="flex flex-col justify-center  mx-auto">
+        {/* code Blocks Section 1 */}
 
-      <div className="flex lg:flex-row flex-col w-[80%] mx-auto ">
-        <CodeBlock
-          heading={
-            <div className="text-4xl font-semibold">
-              Unlock your <HighlightText text={"coding potential"} /> with our
-              online courses.
-            </div>
-          }
-          subheading={
-            "Our courses are designed and taught by industry experts who have years of experience in coding and are passionate about sharing theirknowledge with you."
-          }
-          position={"lg:flex-row"}
-          ctaBtn1={{
-            text: "Try it Yourself",
-            active: true,
-            link: "/signup",
-          }}
-          ctaBtn2={{
-            text: "Learn More",
-            active: false,
-            link: "/login",
-          }}
-        />
-        <AnimateCode
-          position={"lg:flex-row"}
-          backgroundGradient={<div className="codeblock1 absolute"></div>}
-          codeColor={"text-yellow-25"}
-          codes={`<!DOCTYPE html>\n <html lang="en">\n<head>\n<title>This is Home Page</title>\n</head>\n<body>\n<h1>Header</h1>\n<nav><a href="/one">One</a>\n<a href="/two">Two</a>\n<a href="/three">Three</a></nav>\n</body>`}
-        />
-      </div>
+        <div className="flex lg:flex-row flex-col w-[80%] mx-auto ">
+          <CodeBlock
+            heading={
+              <div className="text-4xl font-semibold">
+                Unlock your <HighlightText text={"coding potential"} /> with our
+                online courses.
+              </div>
+            }
+            subheading={
+              "Our courses are designed and taught by industry experts who have years of experience in coding and are passionate about sharing theirknowledge with you."
+            }
+            position={"lg:flex-row"}
+            ctaBtn1={{
+              text: "Try it Yourself",
+              active: true,
+              link: "/signup",
+            }}
+            ctaBtn2={{
+              text: "Learn More",
+              active: false,
+              link: "/login",
+            }}
+          />
+          <AnimateCode
+            position={"lg:flex-row"}
+            backgroundGradient={<div className="codeblock1 absolute"></div>}
+            codeColor={"text-yellow-25"}
+            codes={`<!DOCTYPE html>\n <html lang="en">\n<head>\n<title>This is Home Page</title>\n</head>\n<body>\n<h1>Header</h1>\n<nav><a href="/one">One</a>\n<a href="/two">Two</a>\n<a href="/three">Three</a></nav>\n</body>`}
+          />
+        </div>
 
-      {/* code Blocks Section 2 */}
+        {/* code Blocks Section 2 */}
 
-      <div className=" flex lg:flex-row-reverse flex-col w-[80%] mx-auto gap-48 ">
-        <CodeBlock
-          heading={
-            <div className="text-4xl font-semibold">
-              Start <HighlightText text={"coding in seconds"} />
-            </div>
-          }
-          subheading={
-            "Go ahead, give it a try. Our hands-on learning environment means you'll be writing real code from your very first lesson."
-          }
-          position={"lg:flex-row"}
-          ctaBtn1={{
-            text: "Continue Lesson",
-            active: true,
-            link: "/signup",
-          }}
-          ctaBtn2={{
-            text: "Learn More",
-            active: false,
-            link: "/login",
-          }}
-        />
-        <AnimateCode
-          position={"lg:flex-row"}
-          backgroundGradient={<div className="codeblock2 absolute"></div>}
-          codeColor={" text-purple-400 "}
-          codes={`import { Link } from "react-router-dom";
+        <div className="flex lg:flex-row-reverse justify-between flex-col w-[80%] mx-auto lg:gap-x-48">
+          <CodeBlock
+            customClasses={""}
+            heading={
+              <div className="text-4xl font-semibold">
+                Start <HighlightText text={"coding in seconds"} />
+              </div>
+            }
+            subheading={
+              "Go ahead, give it a try. Our hands-on learning environment means you'll be writing real code from your very first lesson."
+            }
+            position={"lg:flex-row"}
+            ctaBtn1={{
+              text: "Continue Lesson",
+              active: true,
+              link: "/signup",
+            }}
+            ctaBtn2={{
+              text: "Learn More",
+              active: false,
+              link: "/login",
+            }}
+          />
+          <AnimateCode
+            position={"lg:flex-row"}
+            backgroundGradient={<div className="codeblock2"></div>}
+            codeColor={" text-purple-400 "}
+            codes={`import { Link } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa";
 import Banner from "../assets/Images/banner.mp4";
 import { AnimateCode } from "../components/homepage/AnimateCode";
@@ -139,7 +141,8 @@ export const Home = () => {
   return (
       {/* Section 1 */}
       <div className="relative mx-auto flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-8"> {/* Become an Instructor Button */}`}
-        />
+          />
+        </div>
       </div>
 
       {/* Explore more Tabs and Cards */}

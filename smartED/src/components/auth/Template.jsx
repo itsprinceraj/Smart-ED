@@ -11,18 +11,18 @@ import { useNavigate } from "react-router-dom";
 import { setToken } from "../../redux/slices/authSlice";
 import { setUser } from "../../redux/slices/profileSlice";
 const { GOOGLE_SIGNUP_API } = googleSignup;
+
 export const Template = ({ data, image, setIsLoggedIn }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleGoogleSignUp = async () => {
     // Redirect to Google Sign-In
-    window.location.href =
-      "https://smarted-backend.onrender.com/api/v1/auth/google/";
+    window.location.href = "http://localhost:4000/api/v1/auth/google/";
   };
 
   return (
-    <div className="flex w-11/12 justify-between max-w-[1200px] py-12 mx-auto gap-x-12 gap-y-0">
-      <div className="w-11/12 max-w-[420px]">
+    <div className="flex lg:flex-row md:flex-col-reverse   w-11/12 justify-between max-w-[1200px] py-12 mx-auto gap-x-12 gap-y-0 items-center template">
+      <div className="w-11/12 max-w-[500px] mt-14">
         <h1 className="text-richblack-5 font-semibold text-[1.875rem] leading-[2.375rem]">
           {data.title}
         </h1>
@@ -62,13 +62,13 @@ export const Template = ({ data, image, setIsLoggedIn }) => {
 
       {/* Render Image */}
 
-      <div className="relative  -top-16 w-[600]">
+      <div className="hidden md:flex lg:flex items-center justify-center w-[600]">
         <img
           className=""
           src={image}
           alt="Students"
-          height={700}
-          width={650}
+          height={500}
+          width={600}
           loading="lazy"
         />
       </div>

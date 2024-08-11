@@ -78,7 +78,7 @@ export const Navbar = () => {
         {/* Logo */}
 
         <Link to={"/"}>
-          <div className="flex relative">
+          <div className="flex relative  ml-4 mt-2">
             <img src={Logo} alt="logo" height={32} width={160} loading="lazy" />
             <img
               src={Logo2}

@@ -27,7 +27,7 @@ export const ReviewSlider = () => {
           ratingsEndpoints.REVIEWS_DETAILS_API
         );
 
-        // console.log("Print rating data: ", response);
+        console.log("Print rating data: ", response);
         if (response?.success) {
           setReviews(response?.data);
         }
@@ -38,10 +38,10 @@ export const ReviewSlider = () => {
   }, []);
 
   return (
-    <div className="w-11/12 mx-auto flex gap-3">
-      <div className=" mb-[100px] h-[185px] w-full p-2  flex justify-center items-center ">
+    <div className=" w-10/12 mx-auto flex gap-3 items-center justify-center">
+      <div className=" mb-[100px] h-[185px] w-full p-2  flex justify-center items-center">
         <Swiper
-          slidesPerView={4}
+          slidesPerView={1}
           spaceBetween={25}
           loop={true}
           freeMode={true}
@@ -49,13 +49,23 @@ export const ReviewSlider = () => {
             delay: 2000,
             disableOnInteraction: false,
           }}
+          breakpoints={{
+            768: {
+              slidesPerView: 2,
+              spaceBetween: 30,
+            },
+            1024: {
+              slidesPerView: 3,
+              spaceBetween: 35,
+            },
+          }}
           modules={[FreeMode, Pagination, Autoplay]}
-          className="w-full "
+          className="w-full"
         >
           {reviews.map((review, i) => {
             return (
               <SwiperSlide key={i}>
-                <div className="flex flex-col gap-3 bg-richblack-800 p-3 text-[14px] text-richblack-25 hover:bg-richblack-700 rounded-md">
+                <div className="flex flex-col gap-3 bg-richblack-800 p-3 text-[14px] text-richblack-25 hover:bg-richblack-700 rounded-md w-[350px]">
                   <div className="flex items-center gap-4">
                     <img
                       src={
