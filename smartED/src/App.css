@@ -252,3 +252,7 @@ details > summary::-webkit-details-marker {
     flex-direction: column-reverse;
   }
 }
+
+.active {
+  color: yellow;
+}
