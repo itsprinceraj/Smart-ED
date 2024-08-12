@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { buyCourse } from "../../../services/operations/paymentApi";
 
 export const CartCourseTotalAmount = () => {
   const { total, cart } = useSelector((state) => state.cart);
@@ -15,8 +16,8 @@ export const CartCourseTotalAmount = () => {
 
   //  write a function to hadle buy course button , for payment integration
   const handleBuyCourse = () => {
-    // const courses = cart.map((course) => course._id);
-    return toast.error("Payment Gateway is not Integrated");
+    const courses = cart.map((course) => course._id);
+    buyCourse(token, courses, user, navigate, dispatch);
   };
   return (
     <div className="min-w-[280px] rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-6">

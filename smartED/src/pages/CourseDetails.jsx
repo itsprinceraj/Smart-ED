@@ -6,7 +6,7 @@ import { ConfirmationModal } from "../components/common/ConfirmationModal";
 import { RatingStars } from "../components/common/RatingStars";
 // import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import { GetAvgRating } from "../utilities/avgRating";
-import { ErrorPage } from "../pages/ErrorPage";
+import { ErrorPage } from "./ErrorPage";
 import toast from "react-hot-toast";
 import { getCourseDetail } from "../services/operations/courseDetailApi";
 import { BiInfoCircle } from "react-icons/bi";
@@ -14,13 +14,7 @@ import { HiOutlineGlobeAlt } from "react-icons/hi";
 import { formatDate } from "../services/formatDate";
 import { CourseAccordionBar } from "../components/coureDetailPage/CourseAccordionBar";
 import { CourseDetailsCard } from "../components/coureDetailPage/CourseDetailsCard";
-// import { apiConnector } from "../services/apiConnector";
-// import { paymentApiEndpoints } from "../services/apiEndPoints";
-// import { load } from "@cashfreepayments/cashfree-js";
-// import { setPaymentLoading } from "../redux/slices/courseSlice";
-// import { resetCartItems } from "../redux/slices/cartSlice";
-
-// const { CREATE_PAYMENT_API, VERIFY_SIGNATURE_API } = paymentApiEndpoints;
+import { buyCourse } from "../services/operations/paymentApi";
 
 export const CourseDetails = () => {
   //  fetch user and token as  they are much needed thing for this section
@@ -115,19 +109,17 @@ export const CourseDetails = () => {
   };
 
   //  handle purchasing of course
-  const handleBuyCourse = async (event) => {
-    event.preventDefault();
 
+  const handleBuyCourse = () => {
     if (token) {
-      return toast.error("Payment Gateway is not Integrated");
+      buyCourse(token, [courseId], user, navigate, dispatch);
+      return;
     }
-
-    // if no token, prompt the user to log in
     setConfirmationModal({
       text1: "You are not logged in!",
       text2: "Please login to Purchase Course.",
-      btn1: "Login",
-      btn2: "Cancel",
+      btn1Text: "Login",
+      btn2Text: "Cancel",
       btn1Handler: () => navigate("/login"),
       btn2Handler: () => setConfirmationModal(null),
     });
