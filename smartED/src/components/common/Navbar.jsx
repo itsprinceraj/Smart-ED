@@ -173,7 +173,7 @@ export const Navbar = () => {
           >
             {token === null && (
               <>
-                <NavLink to={"/login"}>
+                <Link to={"/login"}>
                   <p
                     className={`${
                       open
@@ -183,9 +183,9 @@ export const Navbar = () => {
                   >
                     Login
                   </p>
-                </NavLink>
+                </Link>
 
-                <NavLink to={"/signup"}>
+                <Link to={"/signup"}>
                   <p
                     className={`${
                       open
@@ -195,7 +195,7 @@ export const Navbar = () => {
                   >
                     Sign Up
                   </p>
-                </NavLink>
+                </Link>
               </>
             )}
 
