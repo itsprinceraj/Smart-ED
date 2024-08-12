@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useDropzone } from "react-dropzone";
 import { FiUploadCloud } from "react-icons/fi";
@@ -20,7 +20,6 @@ export const Upload = ({
   const [previewSource, setPreviewSource] = useState(
     viewData ? viewData : editData ? editData : ""
   );
-  const inputRef = useRef(null);
 
   const onDrop = (acceptedFiles) => {
     const file = acceptedFiles[0];
@@ -38,7 +37,6 @@ export const Upload = ({
   });
 
   const previewFile = (file) => {
-    // console.log(file)
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => {
@@ -56,6 +54,10 @@ export const Upload = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedFile, setValue]);
 
+  const handleClick = () => {
+    document.getElementById(name).click();
+  };
+
   return (
     <div className="flex flex-col space-y-2">
       <label className="text-sm text-richblack-5" htmlFor={name}>
@@ -65,6 +67,7 @@ export const Upload = ({
         className={`${
           isDragActive ? "bg-richblack-600" : "bg-richblack-700"
         } flex min-h-[250px] cursor-pointer items-center justify-center rounded-md border-2 border-dotted border-richblack-500`}
+        onClick={handleClick} // Manually trigger file input click
       >
         {previewSource ? (
           <div className="flex w-full flex-col p-6">
@@ -96,7 +99,7 @@ export const Upload = ({
             className="flex w-full flex-col items-center p-6"
             {...getRootProps()}
           >
-            <input {...getInputProps()} ref={inputRef} />
+            <input {...getInputProps()} id={name} style={{ display: "none" }} />
             <div className="grid aspect-square w-14 place-items-center rounded-full bg-pure-greys-800">
               <FiUploadCloud className="text-2xl text-blue-100" />
             </div>
@@ -104,7 +107,7 @@ export const Upload = ({
               Drag and drop an {!video ? "image" : "video"}, or click to{" "}
               <span className="font-semibold text-blue-100">Browse</span> a file
             </p>
-            <ul className="mt-10 flex list-disc justify-between space-x-12 text-center  text-xs text-richblack-200">
+            <ul className="mt-10 flex list-disc justify-between space-x-12 text-center text-xs text-richblack-200">
               <li>Aspect ratio 16:9</li>
               <li>Recommended size 1024x576</li>
             </ul>
