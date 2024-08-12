@@ -63,7 +63,8 @@ passport.use(
     {
       clientID: clientId,
       clientSecret: clientSecret,
-      callbackURL: "/api/v1/auth/google-sign-in",
+      callbackURL:
+        "https://smarted-backend.onrender.com/api/v1/auth/google-sign-in",
       scope: ["email", "profile"],
     },
     async (accessToken, refreshToken, profile, done) => {
