@@ -67,7 +67,7 @@ export const Upload = ({
         className={`${
           isDragActive ? "bg-richblack-600" : "bg-richblack-700"
         } flex min-h-[250px] cursor-pointer items-center justify-center rounded-md border-2 border-dotted border-richblack-500`}
-        onClick={handleClick} // Manually trigger file input click
+        onClick={() => handleClick} // Manually trigger file input click
       >
         {previewSource ? (
           <div className="flex w-full flex-col p-6">
