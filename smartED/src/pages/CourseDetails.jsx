@@ -15,6 +15,7 @@ import { formatDate } from "../services/formatDate";
 import { CourseAccordionBar } from "../components/coureDetailPage/CourseAccordionBar";
 import { CourseDetailsCard } from "../components/coureDetailPage/CourseDetailsCard";
 import { buyCourse } from "../services/operations/paymentApi";
+import { ACCOUNT_TYPE } from "../utilities/constants";
 
 export const CourseDetails = () => {
   //  fetch user and token as  they are much needed thing for this section
@@ -112,6 +113,9 @@ export const CourseDetails = () => {
 
   const handleBuyCourse = () => {
     if (token) {
+      //  check if user is instructor
+      if (user?.accountType === ACCOUNT_TYPE.INSTRUCTOR)
+        return toast.error("You are an Instructor , you cannot buy course");
       buyCourse(token, [courseId], user, navigate, dispatch);
       return;
     }
