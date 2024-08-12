@@ -165,7 +165,7 @@ app.get(
 
     // Optionally redirect to frontend
     res.redirect(
-      `http://localhost:5173/api/v1/auth/google-sign-in?token=${token}&userData=${JSON.stringify(
+      `https://smart-ed-frontend.vercel.app/api/v1/auth/google-sign-in?token=${token}&userData=${JSON.stringify(
         userData
       )}`
     );
