@@ -204,7 +204,7 @@ export const Navbar = () => {
                 <AiOutlineShoppingCart className="text-3xl text-richblack-100 hover:text-white transition-all duration-200" />
 
                 {totalItems > 0 && (
-                  <span className="absolute -top-[0.3rem] right-[4.5rem] grid h-5 w-5 place-items-center overflow-hidden rounded-full bg-richblack-600 text-center text-xs font-bold text-yellow-100">
+                  <span className="absolute top-[0.5rem] right-[13.8rem] grid h-5 w-5 place-items-center overflow-hidden rounded-full bg-richblack-600 text-center text-xs font-bold text-yellow-100">
                     {totalItems}
                   </span>
                 )}
