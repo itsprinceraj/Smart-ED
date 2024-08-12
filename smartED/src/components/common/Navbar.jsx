@@ -174,15 +174,15 @@ export const Navbar = () => {
             {token === null && (
               <>
                 <NavLink to={"/login"}>
-                  {open ? (
-                    <p className="text-richblack-25 hover:text-white transition-all duration-200">
-                      Login
-                    </p>
-                  ) : (
-                    <button className="rounded-[8px] border border-richblack-700 bg-richblack-800 px-[12px] py-[8px] text-richblack-100 hover:text-white transition-all duration-200">
-                      Login
-                    </button>
-                  )}
+                  <p
+                    className={`${
+                      open
+                        ? "text-richblack-25 hover:text-white transition-all duration-200"
+                        : "rounded-[8px] border border-richblack-700 bg-richblack-800 px-[12px] py-[8px] text-richblack-100 hover:text-white transition-all duration-200"
+                    } `}
+                  >
+                    Login
+                  </p>
                 </NavLink>
 
                 <NavLink to={"/signup"}>
