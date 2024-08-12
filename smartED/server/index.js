@@ -29,7 +29,7 @@ const sessionSecret = process.env.SESSION_SECRET;
 // imporitng Routes
 const userRoutes = require("./routes/userRoutes");
 const profileRoutes = require("./routes/profileRoutes");
-// const paymentRoutes = require("./routes/paymentRoutes");
+const paymentRoutes = require("./routes/paymentRoutes");
 const courseRoutes = require("./routes/courseRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 
@@ -201,7 +201,7 @@ cloudinaryConnect();
 app.use("/api/v1/auth/", userRoutes);
 app.use("/api/v1/profile/", profileRoutes);
 app.use("/api/v1/course/", courseRoutes);
-// app.use("/api/v1/payment/", paymentRoutes);
+app.use("/api/v1/payment/", paymentRoutes);
 app.use("/api/v1/about/", contactRoutes);
 
 // define default routes
