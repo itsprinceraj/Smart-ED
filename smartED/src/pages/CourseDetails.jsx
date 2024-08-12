@@ -118,8 +118,8 @@ export const CourseDetails = () => {
     setConfirmationModal({
       text1: "You are not logged in!",
       text2: "Please login to Purchase Course.",
-      btn1Text: "Login",
-      btn2Text: "Cancel",
+      btn1: "Login",
+      btn2: "Cancel",
       btn1Handler: () => navigate("/login"),
       btn2Handler: () => setConfirmationModal(null),
     });
