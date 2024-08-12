@@ -21,7 +21,7 @@ export const Template = ({ data, image, setIsLoggedIn }) => {
   };
 
   return (
-    <div className="flex lg:flex-row md:flex-col-reverse   w-11/12 justify-between max-w-[1200px] py-12 mx-auto gap-x-12 gap-y-0 items-center template">
+    <div className="flex lg:flex-row md:flex-col-reverse max-lg:mt-20 w-11/12 justify-between max-w-[1200px] py-12 mx-auto gap-x-12 gap-y-0 items-center template">
       <div className="w-11/12 max-w-[500px] mt-14">
         <h1 className="text-richblack-5 font-semibold text-[1.875rem] leading-[2.375rem]">
           {data.title}

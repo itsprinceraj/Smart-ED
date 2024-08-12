@@ -13,7 +13,7 @@ import { ContactFormSection } from "../components/aboutPage/ContactFormSection";
 
 export const About = () => {
   return (
-    <div>
+    <div className="max-lg:mt-36">
       {/* Section 1 */}
 
       <section className="bg-richblack-700">
