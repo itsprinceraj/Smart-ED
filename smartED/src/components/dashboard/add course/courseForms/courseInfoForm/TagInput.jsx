@@ -70,6 +70,7 @@ export const TagInput = ({
       </label>
 
       {/* Render the tags and input */}
+      <p className="text-yellow-50">{`Please press enter to register your tag :)`}</p>
       <div className="flex w-full flex-wrap gap-y-2">
         {/* Map over the chips array and render each chip */}
         {tags.map((tag, index) => (
