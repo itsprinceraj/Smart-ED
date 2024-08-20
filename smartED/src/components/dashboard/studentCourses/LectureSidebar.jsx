@@ -8,6 +8,7 @@ import {
   IoCheckmarkDoneCircleOutline,
   IoCheckmarkDoneCircleSharp,
 } from "react-icons/io5";
+import toast from "react-hot-toast";
 
 export const LectureSidebar = ({ setReviewModal }) => {
   const [activeStatus, setActiveStatus] = useState(null);
@@ -17,7 +18,7 @@ export const LectureSidebar = ({ setReviewModal }) => {
   const location = useLocation();
   const { sectionId, subSectionId } = useParams();
 
-  //  fetch redux states for viewCourse
+  // Fetch redux states for viewCourse
   const {
     courseSectionData,
     courseEntireData,
@@ -25,32 +26,62 @@ export const LectureSidebar = ({ setReviewModal }) => {
     completedLectures,
   } = useSelector((state) => state.viewCourse);
 
-  //  on first render , set all the user course data
+  // Handle keydown to prevent video control when modal is open
+  const handleKeyDown = (event) => {
+    const focusedElement = document.activeElement;
+    const isTextInputFocused =
+      focusedElement.tagName === "TEXTAREA" ||
+      (focusedElement.tagName === "INPUT" && focusedElement.type === "text");
+
+    if (!isTextInputFocused) {
+      if (event.key === " " || event.key.toLowerCase() === "f") {
+        event.preventDefault();
+      }
+    }
+  };
+
+  //  on first render , of the review modal, disabled control keys for video
+  useEffect(() => {
+    const addReviewListener = (isOpen) => {
+      if (isOpen) {
+        window.addEventListener("keydown", handleKeyDown);
+      } else {
+        window.removeEventListener("keydown", handleKeyDown);
+      }
+    };
+
+    // Call the function initially to add the event listener if the modal is open
+    addReviewListener(setReviewModal);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [setReviewModal]);
+
+  // On first render, set all the user course data
   useEffect(() => {
     (() => {
       if (!courseSectionData.length) return;
 
-      //  find current Section Index
+      // Find current Section Index
       const currentSectionIndx = courseSectionData.findIndex((data) => {
-        // console.log(data._id);
         return data?._id === sectionId;
       });
 
-      //  find current SubSection Index
+      // Find current SubSection Index
       const currentSubSectionIndx = courseSectionData?.[
         currentSectionIndx
       ]?.subSection.findIndex((data) => {
-        // console.log(data._id);
         return data?._id === subSectionId;
       });
 
-      //  finde active subSection id
+      // Find active subSection id
       const activeSubSectionId =
         courseSectionData?.[currentSectionIndx]?.subSection?.[
           currentSubSectionIndx
         ]?._id;
 
-      //  set Data to show active Section and active lecture video
+      // Set data to show active Section and active lecture video
       setActiveStatus(courseSectionData?.[currentSectionIndx]?._id);
       setVideoBarActive(activeSubSectionId);
     })();
@@ -63,10 +94,13 @@ export const LectureSidebar = ({ setReviewModal }) => {
     return;
   }
 
+  //  check if user completed the lecture or not
+  const hasCompletedCourse = completedLectures?.length === totalNoOfLectures;
+
   return (
     <div className="flex h-[calc(100vh-3.5rem)] w-[320px] max-w-[350px] flex-col border-r-[1px] border-r-richblack-700 bg-richblack-800">
       <div className="mx-5 flex flex-col items-start justify-between gap-2 gap-y-4 border-b border-richblack-600 py-5 text-lg font-bold text-richblack-25">
-        <div className="flex w-full items-center justify-between ">
+        <div className="flex w-full items-center justify-between">
           <div
             onClick={() => {
               navigate(`/dashboard/enrolled-courses`);
@@ -79,7 +113,15 @@ export const LectureSidebar = ({ setReviewModal }) => {
           <IconBtn
             text="Add Review"
             customClasses="ml-auto"
-            onclick={() => setReviewModal(true)}
+            onclick={() => {
+              if (hasCompletedCourse) {
+                setReviewModal(true);
+              } else {
+                toast.error(
+                  "You can't write a review untill you complete the course !"
+                );
+              }
+            }}
           />
         </div>
         <div className="flex flex-col">
@@ -133,7 +175,7 @@ export const LectureSidebar = ({ setReviewModal }) => {
                       setVideoBarActive(topic._id);
                     }}
                   >
-                    {/*  add tick icon on video completion */}
+                    {/* Add tick icon on video completion */}
                     {completedLectures?.includes(topic?._id) && (
                       <IoCheckmarkDoneCircleOutline color="" size={22} />
                     )}
