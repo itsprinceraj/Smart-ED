@@ -4,7 +4,12 @@ import { apiConnector } from "../apiConnector";
 import { authEndpoints } from "../apiEndPoints";
 import { useNavigate } from "react-router-dom";
 import { setUser } from "../../redux/slices/profileSlice";
-import { resetCartItems } from "../../redux/slices/cartSlice";
+import {
+  resetCartItems,
+  setCartItems,
+  setTotalItems,
+} from "../../redux/slices/cartSlice";
+import { addIntoCart } from "./userProfileApi";
 
 const {
   RESETPASSTOKEN_API,
@@ -118,9 +123,36 @@ export const loginRequest = (email, password, navigate) => {
 
         // dispatch user
         dispatch(setUser({ ...response.user, image: userImage }));
-
         localStorage.setItem("token", JSON.stringify(response.token));
         localStorage.setItem("user", JSON.stringify(response.user));
+        console.log(response.user);
+
+        //  merge localCartItems and serverCartItems
+        let serverCartItems = response?.user?.cart || [];
+        let localCartItems = JSON.parse(localStorage.getItem("cart")) || [];
+
+        const mergedItems = [...serverCartItems];
+
+        //  check if the local item that is into the cart, contains in database or not
+        for (let localItem of localCartItems) {
+          const existInServerCart = serverCartItems.some(
+            (item) => item._id == localItem._id
+          );
+
+          //  check if the course is already purchased by the user
+          const purchasedCourse = response.user.courses.filter(
+            (item) => item._id == localItem._id
+          );
+
+          if (!existInServerCart && !purchasedCourse) {
+            mergedItems.push(localItem);
+            await addIntoCart(dispatch, response?.token, localItem._id);
+          }
+        }
+
+        //  update redux state
+        dispatch(setCartItems(mergedItems));
+        dispatch(setTotalItems(mergedItems.length));
 
         // show success toast
         toast.success(response.message);
@@ -163,7 +195,7 @@ export const resetPasswordToken = (email, setSentEmail) => {
         email,
       });
 
-      console.log("reset pass token :", response);
+      // console.log("reset pass token :", response);
 
       // handle error from api data
       if (!response.success) {
@@ -229,7 +261,7 @@ export const resetPasswordRequest = (
         token,
       });
 
-      console.log(response);
+      // console.log(response);
 
       // handle response and show toast accordingly
       if (!response.success) {

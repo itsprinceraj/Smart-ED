@@ -169,20 +169,20 @@ export const Navbar = () => {
           <div
             className={`flex ${
               open && "justify-center mt-2"
-            } lg:ml-20 gap-8 gap-y-4 lg:gap-x-10`}
+            } lg:ml-20 gap-10 gap-y-4 lg:gap-x-10`}
           >
             {token === null && (
               <>
                 <Link to={"/login"}>
-                  <p
-                    className={`${
-                      open
-                        ? "text-richblack-25 hover:text-white transition-all duration-200"
-                        : "rounded-[8px] border border-richblack-700 bg-richblack-800 px-[12px] py-[8px] text-richblack-100 hover:text-white transition-all duration-200"
-                    } `}
-                  >
-                    Login
-                  </p>
+                  {open ? (
+                    <p className="text-richblack-25 hover:text-white transition-all duration-200">
+                      Log In
+                    </p>
+                  ) : (
+                    <button className="rounded-[8px] border border-richblack-700 bg-richblack-800 px-[12px] py-[8px] text-richblack-100 hover:text-white transition-all duration-200">
+                      Login
+                    </button>
+                  )}
                 </Link>
 
                 <Link to={"/signup"}>
@@ -198,19 +198,17 @@ export const Navbar = () => {
                 </Link>
               </>
             )}
-
-            {user && user?.accountType !== ACCOUNT_TYPE?.INSTRUCTOR && (
-              <Link to={"/dashboard/cart"}>
-                <AiOutlineShoppingCart className="text-3xl text-richblack-100 hover:text-white transition-all duration-200" />
+            {user?.accountType !== ACCOUNT_TYPE?.INSTRUCTOR && (
+              <Link to={"/cart"}>
+                <AiOutlineShoppingCart className="text-3xl text-richblack-100 hover:text-white transition-all duration-200 content-center mt-1" />
 
                 {totalItems > 0 && (
-                  <span className="absolute top-[0.5rem] right-[13.8rem] grid h-5 w-5 place-items-center overflow-hidden rounded-full bg-richblack-600 text-center text-xs font-bold text-yellow-100">
+                  <span className="relative -top-[40px] -right-[20px] grid h-5 w-5 place-items-center overflow-hidden rounded-full bg-richblack-600 text-center text-xs font-bold text-yellow-100">
                     {totalItems}
                   </span>
                 )}
               </Link>
             )}
-
             {token !== null && <UserProfile />}
           </div>
         </nav>

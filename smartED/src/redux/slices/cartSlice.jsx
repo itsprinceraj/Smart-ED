@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
+import { json } from "react-router-dom";
 
 const initialState = {
   totalItems: localStorage.getItem("totalItems")
@@ -19,7 +20,19 @@ const cartSlice = createSlice({
   initialState: initialState,
   reducers: {
     setCartItems: (state, action) => {
+      state.cart = [...action.payload];
+      state.totalItems = action.payload.length;
+      state.total = action.payload.reduce((acc, item) => acc + item.price, 0);
+
+      //  update state in localstorage
+      localStorage.setItem("cart", JSON.stringify(state.cart));
+      localStorage.setItem("totalItems", JSON.stringify(state.totalItems));
+      localStorage.setItem("total", JSON.stringify(state.total));
+    },
+
+    setTotalItems: (state, action) => {
       state.totalItems = action.payload;
+      localStorage.setItem("totalItems", JSON.stringify(state.totalItems));
     },
     resetCartItems: (state) => {
       state.cart = [];
@@ -74,8 +87,13 @@ const cartSlice = createSlice({
 });
 
 // export using actions
-export const { setCartItems, resetCartItems, addToCart, removeFromCart } =
-  cartSlice.actions;
+export const {
+  setCartItems,
+  resetCartItems,
+  addToCart,
+  removeFromCart,
+  setTotalItems,
+} = cartSlice.actions;
 
 //export using reducers
 export default cartSlice.reducer;

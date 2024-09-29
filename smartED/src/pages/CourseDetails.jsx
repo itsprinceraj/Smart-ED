@@ -6,7 +6,7 @@ import { ConfirmationModal } from "../components/common/ConfirmationModal";
 import { RatingStars } from "../components/common/RatingStars";
 // import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import { GetAvgRating } from "../utilities/avgRating";
-import { ErrorPage } from "./ErrorPage";
+import { ErrorPage } from "../pages/ErrorPage";
 import toast from "react-hot-toast";
 import { getCourseDetail } from "../services/operations/courseDetailApi";
 import { BiInfoCircle } from "react-icons/bi";
@@ -113,20 +113,20 @@ export const CourseDetails = () => {
 
   const handleBuyCourse = () => {
     if (token) {
-      //  check if user is instructor
       if (user?.accountType === ACCOUNT_TYPE.INSTRUCTOR)
         return toast.error("You are an Instructor , you cannot buy course");
       buyCourse(token, [courseId], user, navigate, dispatch);
       return;
+    } else {
+      setConfirmationModal({
+        text1: "You are not logged in!",
+        text2: "Please login to Purchase Course.",
+        btn1: "Login",
+        btn2: "Cancel",
+        btn1Handler: () => navigate("/login"),
+        btn2Handler: () => setConfirmationModal(null),
+      });
     }
-    setConfirmationModal({
-      text1: "You are not logged in!",
-      text2: "Please login to Purchase Course.",
-      btn1: "Login",
-      btn2: "Cancel",
-      btn1Handler: () => navigate("/login"),
-      btn2Handler: () => setConfirmationModal(null),
-    });
   };
 
   //  if payment loading show a loader

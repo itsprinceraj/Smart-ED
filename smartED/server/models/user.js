@@ -33,6 +33,12 @@ const userSchema = new mongoose.Schema(
       emum: ["Admin", "Student", "Instructor"],
       required: true,
     },
+    cart: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Course",
+      },
+    ],
     image: {
       type: String,
       required: true,

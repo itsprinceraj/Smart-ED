@@ -50,6 +50,8 @@ export const courseEndpoints = {
   FULL_COURSE_DETAIL_API: BASE_URL + "/course/getFullCourseDetails",
   CREATE_RATING_API: BASE_URL + "/course/createRating",
   LECTURE_COMPLETION_API: BASE_URL + "/course/updateCourseProgress",
+  ADD_TO_CART: BASE_URL + "/course/addToCart",
+  REMOVE_FROM_CART: BASE_URL + "/course/removeFromCart",
 };
 
 //  rating and reviews endPoints

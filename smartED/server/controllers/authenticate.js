@@ -213,7 +213,7 @@ exports.login = async (req, res, next) => {
     }
 
     // Search and Check if user is not registered
-    let user = await User.findOne({ email }); // returns array of objects
+    let user = await User.findOne({ email }).populate("cart"); // returns array of objects
 
     if (!user) {
       return res.status(200).json({
@@ -251,7 +251,7 @@ exports.login = async (req, res, next) => {
         success: true,
         user,
         token,
-        message: " User Logged In Successfully",
+        message: "User Logged In Successfully",
       });
     } else {
       res.status(200).json({

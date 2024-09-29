@@ -6,7 +6,12 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import copy from "copy-to-clipboard";
 import { ACCOUNT_TYPE } from "../../utilities/constants";
-import { addToCart } from "../../redux/slices/cartSlice";
+
+import {
+  addIntoCart,
+  removeCourseFromCart,
+} from "../../services/operations/userProfileApi";
+import { addToCart, removeFromCart } from "../../redux/slices/cartSlice";
 
 export const CourseDetailsCard = ({
   course,
@@ -21,8 +26,12 @@ export const CourseDetailsCard = ({
   //  get all mandatory data
   const { user } = useSelector((state) => state.profile);
   const { token } = useSelector((state) => state.auth);
+  const { cart } = useSelector((state) => state.cart);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  let cartItems = cart.some((item) => item._id == course._id);
 
   //  handle share function
   const handleShare = () => {
@@ -32,27 +41,35 @@ export const CourseDetailsCard = ({
   };
 
   //  handle add to cart
-  const handleAddToCart = () => {
-    //  check if user is student or not
-    if (user && user?.accountType === ACCOUNT_TYPE?.INSTRUCTOR) {
+  const handleAddToCart = async (dispatch, token, course, user, cartItems) => {
+    // If user is an instructor, prevent course purchase
+    if (user?.accountType === ACCOUNT_TYPE?.INSTRUCTOR) {
       toast.error("You are an Instructor. You can't buy a course.");
       return;
     }
 
-    //  if user is student and user is logged in then add course to cart
-    if (token) {
-      dispatch(addToCart(course));
-      return;
+    // Function to handle adding course to cart
+    const addCourseToCart = async () => {
+      if (token) {
+        await addIntoCart(dispatch, token, course);
+      } else {
+        dispatch(addToCart(course));
+      }
+    };
+
+    const removeCourseFromCartHandler = async () => {
+      if (token) {
+        await removeCourseFromCart(dispatch, token, course._id);
+      } else {
+        dispatch(removeFromCart(course._id));
+      }
+    };
+
+    // If course already exists in the cart, remove it
+    if (cartItems) {
+      removeCourseFromCartHandler();
     } else {
-      //  if user is not logged in the show them a modal
-      setConfirmationModal({
-        text1: "You are not logged in!",
-        text2: "Please login to add To Cart",
-        btn1: "Login",
-        btn2: "Cancel",
-        btn1Handler: () => navigate("/login"),
-        btn2Handler: () => setConfirmationModal(null),
-      });
+      addCourseToCart();
     }
   };
 
@@ -87,8 +104,13 @@ export const CourseDetailsCard = ({
                 : "Buy Now"}
             </button>
             {(!user || !course?.studentsEnrolled?.includes(user?._id)) && (
-              <button onClick={handleAddToCart} className="blackButton">
-                Add to Cart
+              <button
+                onClick={() =>
+                  handleAddToCart(dispatch, token, course, user, cartItems)
+                }
+                className="blackButton"
+              >
+                {cartItems ? "Remove From Cart" : "Add to Cart"}
               </button>
             )}
           </div>

@@ -53,6 +53,12 @@ const {
 const upload = require("../utilities/multer");
 const { updateCourseProgress } = require("../controllers/courseProgress");
 
+//  add to cart controller
+const {
+  addCourseToCart,
+  removeCourseFromCart,
+} = require("../controllers/itemsInCart");
+
 // define routes
 
 //******** courseRoutes*******************
@@ -89,6 +95,10 @@ router.post("/createCategory", auth, isAdmin, createCategory);
 
 // *************course progress route
 router.post("/updateCourseProgress", auth, isStudent, updateCourseProgress);
+
+// add to cart
+router.post("/addToCart", auth, addCourseToCart);
+router.post("/removeFromCart", auth, removeCourseFromCart);
 
 // export Router
 module.exports = router;
