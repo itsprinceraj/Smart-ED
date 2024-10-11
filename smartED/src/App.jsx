@@ -102,7 +102,7 @@ function App() {
         <Route path="/reach-us" element={<Contact />} />
 
         {/* show cart if user is not logged in  */}
-        {/* <Route path="/cart" element={<MyCart />} /> */}
+        <Route path="/cart" element={<MyCart />} />
 
         {/* Dashboard Route */}
 
